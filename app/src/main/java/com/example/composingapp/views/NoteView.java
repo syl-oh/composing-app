@@ -10,6 +10,7 @@ import android.view.View;
 import androidx.annotation.Nullable;
 
 public class NoteView extends View {
+    private static final String TAG = "NoteView";
     private Paint mNotePaint;
     private int mNoteX, mNoteY;
     private float mNoteRadius;
