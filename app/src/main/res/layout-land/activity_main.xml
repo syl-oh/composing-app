@@ -8,5 +8,6 @@
     <com.example.composingapp.views.BarViewGroup
         android:layout_width="278dp"
         android:layout_height="203dp" />
+
 </LinearLayout>
 
