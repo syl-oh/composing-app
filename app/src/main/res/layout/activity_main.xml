@@ -6,7 +6,15 @@
 
 
     <com.example.composingapp.views.BarViewGroup
+        android:id="@+id/BarViewGroup"
         android:layout_width="308dp"
-        android:layout_height="212dp" />
+        android:layout_height="212dp">
+
+        <com.example.composingapp.views.NoteView
+            android:id="@+id/noteView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+    </com.example.composingapp.views.BarViewGroup>
 </LinearLayout>
 

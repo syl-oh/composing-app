@@ -24,8 +24,13 @@ class BarViewGroup extends LinearLayout {
         super(context, attrs);
         setOrientation(LinearLayout.HORIZONTAL);
 
+        initMeasurements();
         convertMeasuresToPx();
         initBarPaint();
+
+    }
+
+    private void initMeasurements() {
     }
 
     @Override
