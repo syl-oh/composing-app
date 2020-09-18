@@ -11,13 +11,7 @@ import android.widget.LinearLayout;
 class BarViewGroup extends LinearLayout {
     private static final String TAG = "BarViewGroup";
     private Paint mBarPaint;
-
-    // Measurements for musical bar drawing in dip
-    private static float mBarLineSize = 5;
-    private static float mBarX = 50;
-    private static float mBarY = 50;
-    private static float mBarWidth = 2000;
-    private static float mBarHeight = 100;
+    private float mBarLineSize, mBarX, mBarY, mBarWidth, mBarHeight;
 
 
     public BarViewGroup(Context context, AttributeSet attrs) {
@@ -25,16 +19,14 @@ class BarViewGroup extends LinearLayout {
         setOrientation(LinearLayout.HORIZONTAL);
 
         initMeasurements();
-        convertMeasuresToPx();
         initBarPaint();
 
     }
 
-    private void initMeasurements() {
-    }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
+
     }
 
 
@@ -59,6 +51,16 @@ class BarViewGroup extends LinearLayout {
     private float convertDpToPx(float dp) {
         return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 dp, getResources().getDisplayMetrics());
+    }
+
+    private void initMeasurements() {
+        // Values in dp
+        mBarLineSize = 5;
+        mBarX = 50;
+        mBarY = 50;
+        mBarWidth = 2000;
+        mBarHeight = 100;
+        convertMeasuresToPx();
     }
 
     /**

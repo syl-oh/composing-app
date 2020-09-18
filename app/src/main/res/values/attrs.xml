@@ -4,6 +4,14 @@
         <attr name="showClef" format="boolean" />
         <attr name="showKey" format="boolean" />
         <attr name="showTimeSignature" format="boolean" />
+    </declare-styleable>
 
+    <declare-styleable name="NoteView">
+        <attr name="android:id" />
+        <attr name="android:layout_height" />
+        <attr name="android:layout_width" />
+        <attr name="noteLength" format="enum" />
+        <attr name="pitchClass" format="enum" />
+        <attr name="octave" format="integer" />
     </declare-styleable>
 </resources>
