@@ -15,16 +15,18 @@ public class NoteView extends View {
     private Paint mNotePaint;
     private int mNoteX, mNoteY;
     private float mNoteRadius;
+    private int canvasHeight;
+    private int canvasWidth;
 
     public NoteView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-
-        initMeasurements();
         initNotePaint();
     }
 
     private void initMeasurements() {
-
+        mNoteX = canvasWidth / 2;
+        mNoteY = canvasHeight / 2;
+        mNoteRadius = 30;
     }
 
     private void initNotePaint() {
@@ -44,6 +46,13 @@ public class NoteView extends View {
                 dp, getResources().getDisplayMetrics());
     }
 
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        canvasWidth = w;
+        canvasHeight = h;
+        initMeasurements();
+        super.onSizeChanged(w, h, oldw, oldh);
+    }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -53,8 +62,6 @@ public class NoteView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         canvas.drawCircle(mNoteX, mNoteY, mNoteRadius, mNotePaint);
-
     }
 }
