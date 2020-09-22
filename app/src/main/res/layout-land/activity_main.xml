@@ -5,10 +5,9 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <com.example.composingapp.views.BarViewGroup
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <com.example.composingapp.views.NoteView
             android:id="@+id/noteView"
@@ -20,7 +19,9 @@
             android:layout_width="100dp"
             android:layout_height="200dp" />
 
-    </LinearLayout>
+
+    </com.example.composingapp.views.BarViewGroup>
+
 
 </LinearLayout>
 

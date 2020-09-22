@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -32,6 +33,7 @@ public class NoteView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         canvasWidth = w;
         canvasHeight = h;
+        Log.d(TAG, "onSizeChanged: canvasWidth" + canvasWidth);
         initDrawMeasurements();
         super.onSizeChanged(w, h, oldw, oldh);
     }

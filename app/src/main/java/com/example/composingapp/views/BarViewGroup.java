@@ -5,7 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.LinearLayout;
 
 class BarViewGroup extends LinearLayout {
@@ -23,16 +25,43 @@ class BarViewGroup extends LinearLayout {
 
     }
 
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-
-    }
-
-
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+        int specWidth = MeasureSpec.getSize(widthMeasureSpec);
+        int maxWidth = 0;
+        int maxHeight = 0;
+        int maxIndex = 0;
+        for (int i = 0; i < getChildCount(); i++) {
+            View child = getChildAt(i);
+            final int widthSpec = MeasureSpec.makeMeasureSpec(
+                    specWidth, MeasureSpec.UNSPECIFIED);
+            final int heightSpec = MeasureSpec.makeMeasureSpec(
+                    0, MeasureSpec.UNSPECIFIED);
+            child.measure(widthSpec, heightSpec);
+            int width = child.getMeasuredWidth();
+            if (width > maxWidth) {
+                maxWidth = width;
+                maxIndex = i;
+            }
+        }
+        for (int i = 0; i < getChildCount(); i++) {
+            if (i != maxIndex) {
+                View child = getChildAt(i);
+                final int widthSpec = MeasureSpec.makeMeasureSpec(
+                        maxWidth, MeasureSpec.EXACTLY);
+                final int heightSpec = MeasureSpec.makeMeasureSpec(
+                        0, MeasureSpec.UNSPECIFIED);
+                child.measure(widthSpec, heightSpec);
+            }
+        }
+
+        mBarWidth = maxWidth;
+        mBarHeight = View.MeasureSpec.getSize(heightMeasureSpec);
+
+        Log.d(TAG, "onMeasure: mBarwidth " + mBarWidth);
+        Log.d(TAG, "onMeasure: mBarHeight " + mBarHeight);
     }
 
 
@@ -56,10 +85,8 @@ class BarViewGroup extends LinearLayout {
     private void initMeasurements() {
         // Values in dp
         mBarLineSize = 5;
-        mBarX = 50;
-        mBarY = 50;
-        mBarWidth = 2000;
-        mBarHeight = 100;
+        mBarX = 0;
+        mBarY = 0;
         convertMeasuresToPx();
     }
 
@@ -71,8 +98,6 @@ class BarViewGroup extends LinearLayout {
         mBarLineSize = convertDpToPx(mBarLineSize);
         mBarX = convertDpToPx(mBarX);
         mBarY = convertDpToPx(mBarY);
-        mBarHeight = convertDpToPx(mBarHeight);
-        mBarWidth = convertDpToPx(mBarWidth);
     }
 
     /**
@@ -93,10 +118,12 @@ class BarViewGroup extends LinearLayout {
     private void drawBarLines(Canvas canvas) {
         // Position variable for the y-coordinate since it is the only one that changes in each loop
         float currentY = mBarY;
+
         // Draw the 5 lines from top to bottom
         for (int i = 0; i < 5; i++) {
             canvas.drawLine(mBarX, currentY, mBarX + mBarWidth, currentY, mBarPaint);
             currentY += mBarHeight / 5;
+            Log.d(TAG, "drawBarLines: currentY " + currentY);
         }
     }
 }
