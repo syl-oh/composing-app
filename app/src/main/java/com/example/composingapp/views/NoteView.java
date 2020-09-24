@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
@@ -13,27 +12,20 @@ import androidx.annotation.Nullable;
 
 public class NoteView extends View {
     private static final String TAG = "NoteView";
-    private Paint mNotePaint;
-    private Paint mStemPaint;
-    private float mNoteX, mNoteY;
+    private Paint mNotePaint, mStemPaint;
+    private float mNoteX, mNoteY, mNoteRadius, mStemWidth, mStemHeight;
     private float[] mNoteYPositions;
-    private float mNoteRadius;
-    private int canvasHeight;
-    private int canvasWidth;
-    private float mStemWidth;
-    private float mStemHeight;
+    private int canvasHeight, canvasWidth;
 
 
     public NoteView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        initNoteYPositions();
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         canvasWidth = w;
         canvasHeight = h;
-        Log.d(TAG, "onSizeChanged: canvasWidth" + canvasWidth);
         initDrawMeasurements();
         super.onSizeChanged(w, h, oldw, oldh);
     }
@@ -45,17 +37,18 @@ public class NoteView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
         drawNote(canvas);
     }
 
+    /**
+     * @param canvas
+     */
     private void drawNote(Canvas canvas) {
-        float leftX = (canvasWidth / 2) - mNoteRadius;
-        float rightX = (canvasWidth / 2) + mNoteRadius;
-        float topY = (canvasHeight / 2) + ((mNoteRadius * 3) / 4);
-        float bottomY = (canvasHeight / 2) - ((mNoteRadius * 3) / 4);
+        float leftX = (mNoteX) - (Constants.NOTE_W_TO_H_RATIO * mNoteRadius);
+        float rightX = (mNoteX) + (Constants.NOTE_W_TO_H_RATIO * mNoteRadius);
+        float topY = (mNoteY) + (mNoteRadius);
+        float bottomY = (mNoteY) - (mNoteRadius);
         float midY = (topY + bottomY) / 2;
-
 
         canvas.drawOval(leftX, topY, rightX, bottomY, mNotePaint);
         canvas.drawLine(rightX - mStemWidth / 2,
@@ -65,29 +58,33 @@ public class NoteView extends View {
                 mStemPaint);
     }
 
+    /**
+     * Initializes measurements for all drawings to be drawn in onDraw()
+     */
     private void initDrawMeasurements() {
-        mNoteX = canvasWidth / 2;
-        mNoteY = canvasHeight / 2;
-        mNoteRadius = canvasWidth / 20;
         mStemHeight = (canvasHeight / 3);
-        mStemWidth = 3;
-
-        mNoteX = (int) convertDpToPx(mNoteX);
-        mNoteY = (int) convertDpToPx(mNoteY);
-        mNoteRadius = convertDpToPx(mNoteRadius);
-        mStemWidth = convertDpToPx(mStemWidth);
-
+        mStemWidth = convertDpToPx(Constants.STEM_WIDTH);
+        initNoteYPositions();
+        mNoteX = canvasWidth / 2;
+        mNoteY = mNoteYPositions[10];
+        mNoteRadius = canvasHeight / 10;
         initNotePaint();
     }
 
+    /**
+     * Initializes the mNoteYPositions array, which contains all permitted Y-coordinates for a note
+     */
     private void initNoteYPositions() {
-        mNoteYPositions = new float[33];
-        float highestY = mStemHeight;
-        for (int i = 1; i <= 33; i++) {
-            mNoteYPositions[i - 1] = highestY + (i / 33) * canvasHeight;
+        int totalPositions = Constants.TOTAL_LINES + Constants.TOTAL_SPACES;
+        mNoteYPositions = new float[totalPositions];
+        for (int i = 1; i <= totalPositions; i++) {
+            mNoteYPositions[i - 1] = (canvasHeight * i) / totalPositions - 2 * mStemWidth;
         }
     }
 
+    /**
+     * Initializes the Paint objects to be used in onDraw()
+     */
     private void initNotePaint() {
         mNotePaint = new Paint();
         mNotePaint.setColor(Color.parseColor("black"));

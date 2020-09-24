@@ -12,14 +12,14 @@ import android.widget.LinearLayout;
 
 class BarViewGroup extends LinearLayout {
     private static final String TAG = "BarViewGroup";
+
     private Paint mBarPaint;
     private float mBarLineSize, mBarX, mBarY, mBarWidth, mBarHeight;
-
+    private float[] mNoteYPositions;
 
     public BarViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(LinearLayout.HORIZONTAL);
-
         initMeasurements();
         initBarPaint();
 
@@ -29,39 +29,12 @@ class BarViewGroup extends LinearLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        int specWidth = MeasureSpec.getSize(widthMeasureSpec);
-        int maxWidth = 0;
-        int maxHeight = 0;
-        int maxIndex = 0;
+        // Measure the dimensions of the bar
         for (int i = 0; i < getChildCount(); i++) {
             View child = getChildAt(i);
-            final int widthSpec = MeasureSpec.makeMeasureSpec(
-                    specWidth, MeasureSpec.UNSPECIFIED);
-            final int heightSpec = MeasureSpec.makeMeasureSpec(
-                    0, MeasureSpec.UNSPECIFIED);
-            child.measure(widthSpec, heightSpec);
-            int width = child.getMeasuredWidth();
-            if (width > maxWidth) {
-                maxWidth = width;
-                maxIndex = i;
-            }
+            mBarWidth += child.getMeasuredWidth();
+            mBarHeight = child.getMeasuredHeight();
         }
-        for (int i = 0; i < getChildCount(); i++) {
-            if (i != maxIndex) {
-                View child = getChildAt(i);
-                final int widthSpec = MeasureSpec.makeMeasureSpec(
-                        maxWidth, MeasureSpec.EXACTLY);
-                final int heightSpec = MeasureSpec.makeMeasureSpec(
-                        0, MeasureSpec.UNSPECIFIED);
-                child.measure(widthSpec, heightSpec);
-            }
-        }
-
-        mBarWidth = maxWidth;
-        mBarHeight = View.MeasureSpec.getSize(heightMeasureSpec);
-
-        Log.d(TAG, "onMeasure: mBarwidth " + mBarWidth);
-        Log.d(TAG, "onMeasure: mBarHeight " + mBarHeight);
     }
 
 
@@ -124,6 +97,17 @@ class BarViewGroup extends LinearLayout {
             canvas.drawLine(mBarX, currentY, mBarX + mBarWidth, currentY, mBarPaint);
             currentY += mBarHeight / 5;
             Log.d(TAG, "drawBarLines: currentY " + currentY);
+        }
+    }
+
+    /**
+     * Initializes the mNoteYPositions array, which contains all permitted Y-coordinates for a note
+     */
+    private void initNoteYPositions() {
+        int totalPositions = Constants.TOTAL_SPACES + Constants.TOTAL_LINES;
+        mNoteYPositions = new float[totalPositions];
+        for (int i = 1; i <= totalPositions; i++) {
+            mNoteYPositions[i - 1] = (mBarHeight * i) / totalPositions - 2 * Constants.STEM_WIDTH;
         }
     }
 }

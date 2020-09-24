@@ -3,6 +3,7 @@
     <declare-styleable name="BarViewGroup">
         <attr name="showClef" format="boolean" />
         <attr name="showKey" format="boolean" />
+        <attr name="android:padding" />
         <attr name="showTimeSignature" format="boolean" />
     </declare-styleable>
 
