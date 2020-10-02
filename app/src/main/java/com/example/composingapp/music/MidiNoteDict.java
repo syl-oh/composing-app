@@ -1,4 +1,4 @@
-package musicconstants;
+package com.example.composingapp.music;
 
 import java.util.Hashtable;
 import java.util.Objects;
@@ -15,24 +15,24 @@ public class MidiNoteDict {
 
     private void buildMidiNoteDict() {
         // The dictionary is built only using sharps and naturals, ignoring enharmonic equivalents
-        // Create an array of PitchClass constants to iterate over so we can build midiNoteDict
+        // Create an array ofMusic.PitchClass constants to iterate over so we can build midiNoteDict
         // The 1st element in pitchClasses must match the pitch class of the startingMidiNum
-        final PitchClass[] pitchClasses = {
-                PitchClass.A_NATURAL, PitchClass.A_SHARP, PitchClass.B_NATURAL, PitchClass.C_NATURAL,
-                PitchClass.C_SHARP, PitchClass.D_NATURAL, PitchClass.D_SHARP, PitchClass.E_NATURAL,
-                PitchClass.F_NATURAL, PitchClass.F_SHARP, PitchClass.G_NATURAL, PitchClass.G_SHARP};
+        final Music.PitchClass[] pitchClasses = {
+                Music.PitchClass.A_NATURAL, Music.PitchClass.A_SHARP, Music.PitchClass.B_NATURAL, Music.PitchClass.C_NATURAL,
+                Music.PitchClass.C_SHARP, Music.PitchClass.D_NATURAL, Music.PitchClass.D_SHARP, Music.PitchClass.E_NATURAL,
+                Music.PitchClass.F_NATURAL, Music.PitchClass.F_SHARP, Music.PitchClass.G_NATURAL, Music.PitchClass.G_SHARP};
 
         midiNoteDict = new Hashtable<Integer, Tone>();  // initialize the dictionary
 
         // Prepare for the loop:
         int currentPitchClassIdx = 0; // Index variable points to the current pitch class in pitchClasses
-        PitchClass currentPitchClass;   // variable to store the current pitch class
+        Music.PitchClass currentPitchClass;   // variable to store the current pitch class
         int currentOctave = 0; // Variable to hold the current octave in which we are in
 
         for (int midiNum = startingMidiNum; midiNum <= endingMidiNum; midiNum++) {
             currentPitchClass = pitchClasses[currentPitchClassIdx]; // get the current pitch class
             // Anytime we reach the pitch class C natural, we have moved up an octave
-            if (currentPitchClass == PitchClass.C_NATURAL) {
+            if (currentPitchClass == Music.PitchClass.C_NATURAL) {
                 currentOctave++;
             }
 
@@ -52,7 +52,7 @@ public class MidiNoteDict {
         return Objects.requireNonNull(midiNoteDict.get(midiNum));
     }
 
-    public PitchClass getPitchClass(int midiNum) {
+    public Music.PitchClass getPitchClass(int midiNum) {
         return getTone(midiNum).getPitchClass();
     }
 

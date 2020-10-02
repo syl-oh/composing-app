@@ -44,8 +44,8 @@ public class NoteView extends View {
      * @param canvas
      */
     private void drawNote(Canvas canvas) {
-        float leftX = (mNoteX) - (Constants.NOTE_W_TO_H_RATIO * mNoteRadius);
-        float rightX = (mNoteX) + (Constants.NOTE_W_TO_H_RATIO * mNoteRadius);
+        float leftX = (mNoteX) - (ViewConstants.NOTE_W_TO_H_RATIO * mNoteRadius);
+        float rightX = (mNoteX) + (ViewConstants.NOTE_W_TO_H_RATIO * mNoteRadius);
         float topY = (mNoteY) + (mNoteRadius);
         float bottomY = (mNoteY) - (mNoteRadius);
         float midY = (topY + bottomY) / 2;
@@ -63,19 +63,20 @@ public class NoteView extends View {
      */
     private void initDrawMeasurements() {
         mStemHeight = (canvasHeight / 3);
-        mStemWidth = convertDpToPx(Constants.STEM_WIDTH);
+        mStemWidth = convertDpToPx(ViewConstants.STEM_WIDTH);
         initNoteYPositions();
         mNoteX = canvasWidth / 2;
         mNoteY = mNoteYPositions[10];
         mNoteRadius = canvasHeight / 10;
         initNotePaint();
+
     }
 
     /**
      * Initializes the mNoteYPositions array, which contains all permitted Y-coordinates for a note
      */
     private void initNoteYPositions() {
-        int totalPositions = Constants.TOTAL_LINES + Constants.TOTAL_SPACES;
+        int totalPositions = ViewConstants.TOTAL_LINES + ViewConstants.TOTAL_SPACES;
         mNoteYPositions = new float[totalPositions];
         for (int i = 1; i <= totalPositions; i++) {
             mNoteYPositions[i - 1] = (canvasHeight * i) / totalPositions - 2 * mStemWidth;

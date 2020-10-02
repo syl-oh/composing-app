@@ -1,4 +1,4 @@
-package musicconstants;
+package com.example.composingapp.music;
 
 public final class MusicConverter {
     private static final String TAG = "MusicConverter";

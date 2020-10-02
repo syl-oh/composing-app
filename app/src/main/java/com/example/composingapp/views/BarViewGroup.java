@@ -22,7 +22,6 @@ class BarViewGroup extends LinearLayout {
         setOrientation(LinearLayout.HORIZONTAL);
         initMeasurements();
         initBarPaint();
-
     }
 
     @Override
@@ -34,6 +33,7 @@ class BarViewGroup extends LinearLayout {
             View child = getChildAt(i);
             mBarWidth += child.getMeasuredWidth();
             mBarHeight = child.getMeasuredHeight();
+
         }
     }
 
@@ -104,10 +104,10 @@ class BarViewGroup extends LinearLayout {
      * Initializes the mNoteYPositions array, which contains all permitted Y-coordinates for a note
      */
     private void initNoteYPositions() {
-        int totalPositions = Constants.TOTAL_SPACES + Constants.TOTAL_LINES;
+        int totalPositions = ViewConstants.TOTAL_SPACES + ViewConstants.TOTAL_LINES;
         mNoteYPositions = new float[totalPositions];
         for (int i = 1; i <= totalPositions; i++) {
-            mNoteYPositions[i - 1] = (mBarHeight * i) / totalPositions - 2 * Constants.STEM_WIDTH;
+            mNoteYPositions[i - 1] = (mBarHeight * i) / totalPositions - 2 * ViewConstants.STEM_WIDTH;
         }
     }
 }

@@ -1,4 +1,4 @@
-package musicconstants;
+package com.example.composingapp.music;
 
 public class Staff {
     private static final String TAG = "Staff";

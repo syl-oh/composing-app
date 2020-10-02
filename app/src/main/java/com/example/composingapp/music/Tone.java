@@ -1,19 +1,19 @@
-package musicconstants;
+package com.example.composingapp.music;
 
 public class Tone {
-    private PitchClass pitchClass;
+    private Music.PitchClass pitchClass;
     private int octave;
 
-    public Tone(PitchClass pitchClass, int octave) {
+    public Tone(Music.PitchClass pitchClass, int octave) {
         this.pitchClass = pitchClass;
         this.octave = octave;
     }
 
-    public PitchClass getPitchClass() {
+    public Music.PitchClass getPitchClass() {
         return pitchClass;
     }
 
-    public Tone setPitchClass(PitchClass pitchClass) {
+    public Tone setPitchClass(Music.PitchClass pitchClass) {
         this.pitchClass = pitchClass;
         return this;
     }
