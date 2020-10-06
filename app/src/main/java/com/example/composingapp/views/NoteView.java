@@ -81,6 +81,7 @@ public class NoteView extends View {
         for (int i = 1; i <= totalPositions; i++) {
             mNoteYPositions[i - 1] = (canvasHeight * i) / totalPositions - 2 * mStemWidth;
         }
+        ;
     }
 
     /**

@@ -4,6 +4,11 @@ import android.app.Application;
 
 public class Music extends Application {
 
+    public enum Staff {
+        TREBLE_CLEF,
+        BASS_CLEF;
+    }
+
     public enum NoteLength {
         WHOLE_NOTE,
         HALF_NOTE,
