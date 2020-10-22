@@ -9,10 +9,16 @@ public class MidiNoteDict {
     private final int endingMidiNum = 108;    // end at midi number 108 (the last key on an 88-key piano)
     private Hashtable<Integer, Tone> midiNoteDict;
 
+    /**
+     * Constructs MidiNoteDict. Immediately initializes the dictionary
+     */
     public MidiNoteDict() {
         buildMidiNoteDict();
     }
 
+    /**
+     * Builds the midi note dictionary
+     */
     private void buildMidiNoteDict() {
         // The dictionary is built only using sharps and naturals, ignoring enharmonic equivalents
         // Create an array ofMusic.PitchClass constants to iterate over so we can build midiNoteDict
@@ -27,7 +33,7 @@ public class MidiNoteDict {
         // Prepare for the loop:
         int currentPitchClassIdx = 0; // Index variable points to the current pitch class in pitchClasses
         Music.PitchClass currentPitchClass;   // variable to store the current pitch class
-        int currentOctave = 0; // Variable to hold the current octave in which we are in
+        int currentOctave = -1; // Variable to hold the current octave in which we are in
 
         for (int midiNum = startingMidiNum; midiNum <= endingMidiNum; midiNum++) {
             currentPitchClass = pitchClasses[currentPitchClassIdx]; // get the current pitch class
@@ -48,14 +54,33 @@ public class MidiNoteDict {
         }
     }
 
+    /**
+     * Produces the tone at a specified midi number
+     *
+     * @param midiNum The midi number requested
+     * @return Tone object in the dictionary with the key midiNum
+     */
     public Tone getTone(int midiNum) {
         return Objects.requireNonNull(midiNoteDict.get(midiNum));
     }
 
+    /**
+     * Produces the pitch class of the tone at a specified midi number
+     *
+     * @param midiNum The midi number requested
+     * @return PitchClass of the tone in the dictionary with the key midiNum
+     */
     public Music.PitchClass getPitchClass(int midiNum) {
         return getTone(midiNum).getPitchClass();
     }
 
+    /**
+     * Produces the octave of the tone at a specified midi number
+     *
+     * @param midiNum The midi number requested
+     * @return int between 1 and 7, representing the octave of the tone in the dictionary with the
+     * key midiNum
+     */
     public int getOctave(int midiNum) {
         return getTone(midiNum).getOctave();
     }

@@ -8,14 +8,13 @@ public final class MusicConverter {
      */
     private MusicConverter() {
     }
-
     /**
      * Calculates the MIDI number of a pitch and accesses the noteDict to find the note name.
      * To find the MIDI number, n, based on the frequency, f, use the formula n = 69 + log2(f / 440)
      * More information can be found at https://newt.phys.unsw.edu.au/jw/notes.html
      *
-     * @param pitchInHz The pitch of the incoming audio -- used to find the note name
-     * @param duration  How long the note lasts (s) -- used to find the note length
+     * @param pitchInHz The pitch of the incoming audio
+     * @param duration  How long the note lasts (s)
      * @return A note object containing both the note's tone and rhythmic value.
      */
     public static Tone getToneFromHz(double pitchInHz, double duration) {

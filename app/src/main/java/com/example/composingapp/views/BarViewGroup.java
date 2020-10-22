@@ -10,16 +10,20 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.example.composingapp.music.Music;
+
 class BarViewGroup extends LinearLayout {
     private static final String TAG = "BarViewGroup";
 
     private Paint mBarPaint;
+    private Music.Staff mClef;
     private float mBarLineSize, mBarX, mBarY, mBarWidth, mBarHeight;
     private float[] mNoteYPositions;
 
     public BarViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(LinearLayout.HORIZONTAL);
+        mClef = Music.Staff.TREBLE_CLEF;
         initMeasurements();
         initBarPaint();
     }
@@ -34,7 +38,7 @@ class BarViewGroup extends LinearLayout {
             mBarWidth += child.getMeasuredWidth();
             mBarHeight = child.getMeasuredHeight();
         }
-        ViewConstants.initNoteYPositions(mBarHeight);
+        ViewConstants.initNoteYPositions(mBarHeight, mClef);
     }
 
 
@@ -97,8 +101,7 @@ class BarViewGroup extends LinearLayout {
             canvas.drawLine(mBarX, currentY, mBarX + mBarWidth, currentY, mBarPaint);
             currentY += mBarHeight / 5;
             Log.d(TAG, "drawBarLines: currentY " + currentY);
+
         }
     }
-
-
 }

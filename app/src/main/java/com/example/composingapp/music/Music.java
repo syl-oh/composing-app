@@ -2,13 +2,19 @@ package com.example.composingapp.music;
 
 import android.app.Application;
 
-public class Music extends Application {
+public final class Music extends Application {
 
+    /**
+     * Types of clefs used in music
+     */
     public enum Staff {
         TREBLE_CLEF,
-        BASS_CLEF;
+        BASS_CLEF
     }
 
+    /**
+     * Duration of a note in music
+     */
     public enum NoteLength {
         WHOLE_NOTE,
         HALF_NOTE,
@@ -17,6 +23,9 @@ public class Music extends Application {
         SIXTEENTH_NOTE
     }
 
+    /**
+     * Pitch class (letter-name) of a note in music
+     */
     public enum PitchClass {
         A_FLAT,
         A_NATURAL,
@@ -38,6 +47,6 @@ public class Music extends Application {
         F_SHARP,
         G_FLAT,
         G_NATURAL,
-        G_SHARP;
+        G_SHARP
     }
 }
