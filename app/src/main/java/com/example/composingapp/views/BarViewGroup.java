@@ -38,7 +38,8 @@ class BarViewGroup extends LinearLayout {
             mBarWidth += child.getMeasuredWidth();
             mBarHeight = child.getMeasuredHeight();
         }
-        ViewConstants.initNoteYPositions(mBarHeight, mClef);
+        // TODO: 2020-10-23 prepare for drawing the barlines in the correct spots
+        // ViewConstants.initNoteYPositions(mBarHeight, mClef);
     }
 
 

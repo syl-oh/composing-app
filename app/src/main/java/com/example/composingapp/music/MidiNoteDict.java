@@ -5,8 +5,8 @@ import java.util.Objects;
 
 public class MidiNoteDict {
     private static final String TAG = "MidiNoteDict";
-    private final int startingMidiNum = 21;   // start at midi number 21 (the first key on an 88-key piano)
-    private final int endingMidiNum = 108;    // end at midi number 108 (the last key on an 88-key piano)
+    private final int startingMidiNum = 21;   // the first key on an 88-key piano
+    private final int endingMidiNum = 108;    // the last key on an 88-key piano
     private Hashtable<Integer, Tone> midiNoteDict;
 
     /**
@@ -83,5 +83,24 @@ public class MidiNoteDict {
      */
     public int getOctave(int midiNum) {
         return getTone(midiNum).getOctave();
+    }
+
+
+    /**
+     * Produces the first midi num of midiNoteDict
+     *
+     * @return int representing the starting midi number
+     */
+    public int getStartingMidiNum() {
+        return startingMidiNum;
+    }
+
+    /**
+     * Produces the last midi num of midiNoteDict
+     *
+     * @return int representing the ending midi number
+     */
+    public int getEndingMidiNum() {
+        return endingMidiNum;
     }
 }

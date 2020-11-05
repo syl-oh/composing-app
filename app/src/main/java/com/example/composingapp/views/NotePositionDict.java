@@ -7,11 +7,35 @@ import com.example.composingapp.music.Tone;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static com.example.composingapp.views.ViewConstants.BASS_CLEF_MIDI_START;
+import static com.example.composingapp.views.ViewConstants.TREBLE_CLEF_MIDI_START;
+
 public class NotePositionDict {
     private static final String TAG = "NotePositionDict";
-    HashMap<Tone, Float> noteYPositions;
+    private HashMap<Tone, Float> noteYPositions;
+    private MidiNoteDict midiNoteDict;
 
     public NotePositionDict(float barHeight, Music.Staff clef) {
+        midiNoteDict = new MidiNoteDict();
+        noteYPositions = initNoteYPositions(barHeight, clef);
+    }
+
+    /**
+     * Getter method for noteYPositions
+     *
+     * @return hashmap with tones as keys and the required Y position as float values
+     */
+    public HashMap<Tone, Float> getNoteYPositions() {
+        return noteYPositions;
+    }
+
+    /**
+     * Setter method for noteYPositions
+     *
+     * @param barHeight Height in pixels of the barView
+     * @param clef      Enum from Music.class
+     */
+    public void setNoteYPositions(float barHeight, Music.Staff clef) {
         this.noteYPositions = initNoteYPositions(barHeight, clef);
     }
 
@@ -22,28 +46,27 @@ public class NotePositionDict {
      * @param clef      Enum from Music.class
      * @return Hashmap with the designated y positions for each of the 88 notes on a piano
      */
-    public HashMap<Tone, Float> initNoteYPositions(float barHeight, Music.Staff clef) {
+    private HashMap<Tone, Float> initNoteYPositions(float barHeight, Music.Staff clef) {
         final Music.PitchClass[] accPitchClasses = {Music.PitchClass.A_SHARP,
                 Music.PitchClass.C_SHARP, Music.PitchClass.D_SHARP,
                 Music.PitchClass.F_SHARP, Music.PitchClass.G_SHARP};
+
         int totalPositions = ViewConstants.TOTAL_SPACES + ViewConstants.TOTAL_LINES;
-        MidiNoteDict midiNoteDict = new MidiNoteDict();
         int midiIndex = getStartingIndex(clef);
         float currentY;
         Tone currentTone;
-        HashMap<Tone, Float> noteYPositions = new HashMap<>();
+        noteYPositions = new HashMap<>();
 
-        for (int i = 0; i < totalPositions; i++) {
-            midiIndex += 1;
+        for (int i = 0; i <= totalPositions; i++) {
             currentTone = midiNoteDict.getTone(midiIndex);
-            currentY = ((barHeight * i) / totalPositions) - (2 * ViewConstants.STEM_WIDTH);
+            currentY = ((barHeight * i) / totalPositions); //- (2 * ViewConstants.STEM_WIDTH);
             if (Arrays.asList(accPitchClasses).contains(currentTone.getPitchClass())) {
                 noteYPositions.put(currentTone, currentY);
-                midiIndex += 1;
                 i -= 1;
             } else {
                 noteYPositions.put(currentTone, currentY);
             }
+            midiIndex += 1;
         }
         return noteYPositions;
     }
@@ -56,8 +79,7 @@ public class NotePositionDict {
      */
     int getStartingIndex(Music.Staff clef) {
         int midiStart = 0;
-        int BASS_CLEF_MIDI_START = 23;
-        int TREBLE_CLEF_MIDI_START = 43;
+
         switch (clef) {
             case TREBLE_CLEF:
                 midiStart = TREBLE_CLEF_MIDI_START; // Note: G2
@@ -70,4 +92,6 @@ public class NotePositionDict {
         }
         return midiStart;
     }
+
+
 }
