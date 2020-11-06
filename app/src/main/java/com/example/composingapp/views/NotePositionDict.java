@@ -11,32 +11,17 @@ import static com.example.composingapp.views.ViewConstants.BASS_CLEF_MIDI_START;
 import static com.example.composingapp.views.ViewConstants.TREBLE_CLEF_MIDI_START;
 
 public class NotePositionDict {
+    private static final int NUM_BARLINES = 5;
     private static final String TAG = "NotePositionDict";
     private HashMap<Tone, Float> noteYPositions;
+    private HashMap<Tone, Float> barLineYPositions;
     private MidiNoteDict midiNoteDict;
+
 
     public NotePositionDict(float barHeight, Music.Staff clef) {
         midiNoteDict = new MidiNoteDict();
         noteYPositions = initNoteYPositions(barHeight, clef);
-    }
-
-    /**
-     * Getter method for noteYPositions
-     *
-     * @return hashmap with tones as keys and the required Y position as float values
-     */
-    public HashMap<Tone, Float> getNoteYPositions() {
-        return noteYPositions;
-    }
-
-    /**
-     * Setter method for noteYPositions
-     *
-     * @param barHeight Height in pixels of the barView
-     * @param clef      Enum from Music.class
-     */
-    public void setNoteYPositions(float barHeight, Music.Staff clef) {
-        this.noteYPositions = initNoteYPositions(barHeight, clef);
+        barLineYPositions = initBarLineYPositions(clef);
     }
 
     /**
@@ -71,6 +56,35 @@ public class NotePositionDict {
         return noteYPositions;
     }
 
+    private HashMap<Tone, Float> initBarLineYPositions(Music.Staff clef) {
+
+    }
+
+    private Tone[] barLineTones(Music.Staff clef) {
+        Tone[] tones;
+        switch (clef) {
+            case TREBLE_CLEF:
+                tones = new Tone[]
+                        {new Tone(Music.PitchClass.E_NATURAL, 4),
+                                new Tone(Music.PitchClass.G_NATURAL, 4),
+                                new Tone(Music.PitchClass.B_NATURAL, 4),
+                                new Tone(Music.PitchClass.D_NATURAL, 5),
+                                new Tone(Music.PitchClass.F_NATURAL, 5)};
+                break;
+            case BASS_CLEF:
+                tones = new Tone[]
+                        {new Tone(Music.PitchClass.G_NATURAL, 2),
+                                new Tone(Music.PitchClass.B_NATURAL, 2),
+                                new Tone(Music.PitchClass.D_NATURAL, 3),
+                                new Tone(Music.PitchClass.F_NATURAL, 3),
+                                new Tone(Music.PitchClass.A_NATURAL, 3)};
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + clef);
+        }
+        return tones;
+    }
+
     /**
      * Produces the midi note number of the first note in the treble and bass clef
      *
@@ -93,5 +107,13 @@ public class NotePositionDict {
         return midiStart;
     }
 
+    /**
+     * Getter method for noteYPositions
+     *
+     * @return hashmap with tones as keys and the required Y position as float values
+     */
+    public HashMap<Tone, Float> getNoteYPositions() {
+        return noteYPositions;
+    }
 
 }

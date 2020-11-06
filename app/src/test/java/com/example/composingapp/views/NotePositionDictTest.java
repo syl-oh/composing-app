@@ -90,10 +90,6 @@ class NotePositionDictTest {
     @DisplayName("getStartingIndex() ")
     class getStartingIndex {
 
-        @BeforeEach
-        void prepareInitNoteYPositions() {
-
-        }
 
         @DisplayName("should have the correct starting index")
         @Test
