@@ -1,8 +1,12 @@
 package com.example.composingapp.music;
 
+import androidx.annotation.Nullable;
+
+import java.util.Objects;
+
 public class Tone {
-    private Music.PitchClass pitchClass;
-    private int octave;
+    private final Music.PitchClass pitchClass;
+    private final int octave;
 
     /**
      * Constructs tone object
@@ -25,15 +29,6 @@ public class Tone {
     }
 
     /**
-     * Setter method for the tone's pitch class
-     *
-     * @param pitchClass PitchClass to set
-     */
-    public void setPitchClass(Music.PitchClass pitchClass) {
-        this.pitchClass = pitchClass;
-    }
-
-    /**
      * Getter method for the tone's octave
      *
      * @return int between 1 and 7, representing the current octave of the tone
@@ -42,12 +37,20 @@ public class Tone {
         return octave;
     }
 
-    /**
-     * Setter method for the tone's octave
-     *
-     * @param octave int between 1 and 7, representing the octave to set
-     */
-    public void setOctave(int octave) {
-        this.octave = octave;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(pitchClass, octave);
+    }
+
+    @Override
+    public boolean equals(@Nullable Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Tone)) {
+            return false;
+        }
+        Tone tone = (Tone) obj;
+        return ((pitchClass == tone.getPitchClass())
+                && (octave == tone.getOctave()));
     }
 }

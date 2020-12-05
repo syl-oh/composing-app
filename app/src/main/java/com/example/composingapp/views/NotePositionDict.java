@@ -16,8 +16,6 @@ public class NotePositionDict {
     private HashMap<Tone, Float> noteYPositions;
     private HashMap<Tone, Float> barLineYPositions;
     private MidiNoteDict midiNoteDict;
-
-
     public NotePositionDict(float barHeight, Music.Staff clef) {
         midiNoteDict = new MidiNoteDict();
         noteYPositions = initNoteYPositions(barHeight, clef);
@@ -57,7 +55,11 @@ public class NotePositionDict {
     }
 
     private HashMap<Tone, Float> initBarLineYPositions(Music.Staff clef) {
-
+        HashMap<Tone, Float> positions = new HashMap<Tone, Float>();
+        for (Tone tone : barLineTones(clef)) {
+            positions.put(tone, noteYPositions.get(tone));
+        }
+        return positions;
     }
 
     private Tone[] barLineTones(Music.Staff clef) {
@@ -88,8 +90,8 @@ public class NotePositionDict {
     /**
      * Produces the midi note number of the first note in the treble and bass clef
      *
-     * @param clef the clef we're working with
-     * @return the midi note number of the lowest permitted line of clef
+     * @param clef The clef we're working with
+     * @return The midi note number of the lowest permitted line of clef
      */
     int getStartingIndex(Music.Staff clef) {
         int midiStart = 0;
@@ -110,10 +112,18 @@ public class NotePositionDict {
     /**
      * Getter method for noteYPositions
      *
-     * @return hashmap with tones as keys and the required Y position as float values
+     * @return Hashmap with tones as keys and the required Y position as float values
      */
     public HashMap<Tone, Float> getNoteYPositions() {
         return noteYPositions;
     }
 
+    /**
+     * getter method for barLineYPositions
+     *
+     * @return Hashmap with tones as keys and required Y position as float values
+     */
+    public HashMap<Tone, Float> getBarLineYPositions() {
+        return barLineYPositions;
+    }
 }
