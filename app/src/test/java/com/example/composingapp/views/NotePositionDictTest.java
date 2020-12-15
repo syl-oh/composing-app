@@ -19,6 +19,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("When notePositionDict is created ")
 class NotePositionDictTest {
@@ -35,14 +36,14 @@ class NotePositionDictTest {
     }
 
     @Nested
-    @DisplayName("initNoteYPositions() ")
+    @DisplayName("toneToYMap")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class InitNoteYPositions {
         HashMap<Tone, Float> dict;
 
         @BeforeEach
         void prepareInitNoteYPositions() {
-            dict = notePositionDict.getNoteYPositions();
+            dict = notePositionDict.getToneToYMap();
         }
 
 
@@ -105,7 +106,7 @@ class NotePositionDictTest {
     }
 
     @Nested
-    @DisplayName("initBarLineYPositions")
+    @DisplayName("toneToBarlineMap")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class InitBarLineYPositions {
 
@@ -118,13 +119,10 @@ class NotePositionDictTest {
         @MethodSource("provideBarLineTones")
         void testCorrectTonesForClef(Music.Staff clef, Tone[] clefTones) {
             notePositionDict = new NotePositionDict(barHeight, clef);
-            HashMap<Tone, Float> barLineDict = notePositionDict.getBarLineYPositions();
-            for (Tone toneKey : clefTones) {
-                Music.PitchClass tonePitchClass = toneKey.getPitchClass();
-                int toneOctave = toneKey.getOctave();
-
+            HashMap<Tone, Float> toneToBarlineYMap = notePositionDict.getToneToBarlineYMap();
+            for (Tone tone : clefTones) {
                 assertAll(
-                        () -> assertEquals(tonePitchClass, )
+                        () -> assertTrue(toneToBarlineYMap.containsKey(tone))
                 );
             }
         }
@@ -150,22 +148,6 @@ class NotePositionDictTest {
             return Stream.of(
                     Arguments.of(Music.Staff.TREBLE_CLEF, trebleTones),
                     Arguments.of(Music.Staff.BASS_CLEF, bassTones));
-        }
-
-        /**
-         * Verifies the equality of two tone arrays
-         *
-         * @param tones1 The first array for comparison
-         * @param tones2 The second array for comparison
-         * @return True if tones1 and tones2 contain the same Tones
-         * (pitch class and octave pairs()
-         */
-        private Boolean verifyToneArrays(Tone[] tones1, Tone[] tones2) {
-            if (tones1.length == tones2.length) {
-
-            } else {
-                return false;
-            }
         }
     }
 }

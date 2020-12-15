@@ -1,6 +1,7 @@
 package com.example.composingapp.views;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,18 +15,19 @@ public class NoteView extends View {
     private static final String TAG = "NoteView";
     private Paint mNotePaint, mStemPaint;
     private float mNoteX, mNoteY, mNoteRadius, mStemWidth, mStemHeight;
-    private float[] mNoteYPositions;
-    private int canvasHeight, canvasWidth;
+    private NotePositionDict positionDict;
+    private int mCanvasHeight, mCanvasWidth;
 
 
     public NoteView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+        init(attrs);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        canvasWidth = w;
-        canvasHeight = h;
+        mCanvasWidth = w;
+        mCanvasHeight = h;
         initDrawMeasurements();
         super.onSizeChanged(w, h, oldw, oldh);
     }
@@ -62,36 +64,21 @@ public class NoteView extends View {
      * Initializes measurements for all drawings to be drawn in onDraw()
      */
     private void initDrawMeasurements() {
-        mStemHeight = (canvasHeight / 3);
+        mStemHeight = (mCanvasHeight / 3);
         mStemWidth = convertDpToPx(ViewConstants.STEM_WIDTH);
-        initNoteYPositions();
-        mNoteX = canvasWidth / 2;
-        mNoteY = mNoteYPositions[10];
-        mNoteRadius = canvasHeight / 10;
-        initNotePaint();
-
+        mNoteX = mCanvasWidth / 2;
+       // mNoteY = mNoteYPositions[10];
+        mNoteRadius = mCanvasHeight / 10;
     }
 
-    /**
-     * Initializes the mNoteYPositions array, which contains all permitted Y-coordinates for a note
-     */
-    private void initNoteYPositions() {
-        int totalPositions = ViewConstants.TOTAL_LINES + ViewConstants.TOTAL_SPACES;
-        mNoteYPositions = new float[totalPositions];
-        for (int i = 1; i <= totalPositions; i++) {
-            mNoteYPositions[i - 1] = (canvasHeight * i) / totalPositions - 2 * mStemWidth;
-        }
-        ;
-    }
 
     /**
-     * Initializes the Paint objects to be used in onDraw()
+     * Initializes all objects used for drawing
      */
-    private void initNotePaint() {
+    private void init(AttributeSet attrs) {
         mNotePaint = new Paint();
         mNotePaint.setColor(Color.parseColor("black"));
         mNotePaint.setAntiAlias(true);
-
         mStemPaint = new Paint();
         mStemPaint.setColor(Color.parseColor("black"));
         mStemPaint.setStrokeWidth(mStemWidth);
