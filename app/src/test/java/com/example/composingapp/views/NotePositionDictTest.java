@@ -87,24 +87,6 @@ class NotePositionDictTest {
         }
     }
 
-
-    @Nested
-    @DisplayName("getStartingIndex() ")
-    class GetStartingIndex {
-
-
-        @DisplayName("should have the correct starting index")
-        @Test
-        void testGetStartingIndex() {
-            assertAll(
-                    () -> assertEquals(ViewConstants.TREBLE_CLEF_MIDI_START,
-                            notePositionDict.getStartingIndex(Music.Staff.TREBLE_CLEF)),
-                    () -> assertEquals(ViewConstants.BASS_CLEF_MIDI_START,
-                            notePositionDict.getStartingIndex(Music.Staff.BASS_CLEF))
-            );
-        }
-    }
-
     @Nested
     @DisplayName("toneToBarlineMap")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)

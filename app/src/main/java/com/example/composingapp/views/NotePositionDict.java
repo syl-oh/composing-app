@@ -12,13 +12,19 @@ import java.util.HashMap;
 public class NotePositionDict {
     private static final int NUM_BARLINES = 5;
     private static final String TAG = "NotePositionDict";
+    private final int totalPositions = ViewConstants.TOTAL_SPACES + ViewConstants.TOTAL_LINES;
     private HashMap<Float, Tone> yToToneMap;
     private HashMap<Tone, Float> toneToYMap;
     private HashMap<Float, Tone> barlineYToToneMap;
     private HashMap<Tone, Float> toneToBarlineYMap;
     private MidiNoteDict midiNoteDict;
+    private Float mBarHeight;
+    private Music.Staff mClef;
+    private Float singleSpaceHeight;
 
     public NotePositionDict(float barHeight, Music.Staff clef) {
+        mBarHeight = barHeight;
+        mClef = clef;
         midiNoteDict = new MidiNoteDict();
         initMaps(barHeight, clef);
         initBarlineMaps(clef);
@@ -40,6 +46,24 @@ public class NotePositionDict {
      */
     public HashMap<Tone, Float> getToneToYMap() {
         return toneToYMap;
+    }
+
+
+    /**
+     * Produces the space between two consecutive bar lines (the height of a single space)
+     * @return Height of a single space in Px
+     */
+    public Float getSingleSpaceHeight() {
+        return 2 * mBarHeight / totalPositions;
+    }
+
+    /**
+     * Produces the space between two of the same pitchclasses, an octave apart
+     *
+     * @return Height of an octave in Px
+     */
+    public Float getOctaveHeight() {
+        return (getSingleSpaceHeight() * 4);
     }
 
     /**
@@ -74,7 +98,6 @@ public class NotePositionDict {
                 Music.PitchClass.F_SHARP, Music.PitchClass.G_SHARP};
 
         // Prepare for loop
-        int totalPositions = ViewConstants.TOTAL_SPACES + ViewConstants.TOTAL_LINES;
         int midiIndex = clef.getMidiStartingIndex();
         float currentY = 0;
         Tone currentTone = null;

@@ -9,12 +9,27 @@
     <com.example.composingapp.views.BarViewGroup
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="2">
 
         <com.example.composingapp.views.NoteView
-            android:id="@+id/noteView3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <com.example.composingapp.views.NoteView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <com.example.composingapp.views.NoteView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <com.example.composingapp.views.NoteView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
     </com.example.composingapp.views.BarViewGroup>
 
     <LinearLayout

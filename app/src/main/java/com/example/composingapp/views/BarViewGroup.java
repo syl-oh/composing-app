@@ -39,6 +39,8 @@ class BarViewGroup extends LinearLayout {
         mBarPaint.setStyle(Paint.Style.STROKE);
         mBarPaint.setColor(Color.parseColor("black"));
         mBarPaint.setStrokeWidth(mBarLineSize);
+        mBarLineSize = 6; // Value in dp
+        mBarLineSize = convertDpToPx(mBarLineSize);
     }
 
 //    @Override
@@ -58,23 +60,20 @@ class BarViewGroup extends LinearLayout {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         // Get x and y coordinates
         int[] barXY = new int[2];
-        getLocationOnScreen(barXY);
+        getLocationInWindow(barXY);
         mBarX = barXY[0];
         mBarY = barXY[1];
         mBarHeight = getMeasuredHeight();
         mBarWidth = getWidth();
+
 //        Log.d(TAG, "onSizeChanged: mBarX is "+ mBarX);
-        Log.d(TAG, "onSizeChanged: mBarY is "+ mBarY);
+//        Log.d(TAG, "onSizeChanged: mBarY is "+ mBarY);
 //        Log.d(TAG, "onSizeChanged: mBarHeight is "+ mBarHeight);
 //        Log.d(TAG, "onSizeChanged: mBarWidth is "+ mBarWidth);
 
         // Update the y position dictionaries
         yPositions = new NotePositionDict(mBarHeight, mClef);
-
         updateBarlineYPositions();
-        // Values in dp
-        mBarLineSize = 5;
-        mBarLineSize = convertDpToPx(mBarLineSize);
     }
 
     /**
@@ -114,7 +113,7 @@ class BarViewGroup extends LinearLayout {
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
         drawBarLines(canvas);
-        canvas.drawRect(0,0,mBarWidth,mBarHeight, mBarPaint);
+        canvas.drawRect(0, 0, mBarWidth, mBarHeight, mBarPaint);
     }
 
     /**

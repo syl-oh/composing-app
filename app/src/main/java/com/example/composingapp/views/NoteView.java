@@ -5,17 +5,22 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 
 import androidx.annotation.Nullable;
 
 import com.example.composingapp.music.Music;
+import com.example.composingapp.music.Tone;
+
+import java.util.HashMap;
 
 public class NoteView extends View {
     private static final String TAG = "NoteView";
     private Paint mNotePaint, mStemPaint;
-    private float mNoteX, mNoteY, mNoteRadius, mStemWidth, mStemHeight;
+    private float mNoteRadius, mStemWidth, mStemHeight;
+    private Float mNoteX, mNoteY;
     private NotePositionDict positionDict;
     private int mHeight, mWidth;
     private Music.Staff mClef;
@@ -24,6 +29,19 @@ public class NoteView extends View {
     public NoteView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         init();
+    }
+
+    /**
+     * Constructor for programmatically creating a NoteView
+     *
+     * @param context   Context of the view
+     * @param attrs     Attributes of the view
+     * @param yPosition Y-position of the note
+     */
+    public NoteView(Context context, @Nullable AttributeSet attrs, Float yPosition) {
+        super(context, attrs);
+        init();
+        mNoteY = yPosition;
     }
 
     /**
@@ -36,15 +54,31 @@ public class NoteView extends View {
         mNotePaint.setAntiAlias(true);
         mStemPaint = new Paint();
         mStemPaint.setColor(Color.parseColor("black"));
+        mStemWidth = convertDpToPx(ViewConstants.STEM_WIDTH);
         mStemPaint.setStrokeWidth(mStemWidth);
-        positionDict = new NotePositionDict(mHeight, mClef);
+        mStemPaint.setColor(Color.parseColor("black"));
+
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         mWidth = w;
         mHeight = h;
-        initDrawMeasurements();
+        positionDict = new NotePositionDict(mHeight, mClef);
+        mNoteX = (float) (mWidth / 2);
+        if (mNoteY == null) {
+            HashMap<Tone, Float> toneToYMap = positionDict.getToneToYMap();
+            Tone middleTone = mClef.getBarlineTones()[2];
+            try {
+                mNoteY = toneToYMap.get(middleTone);
+            } catch (NullPointerException e) {
+                Log.e(TAG, "onSizeChanged: NullPointerException, unable to retrieve y-position " +
+                        "of pitchclass " + middleTone.getPitchClass() + " and octave "
+                        + middleTone.getOctave()) ;
+            }
+        }
+        mStemHeight = positionDict.getOctaveHeight();
+        mNoteRadius = positionDict.getSingleSpaceHeight() / 2;
     }
 
     @Override
@@ -74,19 +108,6 @@ public class NoteView extends View {
                 midY - mStemHeight,
                 mStemPaint);
     }
-
-    /**
-     * Initializes measurements for all drawings to be drawn in onDraw()
-     */
-    private void initDrawMeasurements() {
-        mStemHeight = (mHeight / 3);
-        mStemWidth = convertDpToPx(ViewConstants.STEM_WIDTH);
-        mNoteX = mWidth / 2;
-        // mNoteY = mNoteYPositions[10];
-        mNoteRadius = mHeight / 10;
-    }
-
-
 
 
     /**
