@@ -8,8 +8,34 @@ public final class Music extends Application {
      * Types of clefs used in music
      */
     public enum Staff {
-        TREBLE_CLEF,
-        BASS_CLEF
+        TREBLE_CLEF(43, new Tone[]
+                {new Tone(Music.PitchClass.E_NATURAL, 4),
+                        new Tone(Music.PitchClass.G_NATURAL, 4),
+                        new Tone(Music.PitchClass.B_NATURAL, 4),
+                        new Tone(Music.PitchClass.D_NATURAL, 5),
+                        new Tone(Music.PitchClass.F_NATURAL, 5)}),
+        BASS_CLEF(23, new Tone[]
+                {new Tone(Music.PitchClass.G_NATURAL, 2),
+                        new Tone(Music.PitchClass.B_NATURAL, 2),
+                        new Tone(Music.PitchClass.D_NATURAL, 3),
+                        new Tone(Music.PitchClass.F_NATURAL, 3),
+                        new Tone(Music.PitchClass.A_NATURAL, 3)});
+
+        private Tone[] barlineTones;
+        private int midiStartingIndex;
+
+        Staff(int midiStartingIndex, Tone[] barlineTones) {
+            this.midiStartingIndex = midiStartingIndex;
+            this.barlineTones = barlineTones;
+        }
+
+        public Tone[] getBarlineTones() {
+            return barlineTones;
+        }
+
+        public int getMidiStartingIndex() {
+            return midiStartingIndex;
+        }
     }
 
     /**

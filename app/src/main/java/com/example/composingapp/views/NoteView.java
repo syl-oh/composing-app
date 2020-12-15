@@ -1,7 +1,6 @@
 package com.example.composingapp.views;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -11,25 +10,41 @@ import android.view.View;
 
 import androidx.annotation.Nullable;
 
+import com.example.composingapp.music.Music;
+
 public class NoteView extends View {
     private static final String TAG = "NoteView";
     private Paint mNotePaint, mStemPaint;
     private float mNoteX, mNoteY, mNoteRadius, mStemWidth, mStemHeight;
     private NotePositionDict positionDict;
-    private int mCanvasHeight, mCanvasWidth;
+    private int mHeight, mWidth;
+    private Music.Staff mClef;
 
 
     public NoteView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        init(attrs);
+        init();
+    }
+
+    /**
+     * Initializes all objects used for drawing
+     */
+    private void init() {
+        mClef = Music.Staff.TREBLE_CLEF;
+        mNotePaint = new Paint();
+        mNotePaint.setColor(Color.parseColor("black"));
+        mNotePaint.setAntiAlias(true);
+        mStemPaint = new Paint();
+        mStemPaint.setColor(Color.parseColor("black"));
+        mStemPaint.setStrokeWidth(mStemWidth);
+        positionDict = new NotePositionDict(mHeight, mClef);
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        mCanvasWidth = w;
-        mCanvasHeight = h;
+        mWidth = w;
+        mHeight = h;
         initDrawMeasurements();
-        super.onSizeChanged(w, h, oldw, oldh);
     }
 
     @Override
@@ -64,25 +79,15 @@ public class NoteView extends View {
      * Initializes measurements for all drawings to be drawn in onDraw()
      */
     private void initDrawMeasurements() {
-        mStemHeight = (mCanvasHeight / 3);
+        mStemHeight = (mHeight / 3);
         mStemWidth = convertDpToPx(ViewConstants.STEM_WIDTH);
-        mNoteX = mCanvasWidth / 2;
-       // mNoteY = mNoteYPositions[10];
-        mNoteRadius = mCanvasHeight / 10;
+        mNoteX = mWidth / 2;
+        // mNoteY = mNoteYPositions[10];
+        mNoteRadius = mHeight / 10;
     }
 
 
-    /**
-     * Initializes all objects used for drawing
-     */
-    private void init(AttributeSet attrs) {
-        mNotePaint = new Paint();
-        mNotePaint.setColor(Color.parseColor("black"));
-        mNotePaint.setAntiAlias(true);
-        mStemPaint = new Paint();
-        mStemPaint.setColor(Color.parseColor("black"));
-        mStemPaint.setStrokeWidth(mStemWidth);
-    }
+
 
     /**
      * Converts from dp to px
