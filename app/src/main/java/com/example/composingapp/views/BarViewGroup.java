@@ -7,22 +7,29 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.core.view.ViewCompat;
+
 import com.example.composingapp.music.Music;
+import com.example.composingapp.music.Note;
 import com.example.composingapp.music.Tone;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.example.composingapp.views.ViewConstants.TOTAL_LINES;
 
-class BarViewGroup extends LinearLayout {
+public class BarViewGroup extends LinearLayout {
     private static final String TAG = "BarViewGroup";
+    private ArrayList<NoteView> mNoteViewList;
     private Paint mBarPaint;
-    private Music.Staff mClef;
+    private Music.Clef mClef;
     private float mBarLineSize, mBarWidth, mBarHeight, mBarX, mBarY;
     private NotePositionDict yPositions;
     private float[] barlineYPositions;
+    private LinearLayout.LayoutParams mBarViewGroupParams;
 
     public BarViewGroup(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -34,7 +41,13 @@ class BarViewGroup extends LinearLayout {
      */
     private void init() {
         setOrientation(LinearLayout.HORIZONTAL);
-        mClef = Music.Staff.TREBLE_CLEF;
+        mBarViewGroupParams = new LinearLayout.LayoutParams(
+                LayoutParams.MATCH_PARENT,
+                LayoutParams.WRAP_CONTENT,
+                1
+        );
+        mClef = Music.Clef.TREBLE_CLEF;
+        mNoteViewList = new ArrayList<>();
         mBarPaint = new Paint();
         mBarPaint.setStyle(Paint.Style.STROKE);
         mBarPaint.setColor(Color.parseColor("black"));
@@ -43,18 +56,22 @@ class BarViewGroup extends LinearLayout {
         mBarLineSize = convertDpToPx(mBarLineSize);
     }
 
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//
-//        // Measure the dimensions of the bar
-//        for (int i = 0; i < getChildCount(); i++) {
-//            View child = getChildAt(i);
-//            mBarWidth += child.getMeasuredWidth();
-//            mBarHeight = child.getMeasuredHeight();
-//        }
-//        // ViewConstants.initNoteYPositions(mBarHeight, mClef);
-//    }
+    /**
+     *  Adds NoteView children to this BarViewGroup from mNoteViewList
+     */
+    private void addNoteViewsAsChildren() {
+        if (!mNoteViewList.isEmpty()) {
+            for (NoteView noteView : mNoteViewList) {
+                noteView.setId(ViewCompat.generateViewId());
+                noteView.setLayoutParams(mBarViewGroupParams);
+                this.addView(noteView);
+            }
+        } else{
+            Log.w(TAG, "addNoteViewsAsChildren: attempting to add an empty list of NoteViews " +
+                    "to the children of this BarViewGroup");
+        }
+
+    }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {

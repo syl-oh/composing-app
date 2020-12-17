@@ -6,6 +6,8 @@ import com.example.composingapp.music.MidiNoteDict;
 import com.example.composingapp.music.Music;
 import com.example.composingapp.music.Tone;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -19,10 +21,9 @@ public class NotePositionDict {
     private HashMap<Tone, Float> toneToBarlineYMap;
     private MidiNoteDict midiNoteDict;
     private Float mBarHeight;
-    private Music.Staff mClef;
-    private Float singleSpaceHeight;
+    private Music.Clef mClef;
 
-    public NotePositionDict(float barHeight, Music.Staff clef) {
+    public NotePositionDict(float barHeight, Music.Clef clef) {
         mBarHeight = barHeight;
         mClef = clef;
         midiNoteDict = new MidiNoteDict();
@@ -92,14 +93,14 @@ public class NotePositionDict {
      * @param barHeight Height in pixels of the barView
      * @param clef      Enum from Music.class
      */
-    private void initMaps(float barHeight, Music.Staff clef) {
+    private void initMaps(float barHeight, @NotNull Music.Clef clef) {
         final Music.PitchClass[] accPitchClasses = {Music.PitchClass.A_SHARP,
                 Music.PitchClass.C_SHARP, Music.PitchClass.D_SHARP,
                 Music.PitchClass.F_SHARP, Music.PitchClass.G_SHARP};
 
         // Prepare for loop
         int midiIndex = clef.getMidiStartingIndex();
-        float currentY = 0;
+        float currentY;
         Tone currentTone = null;
         yToToneMap = new HashMap<>();
         toneToYMap = new HashMap<>();
@@ -115,7 +116,7 @@ public class NotePositionDict {
             if (Arrays.asList(accPitchClasses).contains(currentTone.getPitchClass())) {
                 i -= 1;
             }
-            currentY = ((barHeight * i) / totalPositions); //- (2 * ViewConstants.STEM_WIDTH);
+            currentY = barHeight - ((barHeight * i) / totalPositions); // build from bottom to top
 //            Log.d(TAG, "initMaps: for pitchclass "+ currentTone.getPitchClass() + " with " +
 //                    "octave " + currentTone.getOctave() + " the y-pos is " + currentY);
             yToToneMap.put(currentY, currentTone);
@@ -129,7 +130,7 @@ public class NotePositionDict {
      *
      * @param clef
      */
-    private void initBarlineMaps(Music.Staff clef) {
+    private void initBarlineMaps(@NotNull Music.Clef clef) {
         barlineYToToneMap = new HashMap<>();
         toneToBarlineYMap = new HashMap<>();
         for (Tone tone : clef.getBarlineTones()) {

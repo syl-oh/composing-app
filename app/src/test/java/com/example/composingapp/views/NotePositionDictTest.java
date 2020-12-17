@@ -1,6 +1,7 @@
 package com.example.composingapp.views;
 
 import com.example.composingapp.music.Music;
+import com.example.composingapp.music.Note;
 import com.example.composingapp.music.Tone;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -18,20 +19,20 @@ import java.util.HashMap;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 @DisplayName("When notePositionDict is created ")
 class NotePositionDictTest {
     NotePositionDict notePositionDict;
 
     float barHeight;
-    Music.Staff clef;
+    Music.Clef clef;
 
     @BeforeEach
     void init() {
         barHeight = 100;
-        clef = Music.Staff.TREBLE_CLEF;
+        clef = Music.Clef.TREBLE_CLEF;
         notePositionDict = new NotePositionDict(barHeight, clef);
     }
 
@@ -39,11 +40,11 @@ class NotePositionDictTest {
     @DisplayName("toneToYMap")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     class InitNoteYPositions {
-        HashMap<Tone, Float> dict;
+        HashMap<Tone, Float> toneToYMap;
 
         @BeforeEach
         void prepareInitNoteYPositions() {
-            dict = notePositionDict.getToneToYMap();
+            toneToYMap = notePositionDict.getToneToYMap();
         }
 
 
@@ -51,7 +52,7 @@ class NotePositionDictTest {
         @ParameterizedTest
         @MethodSource("provideAccidentalTones")
         void testAccidentalTones(Tone unaccTone, Tone accTone) {
-            assertEquals(dict.get(unaccTone), dict.get(accTone));
+            assertEquals(toneToYMap.get(unaccTone), toneToYMap.get(accTone));
         }
 
         /**
@@ -81,9 +82,18 @@ class NotePositionDictTest {
         @Test
         void testMinAndMaxOfNoteYPositions() {
             assertAll(
-                    () -> assertEquals(0, Collections.min(dict.values())),
-                    () -> assertEquals(barHeight, Collections.max(dict.values()))
+                    () -> assertEquals(0, Collections.min(toneToYMap.values())),
+                    () -> assertEquals(barHeight, Collections.max(toneToYMap.values()))
             );
+        }
+
+        @DisplayName("should produce y-values for notes, since they are also tones")
+        @Test
+        void testNotesAsInput() {
+            // C4 - Middle C is included in every staff
+            Note middleCNote = new Note(Music.PitchClass.C_NATURAL, 4,
+                    Music.NoteLength.QUARTER_NOTE);
+            assertDoesNotThrow(() ->toneToYMap.get(middleCNote));
         }
     }
 
@@ -99,7 +109,7 @@ class NotePositionDictTest {
         @DisplayName("should have barlines on the right tones for each clef")
         @ParameterizedTest
         @MethodSource("provideBarLineTones")
-        void testCorrectTonesForClef(Music.Staff clef, Tone[] clefTones) {
+        void testCorrectTonesForClef(Music.Clef clef, Tone[] clefTones) {
             notePositionDict = new NotePositionDict(barHeight, clef);
             HashMap<Tone, Float> toneToBarlineYMap = notePositionDict.getToneToBarlineYMap();
             for (Tone tone : clefTones) {
@@ -128,8 +138,8 @@ class NotePositionDictTest {
                     new Tone(Music.PitchClass.F_NATURAL, 3),
                     new Tone(Music.PitchClass.A_NATURAL, 3)};
             return Stream.of(
-                    Arguments.of(Music.Staff.TREBLE_CLEF, trebleTones),
-                    Arguments.of(Music.Staff.BASS_CLEF, bassTones));
+                    Arguments.of(Music.Clef.TREBLE_CLEF, trebleTones),
+                    Arguments.of(Music.Clef.BASS_CLEF, bassTones));
         }
     }
 }

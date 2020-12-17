@@ -1,5 +1,6 @@
 package com.example.composingapp.music;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Objects;
 
@@ -7,7 +8,7 @@ public class MidiNoteDict {
     private static final String TAG = "MidiNoteDict";
     private final int startingMidiNum = 21;   // the first key on an 88-key piano
     private final int endingMidiNum = 108;    // the last key on an 88-key piano
-    private Hashtable<Integer, Tone> midiNoteDict;
+    private HashMap<Integer, Tone> midiNoteDict;
 
     /**
      * Constructs MidiNoteDict. Immediately initializes the dictionary
@@ -28,7 +29,7 @@ public class MidiNoteDict {
                 Music.PitchClass.C_SHARP, Music.PitchClass.D_NATURAL, Music.PitchClass.D_SHARP, Music.PitchClass.E_NATURAL,
                 Music.PitchClass.F_NATURAL, Music.PitchClass.F_SHARP, Music.PitchClass.G_NATURAL, Music.PitchClass.G_SHARP};
 
-        midiNoteDict = new Hashtable<Integer, Tone>();  // initialize the dictionary
+        midiNoteDict = new HashMap<Integer, Tone>();  // initialize the dictionary
 
         // Prepare for the loop:
         int currentPitchClassIdx = 0; // Index variable points to the current pitch class in pitchClasses

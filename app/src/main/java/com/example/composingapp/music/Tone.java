@@ -43,6 +43,14 @@ public class Tone {
         return Objects.hash(pitchClass, octave);
     }
 
+    /**
+     * Checks for equality between this tone and any obj, which is true when both are tones whose
+     *  pitchclasses and octaves are equal
+     *
+     * @param obj Any object
+     * @return Boolean: true if obj is a tone and has the same pitchclass and octave as this instance,
+     *            and false otherwise
+     */
     @Override
     public boolean equals(@Nullable Object obj) {
         if (obj == this) return true;

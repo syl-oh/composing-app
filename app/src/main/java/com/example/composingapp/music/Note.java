@@ -23,6 +23,4 @@ public class Note extends Tone {
         this.noteLength = noteLength;
         return this;
     }
-
-
 }
