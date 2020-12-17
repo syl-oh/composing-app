@@ -33,7 +33,6 @@ public class NoteView extends View {
     public NoteView(Context context, Note note, Music.Clef clef) {
         super(context);
         init(note, clef);
-
     }
 
 
