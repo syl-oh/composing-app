@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.core.view.ViewCompat;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static com.example.composingapp.views.ViewConstants.BARLINE_SIZE;
 import static com.example.composingapp.views.ViewConstants.TOTAL_LINES;
 
 public class BarViewGroup extends LinearLayout {
@@ -26,33 +28,39 @@ public class BarViewGroup extends LinearLayout {
     private ArrayList<NoteView> mNoteViewList;
     private Paint mBarPaint;
     private Music.Clef mClef;
-    private float mBarLineSize, mBarWidth, mBarHeight, mBarX, mBarY;
+    private float mBarLineSize, mBarWidth, mBarHeight;
     private NotePositionDict yPositions;
     private float[] mBarlineYPositions;
     private LinearLayout.LayoutParams mBarViewGroupParams;
 
-    public BarViewGroup(Context context, Music.Clef clef) {
+    public BarViewGroup(Context context) {
         super(context);
-        init(clef);
+        init();
+
+    }
+
+    public BarViewGroup(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init();
     }
 
     /**
      * Initializes the paint used in the dispatchDraw() method and its helper methods
      */
-    private void init(Music.Clef clef) {
+    private void init() {
         setWillNotDraw(false); // Enable drawing of the ViewGroup
         setOrientation(LinearLayout.HORIZONTAL);
         mBarViewGroupParams = new LinearLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT);
 
-        mClef = clef;
+        mClef = Music.Clef.TREBLE_CLEF;
         mNoteViewList = new ArrayList<>();
         mBarPaint = new Paint();
         mBarPaint.setStyle(Paint.Style.STROKE);
         mBarPaint.setColor(Color.parseColor("black"));
         mBarPaint.setStrokeWidth(mBarLineSize);
-        mBarLineSize = 6; // Value in dp
+        mBarLineSize = ViewConstants.BARLINE_SIZE; // Value in dp
         mBarLineSize = convertDpToPx(mBarLineSize);
 
         Note note = new Note(Music.PitchClass.C_NATURAL, 4, Music.NoteLength.QUARTER_NOTE);
@@ -70,18 +78,12 @@ public class BarViewGroup extends LinearLayout {
         mNoteViewList.add(noteView);
     }
 
-
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        // Get x and y coordinates
-        int[] barXY = new int[2];
-        getLocationInWindow(barXY);
-        mBarX = barXY[0];
-        mBarY = barXY[1];
-        mBarWidth = w - mBarX;
-        mBarHeight = h - mBarY;
+        mBarWidth = w;
+        mBarHeight = h;
 
-        Log.d(TAG, "onSizeChanged: mBarX is " + mBarX);
+//        Log.d(TAG, "onSizeChanged: mBarX is " + mBarX);
 //        Log.d(TAG, "onSizeChanged: mBarY is " + mBarY);
 //        Log.d(TAG, "onSizeChanged: mBarHeight is "+ mBarHeight);
 //        Log.d(TAG, "onSizeChanged: mBarWidth is "+ mBarWidth);
@@ -125,9 +127,11 @@ public class BarViewGroup extends LinearLayout {
 
     @Override
     protected void onDraw(Canvas canvas) {
+//        Log.d(TAG, "onDraw: " + this.getId());
         drawBarLines(canvas);
         drawSideLines(canvas);
     }
+
 
     /**
      * Draws barlines on a canvas
@@ -135,12 +139,17 @@ public class BarViewGroup extends LinearLayout {
      * @param canvas The canvas to draw on
      */
     private void drawBarLines(Canvas canvas) {
+        float startX = 0;
+        float endX = mBarWidth - 1;
+
+//        Log.d(TAG, "drawBarLines: startX is " + startX);
+//        Log.d(TAG, "drawBarLines: endX is "+ endX);
         // Draw the 5 lines from top to bottom
         for (float currentY : mBarlineYPositions) {
-            canvas.drawLine(mBarX, currentY, mBarX + mBarWidth - 1,
-                    currentY, mBarPaint);
+            canvas.drawLine(startX, currentY, endX, currentY, mBarPaint);
 //            Log.d(TAG, "drawBarLines: currentY " + currentY);
         }
+//        Log.d(TAG, "drawBarLines: Drew barlines for BarViewGroup with ID " + this.getId());
     }
 
     /**
@@ -151,11 +160,13 @@ public class BarViewGroup extends LinearLayout {
     private void drawSideLines(Canvas canvas) {
         float[] barlineYPositions = mBarlineYPositions.clone();
         Arrays.sort(barlineYPositions);
+        float startX = 0;
+        float endX = mBarWidth - 1;
 
         float topBarlineY = barlineYPositions[0];
         float bottomBarlineY = barlineYPositions[barlineYPositions.length - 1];
 
-        for (float xPos : new float[]{mBarX, (mBarX + mBarWidth - 1)}) {
+        for (float xPos : new float[]{startX, endX}) {
             canvas.drawLine(xPos, topBarlineY, xPos, bottomBarlineY, mBarPaint);
 //            Log.d(TAG, "drawSideLines: xPos: " + xPos);
 //            Log.d(TAG, "drawSideLines: topBarlineY: " + topBarlineY);

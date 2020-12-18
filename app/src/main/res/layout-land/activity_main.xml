@@ -6,14 +6,26 @@
     android:orientation="vertical">
 
 
-    <com.example.composingapp.views.StaffViewGroup
+    <com.example.composingapp.views.ScoreLineViewGroup
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
         android:orientation="horizontal"
-        android:padding="4dp">
+        android:layout_height="0dp"
+        android:layout_weight="2">
 
-    </com.example.composingapp.views.StaffViewGroup>
+
+        <com.example.composingapp.views.BarViewGroup
+            android:id="@+id/barViewGroup1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <com.example.composingapp.views.BarViewGroup
+            android:id="@+id/barViewGroup2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+    </com.example.composingapp.views.ScoreLineViewGroup>
 
     <LinearLayout
         android:layout_width="match_parent"
