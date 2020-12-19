@@ -1,7 +1,6 @@
 package com.example.composingapp.views;
 
 import android.content.Context;
-import android.gesture.Gesture;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -14,11 +13,13 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import androidx.annotation.NonNull;
-import androidx.core.view.MotionEventCompat;
 
 import com.example.composingapp.music.Music;
 import com.example.composingapp.music.Note;
 import com.example.composingapp.music.Tone;
+import com.example.composingapp.utils.NoDragShadowBuilder;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 
@@ -74,6 +75,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
         mStemPaint.setStrokeWidth(mStemWidth);
         mStemPaint.setColor(Color.parseColor("black"));
     }
+
     /**
      * Converts from dp to px
      *
@@ -93,6 +95,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
         positionDict = new NotePositionDict(mHeight, mClef);
         mNoteX = (float) (mWidth / 2);
         mNoteY = calculateNoteY(mNote);
+//        Log.d(TAG, "onSizeChanged: mNoteY: " + mNoteY);
         mStemHeight = positionDict.getOctaveHeight();
         mNoteRadius = positionDict.getSingleSpaceHeight() / 2;
     }
@@ -150,49 +153,48 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
 
 
     @Override
-    public boolean onDrag(View v, DragEvent event) {
-
+    public boolean onDrag(View v, @NotNull DragEvent event) {
         switch (event.getAction()) {
             case DragEvent.ACTION_DRAG_STARTED:
-                Log.d(TAG, "onDrag: drag started.");
+//                Log.d(TAG, "onDrag: drag started.");
                 return true;
 
             case DragEvent.ACTION_DRAG_ENTERED:
-                Log.d(TAG, "onDrag: drag entered.");
+//                Log.d(TAG, "onDrag: drag entered.");
                 return true;
 
             case DragEvent.ACTION_DRAG_LOCATION:
-                Float semiSpace = positionDict.getSingleSpaceHeight() / 2;
+                Float semiSpace = positionDict.getSingleSpaceHeight() / 2; // Semispace distance
+                Float dy = mNoteY - event.getY();                          // Change in y position
 
-//                Log.d(TAG, "onDrag: current point: (" + event.getX() + "," + event.getY() + ")");
-                Float dy = mNoteY - event.getY();
-                Log.d(TAG, "onDrag: dy is " + dy);
                 // Move up to the note a semispace above if the note has been dragged that far
                 if (abs(dy) >= semiSpace) {
-                    Float newToneY = dy > 0 ? mNoteY + semiSpace : mNoteY - semiSpace;
-                    Log.d(TAG, "onDrag: mNoteY is  " + mNoteY);
-                    Tone nextTone = positionDict.getYToToneMap().get(mNoteY);
-                    Log.d(TAG, "onDrag: nextTone: " + nextTone);
-//                    mNote = new Note(
-//                            nextTone.getPitchClass(),
-//                            nextTone.getOctave(),
-//                            mNote.getNoteLength());
+                    // Find the new tone
+                    Float newToneY = dy > 0 ? mNoteY - semiSpace : mNoteY + semiSpace;
+                    Tone nextTone = positionDict.getYToToneMap().get(newToneY);
+//                    Log.d(TAG, "onDrag: nextTone: " + nextTone.getPitchClass() + " octave " +
+//                            nextTone.getOctave());
 
-                    // TODO: 18/12/2020 - Complete dragging feature or NoteView
+                    // Update the note and the NoteView, then redraw
+                    mNote = new Note(
+                            nextTone.getPitchClass(),
+                            nextTone.getOctave(),
+                            mNote.getNoteLength());
+                    mNoteY = calculateNoteY(mNote);
+                    invalidate();
                 }
-
                 return true;
 
             case DragEvent.ACTION_DRAG_EXITED:
-                Log.d(TAG, "onDrag: exited.");
+//                Log.d(TAG, "onDrag: exited.");
                 return true;
 
             case DragEvent.ACTION_DROP:
-                Log.d(TAG, "onDrag: dropped.");
+//                Log.d(TAG, "onDrag: dropped.");
                 return true;
 
             case DragEvent.ACTION_DRAG_ENDED:
-                Log.d(TAG, "onDrag: ended.");
+//                Log.d(TAG, "onDrag: ended.");
                 return true;
 
             // An unknown action type was received.
@@ -225,8 +227,8 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
 
     @Override
     public void onLongPress(MotionEvent e) {
-        DragShadowBuilder builder = new DragShadowBuilder(this);
-        this.startDragAndDrop(null, builder, null, DRAG_FLAG_OPAQUE);
+        NoDragShadowBuilder builder =  new NoDragShadowBuilder(this); // Shadowless drag
+        this.startDragAndDrop(null, builder, null, 0);
         builder.getView().setOnDragListener(this);
     }
 
