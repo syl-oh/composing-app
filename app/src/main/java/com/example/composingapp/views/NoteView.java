@@ -1,12 +1,20 @@
 package com.example.composingapp.views;
 
 import android.content.Context;
+import android.gesture.Gesture;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.DragEvent;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
+import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.MotionEventCompat;
 
 import com.example.composingapp.music.Music;
 import com.example.composingapp.music.Note;
@@ -14,7 +22,9 @@ import com.example.composingapp.music.Tone;
 
 import java.util.HashMap;
 
-public class NoteView extends View {
+import static java.lang.Math.abs;
+
+public class NoteView extends View implements OnGestureListener, View.OnDragListener {
     private static final String TAG = "NoteView";
     private Paint mNotePaint, mStemPaint;
     private float mNoteRadius, mStemWidth, mStemHeight;
@@ -23,14 +33,15 @@ public class NoteView extends View {
     private int mHeight, mWidth;
     private Music.Clef mClef;
     private Note mNote;
+    private GestureDetector mGestureDetector;
 
     /**
      * Constructor for programmatically creating a NoteView
      *
-     * @param context   Context of the view
-     * @param note Note object
+     * @param context Context of the view
+     * @param note    Note object
      */
-    public NoteView(Context context, Note note, Music.Clef clef) {
+    public NoteView(Context context, @NonNull Note note, @NonNull Music.Clef clef) {
         super(context);
         init(note, clef);
     }
@@ -40,8 +51,20 @@ public class NoteView extends View {
      * Initializes all objects used for drawing
      */
     private void init(Note note, Music.Clef clef) {
-        mNote = note;
-        mClef = clef;
+        if (note != null) {
+            mNote = note;
+        } else {
+            Log.e(TAG, "init: FATAL: Recieved null note for NoteView with ID "
+                    + this.getId());
+        }
+
+        if (clef != null) {
+            mClef = clef;
+        } else {
+            Log.e(TAG, "init: FATAL: Recieved null clef for NoteView with ID "
+                    + this.getId());
+        }
+        mGestureDetector = new GestureDetector(getContext(), this);
         mNotePaint = new Paint();
         mNotePaint.setColor(Color.parseColor("black"));
         mNotePaint.setAntiAlias(true);
@@ -51,6 +74,17 @@ public class NoteView extends View {
         mStemPaint.setStrokeWidth(mStemWidth);
         mStemPaint.setColor(Color.parseColor("black"));
     }
+    /**
+     * Converts from dp to px
+     *
+     * @param dp (float) measure of density-independent pixel
+     * @return (float) measure of dp in pixels for the operating device
+     */
+    private float convertDpToPx(float dp) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                dp, getResources().getDisplayMetrics());
+    }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
@@ -58,18 +92,22 @@ public class NoteView extends View {
         mHeight = h;
         positionDict = new NotePositionDict(mHeight, mClef);
         mNoteX = (float) (mWidth / 2);
-        if (mNoteY == null) {
-            HashMap<Tone, Float> toneToYMap = positionDict.getToneToYMap();
-            try {
-                mNoteY = toneToYMap.get(mNote);
-            } catch (NullPointerException e) {
-                Log.e(TAG, "onSizeChanged: NullPointerException, unable to retrieve y-position " +
-                        "of pitchclass " + mNote.getPitchClass() + " and octave "
-                        + mNote.getOctave());
-            }
-        }
+        mNoteY = calculateNoteY(mNote);
         mStemHeight = positionDict.getOctaveHeight();
         mNoteRadius = positionDict.getSingleSpaceHeight() / 2;
+    }
+
+    private Float calculateNoteY(Note note) {
+        HashMap<Tone, Float> toneToYMap = positionDict.getToneToYMap();
+        Float yPos = null;
+        try {
+            yPos = toneToYMap.get(note);
+        } catch (NullPointerException e) {
+            Log.e(TAG, "onSizeChanged: NullPointerException, unable to retrieve y-position " +
+                    "of pitchclass " + note.getPitchClass() + " and octave "
+                    + note.getOctave());
+        }
+        return yPos;
     }
 
     @Override
@@ -100,15 +138,100 @@ public class NoteView extends View {
                 mStemPaint);
     }
 
+    private void updateNoteView(Float eventX, Float eventY) {
 
-    /**
-     * Converts from dp to px
-     *
-     * @param dp (float) measure of density-independent pixel
-     * @return (float) measure of dp in pixels for the operating device
-     */
-    private float convertDpToPx(float dp) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                dp, getResources().getDisplayMetrics());
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        mGestureDetector.onTouchEvent(event);
+        return true;
+    }
+
+
+    @Override
+    public boolean onDrag(View v, DragEvent event) {
+
+        switch (event.getAction()) {
+            case DragEvent.ACTION_DRAG_STARTED:
+                Log.d(TAG, "onDrag: drag started.");
+                return true;
+
+            case DragEvent.ACTION_DRAG_ENTERED:
+                Log.d(TAG, "onDrag: drag entered.");
+                return true;
+
+            case DragEvent.ACTION_DRAG_LOCATION:
+                Float semiSpace = positionDict.getSingleSpaceHeight() / 2;
+
+//                Log.d(TAG, "onDrag: current point: (" + event.getX() + "," + event.getY() + ")");
+                Float dy = mNoteY - event.getY();
+                Log.d(TAG, "onDrag: dy is " + dy);
+                // Move up to the note a semispace above if the note has been dragged that far
+                if (abs(dy) >= semiSpace) {
+                    Float newToneY = dy > 0 ? mNoteY + semiSpace : mNoteY - semiSpace;
+                    Log.d(TAG, "onDrag: mNoteY is  " + mNoteY);
+                    Tone nextTone = positionDict.getYToToneMap().get(mNoteY);
+                    Log.d(TAG, "onDrag: nextTone: " + nextTone);
+//                    mNote = new Note(
+//                            nextTone.getPitchClass(),
+//                            nextTone.getOctave(),
+//                            mNote.getNoteLength());
+
+                    // TODO: 18/12/2020 - Complete dragging feature or NoteView
+                }
+
+                return true;
+
+            case DragEvent.ACTION_DRAG_EXITED:
+                Log.d(TAG, "onDrag: exited.");
+                return true;
+
+            case DragEvent.ACTION_DROP:
+                Log.d(TAG, "onDrag: dropped.");
+                return true;
+
+            case DragEvent.ACTION_DRAG_ENDED:
+                Log.d(TAG, "onDrag: ended.");
+                return true;
+
+            // An unknown action type was received.
+            default:
+                Log.e(TAG, "Unknown action type received by OnStartDragListener.");
+                break;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+        DragShadowBuilder builder = new DragShadowBuilder(this);
+        this.startDragAndDrop(null, builder, null, DRAG_FLAG_OPAQUE);
+        builder.getView().setOnDragListener(this);
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return false;
     }
 }

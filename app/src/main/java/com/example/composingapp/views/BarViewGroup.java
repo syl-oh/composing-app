@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 
 import com.example.composingapp.music.Music;
@@ -19,6 +20,8 @@ import com.example.composingapp.music.Tone;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+
+import javax.xml.transform.TransformerException;
 
 import static com.example.composingapp.views.ViewConstants.BARLINE_SIZE;
 import static com.example.composingapp.views.ViewConstants.TOTAL_LINES;
@@ -33,29 +36,25 @@ public class BarViewGroup extends LinearLayout {
     private float[] mBarlineYPositions;
     private LinearLayout.LayoutParams mBarViewGroupParams;
 
-    public BarViewGroup(Context context) {
+    public BarViewGroup(Context context, @NonNull Music.Clef clef) {
         super(context);
-        init();
+        init(clef);
 
-    }
-
-    public BarViewGroup(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
     }
 
     /**
-     * Initializes the paint used in the dispatchDraw() method and its helper methods
+     * Initializes the parameters, paints, and bar properties
      */
-    private void init() {
+    private void init(Music.Clef clef) {
+        // Initialize layout parameters
         setWillNotDraw(false); // Enable drawing of the ViewGroup
         setOrientation(LinearLayout.HORIZONTAL);
         mBarViewGroupParams = new LinearLayout.LayoutParams(
                 LayoutParams.MATCH_PARENT,
                 LayoutParams.WRAP_CONTENT);
+        mBarViewGroupParams.weight = 1;
 
-        mClef = Music.Clef.TREBLE_CLEF;
-        mNoteViewList = new ArrayList<>();
+        // Initialize paints
         mBarPaint = new Paint();
         mBarPaint.setStyle(Paint.Style.STROKE);
         mBarPaint.setColor(Color.parseColor("black"));
@@ -63,28 +62,37 @@ public class BarViewGroup extends LinearLayout {
         mBarLineSize = ViewConstants.BARLINE_SIZE; // Value in dp
         mBarLineSize = convertDpToPx(mBarLineSize);
 
-        Note note = new Note(Music.PitchClass.C_NATURAL, 4, Music.NoteLength.QUARTER_NOTE);
-        NoteView noteView = new NoteView(getContext(), note, mClef);
-        addNoteViewToChildren(noteView);
+
+        // Initialize bar properties
+        mNoteViewList = new ArrayList<>();
+        if (clef != null) {    // Verify that the clef is non-null and set it to the field
+            mClef = clef;
+        } else {
+            Log.e(TAG, "init: Received null clef for BarViewGroup with ID " + this.getId()
+                    + " .Defaulting to treble clef to avoid application crash");
+            mClef = Music.Clef.TREBLE_CLEF;
+        }
     }
 
     /**
-     * Adds a NoteView as a child to this BarViewGroup
+     * Adds a Note as a child to this BarViewGroup
      */
-    private void addNoteViewToChildren(NoteView noteView) {
-        noteView.setId(ViewCompat.generateViewId());
-        noteView.setLayoutParams(mBarViewGroupParams);
-        this.addView(noteView);
-        mNoteViewList.add(noteView);
+    protected void addNoteToChildren(@NonNull Note note) {
+        if (note != null) {
+            NoteView noteView = new NoteView(getContext(), note, mClef);
+            noteView.setId(ViewCompat.generateViewId());
+            noteView.setLayoutParams(mBarViewGroupParams);
+            this.addView(noteView);
+            mNoteViewList.add(noteView);
+        } else {
+            Log.e(TAG, "addNoteToChildren: Refused to add null note");
+        }
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         mBarWidth = w;
         mBarHeight = h;
-
-//        Log.d(TAG, "onSizeChanged: mBarX is " + mBarX);
-//        Log.d(TAG, "onSizeChanged: mBarY is " + mBarY);
 //        Log.d(TAG, "onSizeChanged: mBarHeight is "+ mBarHeight);
 //        Log.d(TAG, "onSizeChanged: mBarWidth is "+ mBarWidth);
 
