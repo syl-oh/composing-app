@@ -2,8 +2,9 @@ package com.example.composingapp.music;
 
 import android.app.Application;
 
-public final class Music extends Application {
+import java.util.ArrayList;
 
+public final class Music extends Application {
     /**
      * Types of clefs used in music
      */
@@ -53,26 +54,53 @@ public final class Music extends Application {
      * Pitch class (letter-name) of a note in music
      */
     public enum PitchClass {
-        A_FLAT,
-        A_NATURAL,
-        A_SHARP,
-        B_FLAT,
-        B_NATURAL,
-        B_SHARP,
-        C_FLAT,
-        C_NATURAL,
-        C_SHARP,
-        D_FLAT,
-        D_NATURAL,
-        D_SHARP,
-        E_FLAT,
-        E_NATURAL,
-        E_SHARP,
-        F_FLAT,
-        F_NATURAL,
-        F_SHARP,
-        G_FLAT,
-        G_NATURAL,
-        G_SHARP
+        A_FLAT(Accidental.FLAT),
+        A_NATURAL(Accidental.NATURAL),
+        A_SHARP(Accidental.SHARP),
+        B_FLAT(Accidental.FLAT),
+        B_NATURAL(Accidental.NATURAL),
+        B_SHARP(Accidental.SHARP),
+        C_FLAT(Accidental.FLAT),
+        C_NATURAL(Accidental.NATURAL),
+        C_SHARP(Accidental.SHARP),
+        D_FLAT(Accidental.FLAT),
+        D_NATURAL(Accidental.NATURAL),
+        D_SHARP(Accidental.SHARP),
+        E_FLAT(Accidental.FLAT),
+        E_NATURAL(Accidental.NATURAL),
+        E_SHARP(Accidental.SHARP),
+        F_FLAT(Accidental.FLAT),
+        F_NATURAL(Accidental.NATURAL),
+        F_SHARP(Accidental.SHARP),
+        G_FLAT(Accidental.FLAT),
+        G_NATURAL(Accidental.NATURAL),
+        G_SHARP(Accidental.SHARP);
+
+        private Accidental accidental;
+
+        PitchClass(Accidental accidental) {
+            this.accidental = accidental;
+        }
+
+        public Accidental getAccidental() {
+            return accidental;
+        }
+
+        public PitchClass[] getAccentedPitchClasses() {
+            ArrayList<PitchClass> accentedPitchClasses = new ArrayList<>();
+            for (PitchClass pitchClass : PitchClass.values()) {
+                if (pitchClass.accidental != Accidental.NATURAL) {
+                    accentedPitchClasses.add(pitchClass);
+                }
+            }
+            return (PitchClass[]) accentedPitchClasses.toArray();
+        }
+
+        public enum Accidental {
+            NATURAL,
+            SHARP,
+            FLAT;
+        }
     }
+
 }

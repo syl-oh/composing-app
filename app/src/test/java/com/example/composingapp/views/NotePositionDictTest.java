@@ -25,7 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisplayName("When notePositionDict is created ")
 class NotePositionDictTest {
     NotePositionDict notePositionDict;
-
     float barHeight;
     Music.Clef clef;
 
@@ -39,16 +38,16 @@ class NotePositionDictTest {
     @Nested
     @DisplayName("toneToYMap")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class InitNoteYPositions {
+    class ToneToYMap {
         HashMap<Tone, Float> toneToYMap;
 
         @BeforeEach
-        void prepareInitNoteYPositions() {
+        void initToneToYMap() {
             toneToYMap = notePositionDict.getToneToYMap();
         }
 
 
-        @DisplayName("should have accidental tones in the same position as unaccented ones")
+        @DisplayName("has accidental tones in the same position as unaccented ones")
         @ParameterizedTest
         @MethodSource("provideAccidentalTones")
         void testAccidentalTones(Tone unaccTone, Tone accTone) {
@@ -67,6 +66,7 @@ class NotePositionDictTest {
             Music.PitchClass[] accPitchClasses = {Music.PitchClass.A_SHARP,
                     Music.PitchClass.C_SHARP, Music.PitchClass.D_SHARP,
                     Music.PitchClass.F_SHARP, Music.PitchClass.G_SHARP};
+
             int octave = 4; // essential octave in any score (contains middle C)
             Arguments[] arguments = new Arguments[accPitchClasses.length];
             for (int i = 0; i < accPitchClasses.length; i++) {
@@ -78,7 +78,7 @@ class NotePositionDictTest {
         }
 
 
-        @DisplayName("should be bounded within the bar height")
+        @DisplayName("is bounded within the bar height")
         @Test
         void testMinAndMaxOfNoteYPositions() {
             assertAll(
@@ -87,7 +87,7 @@ class NotePositionDictTest {
             );
         }
 
-        @DisplayName("should produce y-values for notes, since they are also tones")
+        @DisplayName("produces y-values for notes, since they are also tones")
         @Test
         void testNotesAsInput() {
             // C4 - Middle C is included in every staff
@@ -98,15 +98,11 @@ class NotePositionDictTest {
     }
 
     @Nested
-    @DisplayName("toneToBarlineMap")
+    @DisplayName("toneToBarlineYMap")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class InitBarLineYPositions {
+    class ToneToBarLineYMap {
 
-        @BeforeEach
-        void prepareInitNoteYPositions() {
-        }
-
-        @DisplayName("should have barlines on the right tones for each clef")
+        @DisplayName("has barlines on the right tones for each clef")
         @ParameterizedTest
         @MethodSource("provideBarLineTones")
         void testCorrectTonesForClef(Music.Clef clef, Tone[] clefTones) {
@@ -143,5 +139,24 @@ class NotePositionDictTest {
         }
     }
 
+    @Nested
+    @DisplayName("yToToneMap")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    class YToToneMap {
+        HashMap<Float, Tone> yToToneMap;
 
+        @BeforeEach
+        void initYToToneMap() {
+            yToToneMap = notePositionDict.getYToToneMap();
+        }
+
+        @DisplayName("only contains natural notes")
+        @Test
+        void verifyOnlyNaturalNotes() {
+            for (Tone tone : yToToneMap.values()) {
+                assertTrue(tone.getPitchClass().getAccidental() ==
+                        Music.PitchClass.Accidental.NATURAL);
+            }
+        }
+    }
 }

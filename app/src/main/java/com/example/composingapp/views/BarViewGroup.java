@@ -24,6 +24,7 @@ import java.util.HashMap;
 import javax.xml.transform.TransformerException;
 
 import static com.example.composingapp.views.ViewConstants.BARLINE_SIZE;
+import static com.example.composingapp.views.ViewConstants.BARS_PER_LINE;
 import static com.example.composingapp.views.ViewConstants.TOTAL_LINES;
 
 public class BarViewGroup extends LinearLayout {
@@ -50,7 +51,7 @@ public class BarViewGroup extends LinearLayout {
         setWillNotDraw(false); // Enable drawing of the ViewGroup
         setOrientation(LinearLayout.HORIZONTAL);
         mBarViewGroupParams = new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT / BARS_PER_LINE,
                 LayoutParams.WRAP_CONTENT);
         mBarViewGroupParams.weight = 1;
 
