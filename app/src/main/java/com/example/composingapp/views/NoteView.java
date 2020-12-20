@@ -17,7 +17,9 @@ import androidx.annotation.NonNull;
 import com.example.composingapp.music.Music;
 import com.example.composingapp.music.Note;
 import com.example.composingapp.music.Tone;
-import com.example.composingapp.utils.NoDragShadowBuilder;
+import com.example.composingapp.views.utils.NoDragShadowBuilder;
+import com.example.composingapp.views.utils.NotePositionDict;
+import com.example.composingapp.views.utils.ViewConstants;
 
 import org.jetbrains.annotations.NotNull;
 

@@ -3,6 +3,7 @@ package com.example.composingapp.views;
 import com.example.composingapp.music.Music;
 import com.example.composingapp.music.Note;
 import com.example.composingapp.music.Tone;
+import com.example.composingapp.views.utils.NotePositionDict;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

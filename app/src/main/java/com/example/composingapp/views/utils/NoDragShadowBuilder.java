@@ -1,4 +1,4 @@
-package com.example.composingapp.utils;
+package com.example.composingapp.views.utils;
 
 import android.graphics.Canvas;
 import android.view.View;

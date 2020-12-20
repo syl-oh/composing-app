@@ -1,11 +1,12 @@
-package com.example.composingapp.views;
+package com.example.composingapp.views.utils;
 
 import android.util.Log;
 
 import com.example.composingapp.music.MidiNoteDict;
 import com.example.composingapp.music.Music;
 import com.example.composingapp.music.Tone;
-import com.example.composingapp.utils.FloatToneHashMap;
+import com.example.composingapp.views.utils.FloatToneHashMap;
+import com.example.composingapp.views.utils.ViewConstants;
 
 import org.jetbrains.annotations.NotNull;
 

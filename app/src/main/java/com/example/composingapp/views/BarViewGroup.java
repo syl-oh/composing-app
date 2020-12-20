@@ -4,10 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
@@ -16,16 +14,15 @@ import androidx.core.view.ViewCompat;
 import com.example.composingapp.music.Music;
 import com.example.composingapp.music.Note;
 import com.example.composingapp.music.Tone;
+import com.example.composingapp.views.utils.NotePositionDict;
+import com.example.composingapp.views.utils.ViewConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import javax.xml.transform.TransformerException;
-
-import static com.example.composingapp.views.ViewConstants.BARLINE_SIZE;
-import static com.example.composingapp.views.ViewConstants.BARS_PER_LINE;
-import static com.example.composingapp.views.ViewConstants.TOTAL_LINES;
+import static com.example.composingapp.views.utils.ViewConstants.BARS_PER_LINE;
+import static com.example.composingapp.views.utils.ViewConstants.TOTAL_LINES;
 
 public class BarViewGroup extends LinearLayout {
     private static final String TAG = "BarViewGroup";
@@ -39,9 +36,10 @@ public class BarViewGroup extends LinearLayout {
 
     public BarViewGroup(Context context, @NonNull Music.Clef clef) {
         super(context);
+        mClef = clef;
         init(clef);
-
     }
+
 
     /**
      * Initializes the parameters, paints, and bar properties
