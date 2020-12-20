@@ -1,4 +1,4 @@
-package com.example.composingapp.music;
+package com.example.composingapp.utils.music;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -9,8 +9,8 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static com.example.composingapp.music.Music.PitchClass.A_NATURAL;
-import static com.example.composingapp.music.Music.PitchClass.C_NATURAL;
+import static com.example.composingapp.utils.music.Music.PitchClass.A_NATURAL;
+import static com.example.composingapp.utils.music.Music.PitchClass.C_NATURAL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertAll;
 

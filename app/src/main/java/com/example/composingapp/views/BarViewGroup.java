@@ -11,18 +11,18 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 
-import com.example.composingapp.music.Music;
-import com.example.composingapp.music.Note;
-import com.example.composingapp.music.Tone;
-import com.example.composingapp.views.utils.NotePositionDict;
-import com.example.composingapp.views.utils.ViewConstants;
+import com.example.composingapp.utils.music.Music;
+import com.example.composingapp.utils.music.Note;
+import com.example.composingapp.utils.music.Tone;
+import com.example.composingapp.utils.viewtools.NotePositionDict;
+import com.example.composingapp.utils.viewtools.ViewConstants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static com.example.composingapp.views.utils.ViewConstants.BARS_PER_LINE;
-import static com.example.composingapp.views.utils.ViewConstants.TOTAL_LINES;
+import static com.example.composingapp.utils.viewtools.ViewConstants.BARS_PER_LINE;
+import static com.example.composingapp.utils.viewtools.ViewConstants.TOTAL_LINES;
 
 public class BarViewGroup extends LinearLayout {
     private static final String TAG = "BarViewGroup";

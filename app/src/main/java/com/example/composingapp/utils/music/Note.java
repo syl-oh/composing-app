@@ -1,4 +1,4 @@
-package com.example.composingapp.music;
+package com.example.composingapp.utils.music;
 
 public class Note extends Tone {
     private Music.NoteLength noteLength;

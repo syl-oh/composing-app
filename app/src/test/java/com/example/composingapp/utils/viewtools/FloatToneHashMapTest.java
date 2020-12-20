@@ -1,17 +1,14 @@
-package com.example.composingapp.utils;
+package com.example.composingapp.utils.viewtools;
 
-import com.example.composingapp.music.Music;
-import com.example.composingapp.music.Tone;
+import com.example.composingapp.utils.music.Music;
+import com.example.composingapp.utils.music.Tone;
+import com.example.composingapp.utils.viewtools.FloatToneHashMap;
 
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.params.provider.Arguments;
-
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;

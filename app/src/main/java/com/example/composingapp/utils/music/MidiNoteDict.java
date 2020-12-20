@@ -1,7 +1,6 @@
-package com.example.composingapp.music;
+package com.example.composingapp.utils.music;
 
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Objects;
 
 public class MidiNoteDict {

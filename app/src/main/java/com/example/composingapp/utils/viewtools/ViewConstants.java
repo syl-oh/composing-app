@@ -1,4 +1,4 @@
-package com.example.composingapp.views.utils;
+package com.example.composingapp.utils.viewtools;
 
 public final class ViewConstants {
     public static int TOTAL_LINES = 19;

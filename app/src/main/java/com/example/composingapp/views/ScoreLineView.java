@@ -1,22 +1,13 @@
 package com.example.composingapp.views;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
-import androidx.core.view.ViewCompat;
-import androidx.recyclerview.widget.RecyclerView;
+import com.example.composingapp.utils.music.Music;
+import com.example.composingapp.utils.music.Note;
 
-import com.example.composingapp.music.Music;
-import com.example.composingapp.music.Note;
-
-import java.util.LinkedList;
-
-import static com.example.composingapp.views.utils.ViewConstants.BARS_PER_LINE;
+import static com.example.composingapp.utils.viewtools.ViewConstants.BARS_PER_LINE;
 
 public class ScoreLineView extends LinearLayout {
     private static final String TAG = "ScoreViewGroup";

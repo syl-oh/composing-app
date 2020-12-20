@@ -1,8 +1,8 @@
-package com.example.composingapp.utils;
+package com.example.composingapp.utils.viewtools;
 
 import androidx.annotation.Nullable;
 
-import com.example.composingapp.music.Tone;
+import com.example.composingapp.utils.music.Tone;
 
 import java.util.HashMap;
 

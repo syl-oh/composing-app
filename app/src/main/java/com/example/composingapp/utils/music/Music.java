@@ -1,4 +1,4 @@
-package com.example.composingapp.music;
+package com.example.composingapp.utils.music;
 
 import android.app.Application;
 
@@ -43,11 +43,23 @@ public final class Music extends Application {
      * Duration of a note in music
      */
     public enum NoteLength {
-        WHOLE_NOTE,
-        HALF_NOTE,
-        QUARTER_NOTE,
-        EIGHTH_NOTE,
-        SIXTEENTH_NOTE
+        WHOLE_NOTE(1),
+        HALF_NOTE(1 / 2),
+        QUARTER_NOTE(1 / 4),
+        EIGHTH_NOTE(1 / 8),
+        SIXTEENTH_NOTE(1 / 16);
+
+        // Value relative to whole note. Actual value does not matter - only its value
+        //    relative to WHOLE_NOTE's
+        private double valueToWholeNote;
+
+        NoteLength(double valueToWholeNote) {
+            this.valueToWholeNote = valueToWholeNote;
+        }
+
+        public double getValueToWholeNote() {
+            return valueToWholeNote;
+        }
     }
 
     /**

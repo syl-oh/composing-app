@@ -1,4 +1,4 @@
-package com.example.composingapp.music;
+package com.example.composingapp.utils.music;
 
 import androidx.annotation.Nullable;
 
