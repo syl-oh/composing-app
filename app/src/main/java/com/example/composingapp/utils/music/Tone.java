@@ -12,7 +12,8 @@ public class Tone {
      * Constructs tone object
      *
      * @param pitchClass From the Enum in Music.class
-     * @param octave     int between 1 and 7, representing the tone's octave
+     * @param octave     int between 1 and 7, or -1, representing the tone's octave or a rest,
+     *                   respectively
      */
     public Tone(Music.PitchClass pitchClass, int octave) {
         this.pitchClass = pitchClass;
@@ -31,7 +32,7 @@ public class Tone {
     /**
      * Getter method for the tone's octave
      *
-     * @return int between 1 and 7, representing the current octave of the tone
+     * @return int between 1 and 7, or -1, representing the current octave of the tone, or a rest
      */
     public int getOctave() {
         return octave;
@@ -45,11 +46,11 @@ public class Tone {
 
     /**
      * Checks for equality between this tone and any obj, which is true when both are tones whose
-     *  pitchclasses and octaves are equal
+     * pitchclasses and octaves are equal
      *
      * @param obj Any object
      * @return Boolean: true if obj is a tone and has the same pitchclass and octave as this instance,
-     *            and false otherwise
+     * and false otherwise
      */
     @Override
     public boolean equals(@Nullable Object obj) {

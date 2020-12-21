@@ -44,10 +44,10 @@ public final class Music extends Application {
      */
     public enum NoteLength {
         WHOLE_NOTE(1),
-        HALF_NOTE(1 / 2),
-        QUARTER_NOTE(1 / 4),
-        EIGHTH_NOTE(1 / 8),
-        SIXTEENTH_NOTE(1 / 16);
+        HALF_NOTE((double) 1 / 2),
+        QUARTER_NOTE((double) 1 / 4),
+        EIGHTH_NOTE((double) 1 / 8),
+        SIXTEENTH_NOTE((double) 1 /  16);
 
         // Value relative to whole note. Actual value does not matter - only its value
         //    relative to WHOLE_NOTE's
@@ -86,7 +86,8 @@ public final class Music extends Application {
         F_SHARP(Accidental.SHARP),
         G_FLAT(Accidental.FLAT),
         G_NATURAL(Accidental.NATURAL),
-        G_SHARP(Accidental.SHARP);
+        G_SHARP(Accidental.SHARP),
+        REST(Accidental.NONE);
 
         private Accidental accidental;
 
@@ -109,6 +110,7 @@ public final class Music extends Application {
         }
 
         public enum Accidental {
+            NONE,
             NATURAL,
             SHARP,
             FLAT;

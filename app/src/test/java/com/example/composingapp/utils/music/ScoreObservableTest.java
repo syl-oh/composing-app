@@ -24,7 +24,7 @@ class ScoreObservableTest {
     @Nested
     @DisplayName("updateObservers")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-    class ToneToYMap {
+    class UpdateObservers {
         BarObserver barObserver;
 
         @BeforeEach
@@ -34,10 +34,9 @@ class ScoreObservableTest {
 
         @Test
         @DisplayName("updates the clefs of its BarObservers when its clef is changed")
-        void updateObservers() {
+        void testUpdateClefOnObservers() {
             Music.Clef newClef = Music.Clef.BASS_CLEF;
             scoreObservable.setClef(newClef);
-            scoreObservable.updateObservers();
 
             assertAll(
                     () -> assertEquals(barObserver.getClef(), newClef),

@@ -25,6 +25,7 @@ public class ScoreObservable implements Observable {
 
     public void setClef(Music.Clef mClef) {
         this.mClef = mClef;
+        updateObservers();
     }
 
     public Music.NoteLength getBeatUnit() {
@@ -33,6 +34,7 @@ public class ScoreObservable implements Observable {
 
     public void setBeatUnit(Music.NoteLength mBeatUnit) {
         this.mBeatUnit = mBeatUnit;
+        updateObservers();
     }
 
     public int getBeatsPerBar() {
@@ -41,6 +43,7 @@ public class ScoreObservable implements Observable {
 
     public void setBeatsPerBar(int mBeatsPerBar) {
         this.mBeatsPerBar = mBeatsPerBar;
+        updateObservers();
     }
 
     @Override
