@@ -3,12 +3,17 @@ import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.ScoreObservable;
+import com.example.composingapp.viewmodels.ScoreViewModel;
 import com.example.composingapp.views.ScoreLineAdapter;
 
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,26 +21,31 @@ import com.example.composingapp.R;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    private ScoreViewModel mScoreViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ScoreObservable mScoreObservable = new ScoreObservable(Music.Clef.TREBLE_CLEF,
-                Music.NoteLength.QUARTER_NOTE, 4);
-        BarObserver barObserver1 = new BarObserver(mScoreObservable);
-        BarObserver barObserver2 = new BarObserver(mScoreObservable);
-        Note note = new Note(Music.PitchClass.C_NATURAL, 4, Music.NoteLength.QUARTER_NOTE);
-        barObserver1.addNote(note);
-        barObserver2.addNote(note);
+
+
+        // Init the ViewModel
+        mScoreViewModel = new ViewModelProvider(this).get(ScoreViewModel.class);
 
         // Init the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final ScoreLineAdapter scoreLineAdapter = new ScoreLineAdapter(mScoreObservable);
+        final ScoreLineAdapter scoreLineAdapter = new ScoreLineAdapter(
+                mScoreViewModel.getScoreObservableMutableLiveData().getValue());
         recyclerView.setAdapter(scoreLineAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         recyclerView.setLayoutManager(layoutManager);
+
+        // Observer which updates the RecyclerView
+        final Observer<ScoreObservable> scoreObserver = scoreLineAdapter::setScoreObservable;
+        // Observe the LiveData for the score in the ScoreViewModel
+        mScoreViewModel.getScoreObservableMutableLiveData().observe(this, scoreObserver);
+
     }
 }

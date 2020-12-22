@@ -11,6 +11,9 @@ import com.example.composingapp.utils.music.ScoreObservable;
 
 import java.util.ArrayList;
 
+import static com.example.composingapp.utils.viewtools.ViewConstants.BARS_PER_LINE;
+
+
 public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarViewGroupHolder> {
     private static final String TAG = "ScoreLineAdapter";
     private ScoreObservable mScoreObservable; // Copy of scoreObservable
@@ -32,10 +35,13 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
 //        Log.d(TAG, "onCreateViewHolder: ");
         BarViewGroup barViewGroup = new BarViewGroup(parent.getContext());
         barViewGroup.setId(View.generateViewId());
-        barViewGroup.setLayoutParams(new ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
 
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                (parent.getWidth() / BARS_PER_LINE) - parent.getPaddingLeft() - parent.getPaddingRight(),
+                ViewGroup.LayoutParams.MATCH_PARENT);
+
+
+        barViewGroup.setLayoutParams(layoutParams);
         return new BarViewGroupHolder(barViewGroup);
     }
 
