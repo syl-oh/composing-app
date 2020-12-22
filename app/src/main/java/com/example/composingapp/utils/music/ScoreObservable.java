@@ -11,12 +11,15 @@ public class ScoreObservable implements Observable {
     private Music.Clef mClef;
     private Music.NoteLength mBeatUnit;
     private int mBeatsPerBar;
-
     public ScoreObservable(Music.Clef mClef, Music.NoteLength mBeatUnit, int mBeatsPerBar) {
         this.mClef = mClef;
         this.mBeatUnit = mBeatUnit;
         this.mBeatsPerBar = mBeatsPerBar;
         mBarObserverList = new ArrayList<>();
+    }
+
+    public ArrayList<BarObserver> getBarObserverList() {
+        return mBarObserverList;
     }
 
     public Music.Clef getClef() {

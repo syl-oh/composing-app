@@ -123,10 +123,11 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     @Override
     protected void onDraw(Canvas canvas) {
         drawNote(canvas);
+        Log.d(TAG, "onDraw: Drew note");
     }
 
     /**
-     * @param canvas
+     * @param canvas The canvas to draw on
      */
     private void drawNote(Canvas canvas) {
         float leftX = (mNoteX) - (ViewConstants.NOTE_W_TO_H_RATIO * mNoteRadius);
@@ -141,10 +142,6 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                 rightX - mStemWidth / 2,
                 midY - mStemHeight,
                 mStemPaint);
-    }
-
-    private void updateNoteView(Float eventX, Float eventY) {
-
     }
 
     @Override
@@ -167,7 +164,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
 
             case DragEvent.ACTION_DRAG_LOCATION:
                 Float semiSpace = positionDict.getSingleSpaceHeight() / 2; // Semispace distance
-                Float dy = mNoteY - event.getY();                          // Change in y position
+                float dy = mNoteY - event.getY();                          // Change in y position
 
                 // Move up to the note a semispace above if the note has been dragged that far
                 if (abs(dy) >= semiSpace) {

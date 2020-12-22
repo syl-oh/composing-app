@@ -8,11 +8,12 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 
+import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
+import com.example.composingapp.utils.music.ScoreObservable;
 import com.example.composingapp.utils.music.Tone;
 import com.example.composingapp.utils.viewtools.NotePositionDict;
 import com.example.composingapp.utils.viewtools.ViewConstants;
@@ -26,25 +27,27 @@ import static com.example.composingapp.utils.viewtools.ViewConstants.TOTAL_LINES
 
 public class BarViewGroup extends LinearLayout {
     private static final String TAG = "BarViewGroup";
-    private ArrayList<NoteView> mNoteViewList;
     private Paint mBarPaint;
-    private Music.Clef mClef;
     private float mBarLineSize, mBarWidth, mBarHeight;
     private NotePositionDict yPositions;
     private float[] mBarlineYPositions;
     private LinearLayout.LayoutParams mBarViewGroupParams;
-
-    public BarViewGroup(Context context, @NonNull Music.Clef clef) {
+    private BarObserver mBarObserver;
+    private ArrayList<NoteView> mNoteViewList;
+    public BarViewGroup(Context context) {
         super(context);
-        mClef = clef;
-        init(clef);
+        init();
     }
 
+    public void setBarObserver(BarObserver barObserver) {
+        this.mBarObserver = barObserver;
+        updateChildrenFromBarObserver();
+    }
 
     /**
      * Initializes the parameters, paints, and bar properties
      */
-    private void init(Music.Clef clef) {
+    private void init() {
         // Initialize layout parameters
         setWillNotDraw(false); // Enable drawing of the ViewGroup
         setOrientation(LinearLayout.HORIZONTAL);
@@ -64,27 +67,19 @@ public class BarViewGroup extends LinearLayout {
 
         // Initialize bar properties
         mNoteViewList = new ArrayList<>();
-        if (clef != null) {    // Verify that the clef is non-null and set it to the field
-            mClef = clef;
-        } else {
-            Log.e(TAG, "init: Received null clef for BarViewGroup with ID " + this.getId()
-                    + " .Defaulting to treble clef to avoid application crash");
-            mClef = Music.Clef.TREBLE_CLEF;
-        }
     }
 
     /**
-     * Adds a Note as a child to this BarViewGroup
+     * Updates NoteView children based on Notes in BarObserver
      */
-    protected void addNoteToChildren(@NonNull Note note) {
-        if (note != null) {
-            NoteView noteView = new NoteView(getContext(), note, mClef);
+    private void updateChildrenFromBarObserver() {
+        ArrayList<Note> noteArrayList = mBarObserver.getNoteArrayList();
+        for (Note note : noteArrayList) {
+            NoteView noteView = new NoteView(getContext(), note, mBarObserver.getClef());
             noteView.setId(ViewCompat.generateViewId());
             noteView.setLayoutParams(mBarViewGroupParams);
             this.addView(noteView);
             mNoteViewList.add(noteView);
-        } else {
-            Log.e(TAG, "addNoteToChildren: Refused to add null note");
         }
     }
 
@@ -96,15 +91,17 @@ public class BarViewGroup extends LinearLayout {
 //        Log.d(TAG, "onSizeChanged: mBarWidth is "+ mBarWidth);
 
         // Update the y position dictionaries
-        yPositions = new NotePositionDict(mBarHeight, mClef);
-        updateBarlineYPositions();
+        if (mBarObserver != null) {
+            yPositions = new NotePositionDict(mBarHeight, mBarObserver.getClef());
+            updateBarlineYPositions();
+        }
     }
 
     /**
      * Updates the array that holds the y positions for where to draw barlines on
      */
     private void updateBarlineYPositions() {
-        Tone[] barlineTones = mClef.getBarlineTones();
+        Tone[] barlineTones = mBarObserver.getClef().getBarlineTones();
         HashMap<Tone, Float> toneToBarlineYMap = yPositions.getToneToBarlineYMap();
         mBarlineYPositions = new float[5];
         Tone currentTone = null;
@@ -113,7 +110,8 @@ public class BarViewGroup extends LinearLayout {
                 currentTone = barlineTones[i];
             } catch (NullPointerException e) {
                 Log.e(TAG, "updateBarlineYPositions: NullPointerException, could not " +
-                        " retrieve the " + i + "th element from barlineTones for clef " + mClef);
+                        " retrieve the " + i + "th element from barlineTones for clef " +
+                        mBarObserver.getClef());
             }
 
             try {
@@ -122,8 +120,8 @@ public class BarViewGroup extends LinearLayout {
                 if (!(TOTAL_LINES < 15)) {
                     Log.e(TAG, "updateBarlineYPositions: NullPointerException, could not " +
                             "retrieve the " + i + "st/th barline y position from toneToBarlineYMap "
-                            + "for clef " + mClef + " and tone with pitchclass " + currentTone.getPitchClass()
-                            + " with octave " + currentTone.getOctave());
+                            + "for clef " + mBarObserver.getClef() + " and tone with pitchclass " +
+                            currentTone.getPitchClass() + " with octave " + currentTone.getOctave());
                 } else {
                     Log.e(TAG, "updateBarlineYPositions: TOTAL_LINES is less than 15: " +
                             " NotePositionDict does not contain all necessary barlines.");
@@ -134,7 +132,7 @@ public class BarViewGroup extends LinearLayout {
 
     @Override
     protected void onDraw(Canvas canvas) {
-//        Log.d(TAG, "onDraw: " + this.getId());
+        Log.d(TAG, "onDraw: " + this.getId());
         drawBarLines(canvas);
         drawSideLines(canvas);
     }

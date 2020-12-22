@@ -1,42 +1,67 @@
 package com.example.composingapp.views;
 
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.LinkedList;
+import com.example.composingapp.utils.music.BarObserver;
+import com.example.composingapp.utils.music.ScoreObservable;
 
-public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.ScoreLineViewHolder> {
-    private Context mClef;
+import java.util.ArrayList;
 
-    public ScoreLineAdapter(Context clef) {
-        this.mClef = clef;
+public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarViewGroupHolder> {
+    private static final String TAG = "ScoreLineAdapter";
+    private ScoreObservable mScoreObservable; // Copy of scoreObservable
+    private ArrayList<BarObserver> mBarObservers;
+
+    public ScoreLineAdapter(ScoreObservable scoreObservable) {
+        mScoreObservable = scoreObservable;
+        mBarObservers = mScoreObservable.getBarObserverList();
+    }
+
+    public void setScoreObservable(ScoreObservable scoreObservable) {
+        this.mScoreObservable = scoreObservable;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public ScoreLineViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
+    public BarViewGroupHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+//        Log.d(TAG, "onCreateViewHolder: ");
+        BarViewGroup barViewGroup = new BarViewGroup(parent.getContext());
+        barViewGroup.setId(View.generateViewId());
+        barViewGroup.setLayoutParams(new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+
+        return new BarViewGroupHolder(barViewGroup);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ScoreLineViewHolder holder, int position) {
-
+    public void onBindViewHolder(@NonNull BarViewGroupHolder holder, int position) {
+        BarObserver currentBarObserver = mBarObservers.get(position);
+        holder.barViewGroup.setBarObserver(currentBarObserver);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mBarObservers.size();
     }
 
 
-    class ScoreLineViewHolder extends RecyclerView.ViewHolder {
+    class BarViewGroupHolder extends RecyclerView.ViewHolder {
+        private BarViewGroup barViewGroup;
 
-        public ScoreLineViewHolder(@NonNull View itemView) {
+        public BarViewGroupHolder(@NonNull View itemView) {
             super(itemView);
+//            Log.d(TAG, "ScoreLineViewHolder: ");
+            barViewGroup = (BarViewGroup) itemView;
+        }
+
+        public BarViewGroup getBarViewGroup() {
+            return barViewGroup;
         }
     }
 }
