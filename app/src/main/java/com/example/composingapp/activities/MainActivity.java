@@ -28,11 +28,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-
         // Init the ViewModel
         mScoreViewModel = new ViewModelProvider(this).get(ScoreViewModel.class);
 
+        // Create the RecyclerView for the BarViewGroups
+        initRecyclerView();
+    }
+
+    /**
+     * Creates the RecyclerView and adds a listener to attach the RecyclerView to the ViewModel
+     */
+    private void initRecyclerView() {
         // Init the RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final ScoreLineAdapter scoreLineAdapter = new ScoreLineAdapter(
@@ -46,6 +52,5 @@ public class MainActivity extends AppCompatActivity {
         final Observer<ScoreObservable> scoreObserver = scoreLineAdapter::setScoreObservable;
         // Observe the LiveData for the score in the ScoreViewModel
         mScoreViewModel.getScoreObservableMutableLiveData().observe(this, scoreObserver);
-
     }
 }
