@@ -123,7 +123,6 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     @Override
     protected void onDraw(Canvas canvas) {
         drawNote(canvas);
-        Log.d(TAG, "onDraw: Drew note");
     }
 
     /**
@@ -171,8 +170,8 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                     // Find the new tone
                     Float newToneY = dy > 0 ? mNoteY - semiSpace : mNoteY + semiSpace;
                     Tone nextTone = positionDict.getYToToneMap().get(newToneY);
-//                    Log.d(TAG, "onDrag: nextTone: " + nextTone.getPitchClass() + " octave " +
-//                            nextTone.getOctave());
+                    Log.d(TAG, "onDrag: nextTone: " + nextTone.getPitchClass() + " octave " +
+                            nextTone.getOctave());
 
                     // Update the note and the NoteView, then redraw
                     mNote = new Note(
@@ -180,6 +179,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                             nextTone.getOctave(),
                             mNote.getNoteLength());
                     mNoteY = calculateNoteY(mNote);
+                    Log.d(TAG, "onDrag: mNoteY" + mNoteY);
                     invalidate();
                 }
                 return true;

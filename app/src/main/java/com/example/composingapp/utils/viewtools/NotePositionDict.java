@@ -118,14 +118,15 @@ public class NotePositionDict {
                 i -= 1;
             }
             currentY = barHeight - ((barHeight * i) / totalPositions); // build from bottom to top
-//            Log.d(TAG, "initMaps: for pitchclass "+ currentTone.getPitchClass() + " with " +
-//                    "octave " + currentTone.getOctave() + " the y-pos is " + currentY);
+            Log.d(TAG, "initMaps: for pitchclass "+ currentTone.getPitchClass() + " with " +
+                    "octave " + currentTone.getOctave() + " the y-pos is " + currentY);
             if (currentTone.getPitchClass().getAccidental() == Music.PitchClass.Accidental.NATURAL) {
                 yToToneMap.put(currentY, currentTone);
             }
 
             toneToYMap.put(currentTone, currentY);
             midiIndex += 1;
+            // TODO: 23/12/2020: Prevent midiIndex from exceeding 108
         }
     }
 
