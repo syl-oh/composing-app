@@ -5,23 +5,20 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
-import android.util.TypedValue;
 import android.widget.LinearLayout;
 
 import androidx.core.view.ViewCompat;
 
 import com.example.composingapp.utils.music.BarObserver;
-import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
-import com.example.composingapp.utils.music.ScoreObservable;
 import com.example.composingapp.utils.music.Tone;
-import com.example.composingapp.utils.viewtools.NotePositionDict;
-import com.example.composingapp.utils.viewtools.ViewConstants;
+import com.example.composingapp.utils.viewtools.PositionDict;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static com.example.composingapp.utils.viewtools.ViewConstants.BARLINE_SIZE;
 import static com.example.composingapp.utils.viewtools.ViewConstants.BARS_PER_LINE;
 import static com.example.composingapp.utils.viewtools.ViewConstants.TOTAL_LINES;
 
@@ -29,7 +26,7 @@ public class BarViewGroup extends LinearLayout {
     private static final String TAG = "BarViewGroup";
     private Paint mBarPaint;
     private float mBarLineSize, mBarWidth, mBarHeight;
-    private NotePositionDict yPositions;
+    private PositionDict yPositions;
     private float[] mBarlineYPositions;
     private LinearLayout.LayoutParams mBarViewGroupParams;
     private BarObserver mBarObserver;
@@ -60,9 +57,7 @@ public class BarViewGroup extends LinearLayout {
         mBarPaint = new Paint();
         mBarPaint.setStyle(Paint.Style.STROKE);
         mBarPaint.setColor(Color.parseColor("black"));
-        mBarPaint.setStrokeWidth(mBarLineSize);
-        mBarLineSize = ViewConstants.BARLINE_SIZE; // Value in dp
-        mBarLineSize = convertDpToPx(mBarLineSize);
+        mBarPaint.setStrokeWidth(BARLINE_SIZE);
 
 
         // Initialize bar properties
@@ -92,7 +87,7 @@ public class BarViewGroup extends LinearLayout {
 
         // Update the y position dictionaries
         if (mBarObserver != null) {
-            yPositions = new NotePositionDict(mBarHeight, mBarObserver.getClef());
+            yPositions = new PositionDict(mBarHeight, mBarObserver.getClef());
             updateBarlineYPositions();
         }
     }
@@ -177,16 +172,5 @@ public class BarViewGroup extends LinearLayout {
 //            Log.d(TAG, "drawSideLines: topBarlineY: " + topBarlineY);
 //            Log.d(TAG, "drawSideLines: bottomBarlineY: " + bottomBarlineY);
         }
-    }
-
-    /**
-     * Converts from dp to px
-     *
-     * @param dp (float) measure of density-independent pixel
-     * @return (float) measure of dp in pixels for the operating device
-     */
-    private float convertDpToPx(float dp) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                dp, getResources().getDisplayMetrics());
     }
 }

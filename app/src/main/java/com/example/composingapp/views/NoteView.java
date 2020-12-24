@@ -2,8 +2,6 @@ package com.example.composingapp.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.DragEvent;
@@ -18,22 +16,17 @@ import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.Tone;
 import com.example.composingapp.utils.viewtools.NoDragShadowBuilder;
-import com.example.composingapp.utils.viewtools.NotePositionDict;
-import com.example.composingapp.utils.viewtools.ViewConstants;
+import com.example.composingapp.utils.viewtools.PositionDict;
 import com.example.composingapp.utils.viewtools.notedrawer.NoteDrawer;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.HashMap;
 
 import static java.lang.Math.abs;
 
 public class NoteView extends View implements OnGestureListener, View.OnDragListener {
     private static final String TAG = "NoteView";
-    private Paint mNotePaint, mStemPaint;
-    private float mNoteRadius, mStemWidth, mStemHeight;
     private Float mNoteX, mNoteY;
-    private NotePositionDict positionDict;
+    private PositionDict positionDict;
     private int mHeight, mWidth;
     private Music.Clef mClef;
     private Note mNote;
@@ -70,14 +63,6 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                     + this.getId());
         }
         mGestureDetector = new GestureDetector(getContext(), this);
-        mNotePaint = new Paint();
-        mNotePaint.setColor(Color.parseColor("black"));
-        mNotePaint.setAntiAlias(true);
-        mStemPaint = new Paint();
-        mStemPaint.setColor(Color.parseColor("black"));
-        mStemWidth = convertDpToPx(ViewConstants.STEM_WIDTH);
-        mStemPaint.setStrokeWidth(mStemWidth);
-        mStemPaint.setColor(Color.parseColor("black"));
     }
 
     /**
@@ -96,12 +81,10 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         mWidth = w;
         mHeight = h;
-        positionDict = new NotePositionDict(mHeight, mClef);
+        positionDict = new PositionDict(mHeight, mClef);
         mNoteX = (float) (mWidth / 2);
         mNoteY = positionDict.getNoteYOf(mNote);
 //        Log.d(TAG, "onSizeChanged: mNoteY: " + mNoteY);
-        mStemHeight = positionDict.getOctaveHeight();
-        mNoteRadius = positionDict.getSingleSpaceHeight() / 2;
 
         mNoteDrawer = new NoteDrawer(mNote, mNoteX, mNoteY, positionDict);
     }
@@ -116,23 +99,6 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
         mNoteDrawer.draw(canvas);
     }
 
-    /**
-     * @param canvas The canvas to draw on
-     */
-    private void drawNote(Canvas canvas) {
-        float leftX = (mNoteX) - (ViewConstants.NOTE_W_TO_H_RATIO * mNoteRadius);
-        float rightX = (mNoteX) + (ViewConstants.NOTE_W_TO_H_RATIO * mNoteRadius);
-        float topY = (mNoteY) + (mNoteRadius);
-        float bottomY = (mNoteY) - (mNoteRadius);
-        float midY = (topY + bottomY) / 2;
-
-        canvas.drawOval(leftX, topY, rightX, bottomY, mNotePaint);
-        canvas.drawLine(rightX - mStemWidth / 2,
-                midY,
-                rightX - mStemWidth / 2,
-                midY - mStemHeight,
-                mStemPaint);
-    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

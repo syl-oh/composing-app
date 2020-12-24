@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.HashMap;
 
-public class NotePositionDict {
+public class PositionDict {
     private static final int NUM_BARLINES = 5;
     private static final String TAG = "NotePositionDict";
     private final int totalPositions = ViewConstants.TOTAL_SPACES + ViewConstants.TOTAL_LINES;
@@ -24,7 +24,7 @@ public class NotePositionDict {
     private Float mBarHeight;
     private Music.Clef mClef;
 
-    public NotePositionDict(float barHeight, Music.Clef clef) {
+    public PositionDict(float barHeight, Music.Clef clef) {
         mBarHeight = barHeight;
         mClef = clef;
         midiNoteDict = new MidiNoteDict();

@@ -3,7 +3,7 @@ package com.example.composingapp.views;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.Tone;
-import com.example.composingapp.utils.viewtools.NotePositionDict;
+import com.example.composingapp.utils.viewtools.PositionDict;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 @DisplayName("When notePositionDict is created ")
 class NotePositionDictTest {
-    NotePositionDict notePositionDict;
+    PositionDict notePositionDict;
     float barHeight;
     Music.Clef clef;
 
@@ -33,7 +33,7 @@ class NotePositionDictTest {
     void init() {
         barHeight = 100;
         clef = Music.Clef.TREBLE_CLEF;
-        notePositionDict = new NotePositionDict(barHeight, clef);
+        notePositionDict = new PositionDict(barHeight, clef);
     }
 
     @Nested
@@ -107,7 +107,7 @@ class NotePositionDictTest {
         @ParameterizedTest
         @MethodSource("provideBarLineTones")
         void testCorrectTonesForClef(Music.Clef clef, Tone[] clefTones) {
-            notePositionDict = new NotePositionDict(barHeight, clef);
+            notePositionDict = new PositionDict(barHeight, clef);
             HashMap<Tone, Float> toneToBarlineYMap = notePositionDict.getToneToBarlineYMap();
             for (Tone tone : clefTones) {
                 assertAll(

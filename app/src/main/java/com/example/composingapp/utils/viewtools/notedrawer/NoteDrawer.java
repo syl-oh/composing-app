@@ -3,6 +3,7 @@ package com.example.composingapp.utils.viewtools.notedrawer;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.Log;
 
 import com.example.composingapp.utils.interfaces.ComponentDrawer;
@@ -11,22 +12,22 @@ import com.example.composingapp.utils.interfaces.LeafDrawer;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.Tone;
-import com.example.composingapp.utils.viewtools.NotePositionDict;
+import com.example.composingapp.utils.viewtools.PositionDict;
 import com.example.composingapp.utils.viewtools.ViewConstants;
 
 import java.util.ArrayList;
 
 import static com.example.composingapp.utils.viewtools.ViewConstants.FILLED_NOTE_ANGLE;
 import static com.example.composingapp.utils.viewtools.ViewConstants.HALF_NOTE_ANGLE_INSIDE;
-import static com.example.composingapp.utils.viewtools.ViewConstants.WHOLE_NOTE_BASE_ANGLE;
-import static com.example.composingapp.utils.viewtools.ViewConstants.WHOLE_NOTE_INNER_ANGLE;
+import static com.example.composingapp.utils.viewtools.ViewConstants.QUARTER_REST_NOTE_X_DEVIANCE_FACTOR;
+import static com.example.composingapp.utils.viewtools.ViewConstants.REST_STROKE_WIDTH;
+import static com.example.composingapp.utils.viewtools.ViewConstants.STEM_WIDTH;
 
 public class NoteDrawer implements CompositeDrawer {
     private static final String TAG = "NoteDrawer";
-    private final NotePositionDict mPositionDict;
+    private final PositionDict mPositionDict;
+    private final Music.Clef mClef;
     private Paint mNotePaint;
-    private Paint mStemPaint;
-    private int mStemWidth;
     private float mNoteRadius;
     private Float mStemHeight;
     private float mNoteX, mNoteY;
@@ -34,7 +35,7 @@ public class NoteDrawer implements CompositeDrawer {
     private Note mNote;
     private float mBaseLeftX, mBaseRightX, mBaseTopY, mBaseBottomY;
 
-    public NoteDrawer(Note note, float noteX, float noteY, NotePositionDict positionDict) {
+    public NoteDrawer(Note note, float noteX, float noteY, PositionDict positionDict) {
         // Init fields
         mStemHeight = positionDict.getOctaveHeight();
         mNoteRadius = positionDict.getSingleSpaceHeight() / 2;
@@ -42,13 +43,15 @@ public class NoteDrawer implements CompositeDrawer {
         mNoteY = noteY;
         mPositionDict = positionDict;
         mNote = note;
+        mClef = mPositionDict.getClef();
         initBaseNotePos();
         initPaint();
 
         // Init drawers
         drawers = new ArrayList<>();
-        add(new FilledBaseLeaf(WHOLE_NOTE_BASE_ANGLE));
-        add(new HollowBaseLeaf(WHOLE_NOTE_INNER_ANGLE));
+        add(new StemLeaf());
+        add(new FilledBaseLeaf(FILLED_NOTE_ANGLE));
+        add(new HollowBaseLeaf(HALF_NOTE_ANGLE_INSIDE));
     }
 
     /**
@@ -79,13 +82,11 @@ public class NoteDrawer implements CompositeDrawer {
         mNotePaint = new Paint();
         mNotePaint.setColor(Color.parseColor("black"));
         mNotePaint.setAntiAlias(true);
-        mStemPaint = new Paint();
-        mStemPaint.setColor(Color.parseColor("black"));
-        mStemWidth = ViewConstants.STEM_WIDTH;
-        mStemPaint.setStrokeWidth(mStemWidth);
-        mStemPaint.setColor(Color.parseColor("black"));
+        mNotePaint.setDither(true);
+        mNotePaint.setStrokeWidth(STEM_WIDTH);
+        mNotePaint.setStrokeJoin(Paint.Join.ROUND);
+        mNotePaint.setStrokeCap(Paint.Cap.ROUND);
     }
-
 
     @Override
     public void draw(Canvas canvas) {
@@ -93,13 +94,13 @@ public class NoteDrawer implements CompositeDrawer {
     }
 
     @Override
-    public void add(ComponentDrawer drawerComponent) {
-        drawers.add(drawerComponent);
+    public void add(ComponentDrawer componentDrawer) {
+        drawers.add(componentDrawer);
     }
 
     @Override
-    public void remove(ComponentDrawer drawerComponent) {
-        drawers.remove(drawerComponent);
+    public void remove(ComponentDrawer componentDrawer) {
+        drawers.remove(componentDrawer);
     }
 
     @Override
@@ -107,17 +108,63 @@ public class NoteDrawer implements CompositeDrawer {
         return drawers;
     }
 
+    class QuarterRestLeaf implements LeafDrawer {
+        private final RectF curvedRect;
+        float firstX, firstY, secondX, secondY, thirdX, thirdY, fourthY;
+        Paint restPaint;
+        public QuarterRestLeaf() {
+            restPaint = new Paint(mNotePaint);
+            restPaint.setStrokeWidth(REST_STROKE_WIDTH);
+            restPaint.setStyle(Paint.Style.STROKE);
+            // x positions: deviance from the initial mNoteX
+            float dx = QUARTER_REST_NOTE_X_DEVIANCE_FACTOR * mNoteX;
+            firstX = mNoteX - dx;
+            secondX = mNoteX + dx;
+
+            // y positions
+            float halfSpace = mPositionDict.getSingleSpaceHeight() / 2;
+            // Start in the middle of the top space
+            try {
+                firstY = mPositionDict.getToneToBarlineYMap().get(mClef.getBarlineTones()[4])
+                        + halfSpace;
+            } catch (NullPointerException e) {
+                Log.e(TAG, "QuarterRestLeaf: NullPointerException: could not retrieve Y position" +
+                        "of the middle of the top space in the bar");
+            }
+            // Move down a space
+            secondY = firstY + 2* halfSpace;
+            // Move down half a space
+            thirdY = secondY + halfSpace;
+            // Move down half a space
+            fourthY = thirdY + halfSpace;
+            // For the curved stroke, create the rect for the oval
+            curvedRect = new RectF(firstX, fourthY,
+                    secondX + 2 * dx,
+                    fourthY + 2 * halfSpace);
+        }
+
+        @Override
+        public void draw(Canvas canvas) {
+            // First Stroke
+            canvas.drawLine(firstX, firstY, secondX, secondY, restPaint);
+            // Second Stroke
+            canvas.drawLine(secondX, secondY, firstX, thirdY, restPaint);
+            // Third Stroke
+            canvas.drawLine(firstX, thirdY, secondX, fourthY, restPaint);
+            // Fourth Stroke (Curved Stroke)
+            canvas.drawArc(curvedRect, 90, 180, false, restPaint);
+        }
+    }
 
     class StemLeaf implements LeafDrawer {
-        float mThirdLineYPos;
+        float thirdLineYPos;
 
         public StemLeaf() {
             // Retrieve the y position of the 3rd line on the bar to determine which way to draw
             //     the stem
-            Music.Clef clef = mPositionDict.getClef();
-            Tone thirdLineTone = clef.getBarlineTones()[2];
+            Tone thirdLineTone = mClef.getBarlineTones()[2];
             try {
-                mThirdLineYPos = mPositionDict.getToneToBarlineYMap().get(thirdLineTone);
+                thirdLineYPos = mPositionDict.getToneToBarlineYMap().get(thirdLineTone);
             } catch (NullPointerException e) {
                 Log.e(TAG, "StemLeaf: NullPointerException, could not retrieve thirdLineTone" +
                         "from toneToBarlineYMap");
@@ -130,15 +177,15 @@ public class NoteDrawer implements CompositeDrawer {
             float xPos, endY;
 
             // If the note is BELOW the third line
-            if (mNoteY > mThirdLineYPos) {
+            if (mNoteY > thirdLineYPos) {
                 // Draw the stem on its right, pointing upwards
-                xPos = mBaseRightX - (float) mStemWidth / 2;
+                xPos = mBaseRightX - (float) STEM_WIDTH / 2;
                 endY = startY - mStemHeight;
             } else {
-                xPos = mBaseLeftX + (float) mStemWidth / 2;
+                xPos = mBaseLeftX + (float) STEM_WIDTH / 2;
                 endY = startY + mStemHeight;
             }
-            canvas.drawLine(xPos, startY, xPos, endY, mStemPaint);
+            canvas.drawLine(xPos, startY, xPos, endY, mNotePaint);
         }
     }
 
