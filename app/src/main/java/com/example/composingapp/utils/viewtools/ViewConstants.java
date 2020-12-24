@@ -7,6 +7,10 @@ public final class ViewConstants {
     public static float NOTE_W_TO_H_RATIO = (float) (3.5 / 3);
     public static int BARLINE_SIZE = 6;
     public static int BARS_PER_LINE = 3;
+    public static float FILLED_NOTE_ANGLE = 330;
+    public static float HALF_NOTE_ANGLE_INSIDE = FILLED_NOTE_ANGLE;
+    public static float WHOLE_NOTE_BASE_ANGLE = 0;
+    public static float WHOLE_NOTE_INNER_ANGLE = 75;
     /**
      * This class should not be instantiated
      */

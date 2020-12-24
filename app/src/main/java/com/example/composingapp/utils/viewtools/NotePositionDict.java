@@ -32,6 +32,10 @@ public class NotePositionDict {
         initBarlineMaps(clef);
     }
 
+    public Music.Clef getClef() {
+        return mClef;
+    }
+
     /**
      * Getter method for toneToBarlineYMap
      *
@@ -131,7 +135,7 @@ public class NotePositionDict {
                 i -= 1;
             }
             currentY = barHeight - ((barHeight * i) / totalPositions); // build from bottom to top
-            Log.d(TAG, "initMaps: for pitchclass "+ currentTone.getPitchClass() + " with " +
+            Log.d(TAG, "initMaps: for pitchclass " + currentTone.getPitchClass() + " with " +
                     "octave " + currentTone.getOctave() + " the y-pos is " + currentY);
             if (currentTone.getPitchClass().getAccidental() == Music.PitchClass.Accidental.NATURAL) {
                 yToToneMap.put(currentY, currentTone);
