@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.composingapp.utils.music.MidiNoteDict;
 import com.example.composingapp.utils.music.Music;
+import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.Tone;
 
 import org.jetbrains.annotations.NotNull;
@@ -86,6 +87,18 @@ public class NotePositionDict {
         return barlineYToToneMap;
     }
 
+
+    public Float getNoteYOf(Note note) {
+        Float yPos = null;
+        try {
+            yPos = toneToYMap.get(note);
+        } catch (NullPointerException e) {
+            Log.e(TAG, "onSizeChanged: NullPointerException, unable to retrieve y-position " +
+                    "of pitchclass " + note.getPitchClass() + " and octave "
+                    + note.getOctave());
+        }
+        return yPos;
+    }
 
     /**
      * Initializes the yToToneMap and toneToYMap Hashmaps, which contains all permitted Y-coordinates

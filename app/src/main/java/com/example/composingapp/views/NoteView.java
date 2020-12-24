@@ -20,6 +20,7 @@ import com.example.composingapp.utils.music.Tone;
 import com.example.composingapp.utils.viewtools.NoDragShadowBuilder;
 import com.example.composingapp.utils.viewtools.NotePositionDict;
 import com.example.composingapp.utils.viewtools.ViewConstants;
+import com.example.composingapp.utils.viewtools.notedrawer.NoteDrawer;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -37,6 +38,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     private Music.Clef mClef;
     private Note mNote;
     private GestureDetector mGestureDetector;
+    private NoteDrawer mNoteDrawer;
 
     /**
      * Constructor for programmatically creating a NoteView
@@ -96,23 +98,12 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
         mHeight = h;
         positionDict = new NotePositionDict(mHeight, mClef);
         mNoteX = (float) (mWidth / 2);
-        mNoteY = calculateNoteY(mNote);
+        mNoteY = positionDict.getNoteYOf(mNote);
 //        Log.d(TAG, "onSizeChanged: mNoteY: " + mNoteY);
         mStemHeight = positionDict.getOctaveHeight();
         mNoteRadius = positionDict.getSingleSpaceHeight() / 2;
-    }
 
-    private Float calculateNoteY(Note note) {
-        HashMap<Tone, Float> toneToYMap = positionDict.getToneToYMap();
-        Float yPos = null;
-        try {
-            yPos = toneToYMap.get(note);
-        } catch (NullPointerException e) {
-            Log.e(TAG, "onSizeChanged: NullPointerException, unable to retrieve y-position " +
-                    "of pitchclass " + note.getPitchClass() + " and octave "
-                    + note.getOctave());
-        }
-        return yPos;
+        mNoteDrawer = new NoteDrawer(mNote, mNoteX, mNoteY, positionDict);
     }
 
     @Override
@@ -122,7 +113,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
 
     @Override
     protected void onDraw(Canvas canvas) {
-        drawNote(canvas);
+        mNoteDrawer.draw(canvas);
     }
 
     /**
@@ -178,8 +169,9 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                             nextTone.getPitchClass(),
                             nextTone.getOctave(),
                             mNote.getNoteLength());
-                    mNoteY = calculateNoteY(mNote);
-                    Log.d(TAG, "onDrag: mNoteY" + mNoteY);
+                    mNoteY = positionDict.getNoteYOf(mNote);
+                    mNoteDrawer.setNote(mNote);
+//                    Log.d(TAG, "onDrag: mNoteY " + mNoteY);
                     invalidate();
                 }
                 return true;
