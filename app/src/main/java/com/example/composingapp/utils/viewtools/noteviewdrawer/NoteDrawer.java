@@ -9,10 +9,11 @@ import android.util.Log;
 import com.example.composingapp.utils.interfaces.ComponentDrawer;
 import com.example.composingapp.utils.interfaces.CompositeDrawer;
 import com.example.composingapp.utils.interfaces.LeafDrawer;
+import com.example.composingapp.utils.interfaces.Observer;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.Tone;
-import com.example.composingapp.utils.viewtools.PositionDict;
+import com.example.composingapp.utils.viewtools.NotePositionDict;
 import com.example.composingapp.utils.viewtools.ViewConstants;
 
 import java.util.ArrayList;
@@ -28,34 +29,28 @@ public class NoteDrawer implements CompositeDrawer {
     private final float QUARTER_REST_X_DEVIANCE_FACTOR = (float) 0.05;
     private final float LONG_REST_X_DEVIANCE_FACTOR = (float) 0.08;
     private final float REST_STROKE_WIDTH = 2 * STEM_WIDTH;
-    private final PositionDict mPositionDict;
-    private final Music.Clef mClef;
+    private Music.Clef mClef;
     private Float mThirdLineY = null;
-    private Paint mNotePaint;
-    private Float mNoteRadius;
     private Float mStemHeight;
     private Float mNoteX, mNoteY;
-    private ArrayList<ComponentDrawer> mDrawers;
+    private Float mNoteRadius;
     private Note mNote;
     private float mBaseLeftX, mBaseRightX, mBaseTopY, mBaseBottomY;
+    private NotePositionDict mNotePositionDict;
+    private Paint mNotePaint;
+    private ArrayList<ComponentDrawer> mDrawers;
 
-    public NoteDrawer(Note note, float noteX, float noteY, PositionDict positionDict) {
+    public NoteDrawer(NotePositionDict notePositionDict) {
         // Init fields
-        mStemHeight = positionDict.getOctaveHeight();
-        mNoteRadius = positionDict.getSingleSpaceHeight() / 2;
-        mNoteX = noteX;
-        mNoteY = noteY;
-        mPositionDict = positionDict;
-        mNote = note;
-        mClef = mPositionDict.getClef();
-        initBaseNotePos();
+        mNotePositionDict = notePositionDict;
+        initFields();
         initPaint();
 
         // Retrieve the y position of the 3rd line on the bar to determine which way to draw
         //     the stem
         Tone thirdLineTone = mClef.getBarlineTones()[2];
         try {
-            mThirdLineY = mPositionDict.getToneToBarlineYMap().get(thirdLineTone);
+            mThirdLineY = mNotePositionDict.getToneToBarlineYMap().get(thirdLineTone);
         } catch (NullPointerException e) {
             Log.e(TAG, "StemLeaf: NullPointerException, could not retrieve thirdLineTone" +
                     "from toneToBarlineYMap");
@@ -67,30 +62,21 @@ public class NoteDrawer implements CompositeDrawer {
         add(new FilledBaseLeaf(FILLED_NOTE_ANGLE));
         add(new HollowBaseLeaf(HALF_NOTE_ANGLE_INSIDE));
         add(new LongRestLeaf(Music.NoteLength.WHOLE_NOTE));
-        add(new SharpLeaf(mNoteY, mNoteX - mPositionDict.getSingleSpaceHeight(), mPositionDict, mNotePaint));
+        add(new SharpLeaf(mNotePositionDict, mNotePaint));
     }
 
-    /**
-     * Updates the note for the NoteDrawer to draw
-     *
-     * @param note The new Note to draw
-     */
-    public void setNote(Note note) {
-        this.mNote = note;
-        mNoteY = mPositionDict.getNoteYOf(mNote);
-        initBaseNotePos();
-    }
-
-    /**
-     * Initializes the left-x, right-x, top-y, and bottom-y coordinates of the base of the note
-     */
-    private void initBaseNotePos() {
+    private void initFields() {
+        mStemHeight = mNotePositionDict.getOctaveHeight();
+        mNoteX = mNotePositionDict.getNoteX();
+        mNoteY = mNotePositionDict.getNoteY();
+        mNoteRadius = mNotePositionDict.getNoteRadius();
+        mNote = mNotePositionDict.getNote();
+        mClef = mNotePositionDict.getClef();
         mBaseLeftX = (mNoteX) - (ViewConstants.NOTE_W_TO_H_RATIO * mNoteRadius);
         mBaseRightX = (mNoteX) + (ViewConstants.NOTE_W_TO_H_RATIO * mNoteRadius);
         mBaseTopY = (mNoteY) + (mNoteRadius);
         mBaseBottomY = (mNoteY) - (mNoteRadius);
     }
-
     /**
      * Initializes the Paint used for drawing
      */
@@ -148,7 +134,7 @@ public class NoteDrawer implements CompositeDrawer {
             }
 
             // Rect
-            Float hatHeight = mPositionDict.getSingleSpaceHeight() / 2;
+            Float hatHeight = mNotePositionDict.getSingleSpaceHeight() / 2;
 
             if (noteLength == Music.NoteLength.WHOLE_NOTE) {
                 rect = new RectF(rectLeftX, bottomY + hatHeight, rectRightX, bottomY);
@@ -166,7 +152,7 @@ public class NoteDrawer implements CompositeDrawer {
 
     class QuarterRestLeaf implements LeafDrawer {
         private final RectF curvedRect;
-        float firstX, firstY, secondX, secondY, thirdX, thirdY, fourthY;
+        float firstX, firstY, secondX, secondY, thirdY, fourthY;
         Paint restPaint;
 
         public QuarterRestLeaf() {
@@ -179,10 +165,10 @@ public class NoteDrawer implements CompositeDrawer {
             secondX = mNoteX + dx;
 
             // y positions
-            float halfSpace = mPositionDict.getSingleSpaceHeight() / 2;
+            float halfSpace = mNotePositionDict.getSingleSpaceHeight() / 2;
             // Start in the middle of the top space
             try {
-                firstY = mPositionDict.getToneToBarlineYMap().get(mClef.getBarlineTones()[4])
+                firstY = mNotePositionDict.getToneToBarlineYMap().get(mClef.getBarlineTones()[4])
                         + halfSpace;
             } catch (NullPointerException e) {
                 Log.e(TAG, "QuarterRestLeaf: NullPointerException: could not retrieve Y position" +
@@ -244,10 +230,6 @@ public class NoteDrawer implements CompositeDrawer {
     }
 
     class StemLeaf implements LeafDrawer {
-        public StemLeaf() {
-
-        }
-
         @Override
         public void draw(Canvas canvas) {
             float startY = (mBaseTopY + mBaseBottomY) / 2;

@@ -93,11 +93,10 @@ public class PositionDict {
         return barlineYToToneMap;
     }
 
-
     public Float getNoteYOf(Note note) {
         Float yPos = null;
         try {
-            yPos = toneToYMap.get(note);
+            yPos = getToneToYMap().get(note);
         } catch (NullPointerException e) {
             Log.e(TAG, "onSizeChanged: NullPointerException, unable to retrieve y-position " +
                     "of pitchclass " + note.getPitchClass() + " and octave "
@@ -137,8 +136,8 @@ public class PositionDict {
                 i -= 1;
             }
             currentY = barHeight - ((barHeight * i) / totalPositions); // build from bottom to top
-            Log.d(TAG, "initMaps: for pitchclass " + currentTone.getPitchClass() + " with " +
-                    "octave " + currentTone.getOctave() + " the y-pos is " + currentY);
+//            Log.d(TAG, "initMaps: for pitchclass " + currentTone.getPitchClass() + " with " +
+//                    "octave " + currentTone.getOctave() + " the y-pos is " + currentY);
             if (currentTone.getPitchClass().getAccidental() == Music.PitchClass.Accidental.NATURAL) {
                 yToToneMap.put(currentY, currentTone);
             }

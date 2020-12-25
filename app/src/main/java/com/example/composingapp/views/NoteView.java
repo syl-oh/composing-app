@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.Tone;
-import com.example.composingapp.utils.viewtools.PositionDict;
+import com.example.composingapp.utils.viewtools.NotePositionDict;
 import com.example.composingapp.utils.viewtools.noteviewdrawer.NoteDrawer;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,9 +23,7 @@ import static java.lang.Math.abs;
 
 public class NoteView extends View implements OnGestureListener, View.OnDragListener {
     private static final String TAG = "NoteView";
-    private Float mNoteX, mNoteY;
-    private PositionDict positionDict;
-    private int mHeight, mWidth;
+    private NotePositionDict notePositionDict;
     private Music.Clef mClef;
     private Note mNote;
     private GestureDetector mGestureDetector;
@@ -41,7 +39,6 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
         super(context);
         init(note, clef);
     }
-
 
     /**
      * Initializes all objects used for drawing
@@ -66,14 +63,8 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        mWidth = w;
-        mHeight = h;
-        positionDict = new PositionDict(mHeight, mClef);
-        mNoteX = (float) (mWidth / 2);
-        mNoteY = positionDict.getNoteYOf(mNote);
-//        Log.d(TAG, "onSizeChanged: mNoteY: " + mNoteY);
-
-        mNoteDrawer = new NoteDrawer(mNote, mNoteX, mNoteY, positionDict);
+        notePositionDict = new NotePositionDict(mNote, mClef, (float) w, (float) h);
+        mNoteDrawer = new NoteDrawer(notePositionDict);
     }
 
     @Override
@@ -106,14 +97,15 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                 return true;
 
             case DragEvent.ACTION_DRAG_LOCATION:
-                Float semiSpace = positionDict.getSingleSpaceHeight() / 2; // Semispace distance
-                float dy = mNoteY - event.getY();                          // Change in y position
+                Float semiSpace = notePositionDict.getSingleSpaceHeight() / 2; // Semispace distance
+                Float noteY = notePositionDict.getNoteY();
+                float dy = noteY - event.getY();                          // Change in y position
 
                 // Move up to the note a semispace above if the note has been dragged that far
                 if (abs(dy) >= semiSpace) {
                     // Find the new tone
-                    Float newToneY = dy > 0 ? mNoteY - semiSpace : mNoteY + semiSpace;
-                    Tone nextTone = positionDict.getYToToneMap().get(newToneY);
+                    Float newToneY = dy > 0 ? noteY - semiSpace : noteY + semiSpace;
+                    Tone nextTone = notePositionDict.getYToToneMap().get(newToneY);
                     Log.d(TAG, "onDrag: nextTone: " + nextTone.getPitchClass() + " octave " +
                             nextTone.getOctave());
 
@@ -122,9 +114,9 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                             nextTone.getPitchClass(),
                             nextTone.getOctave(),
                             mNote.getNoteLength());
-                    mNoteY = positionDict.getNoteYOf(mNote);
-                    mNoteDrawer.setNote(mNote);
-//                    Log.d(TAG, "onDrag: mNoteY " + mNoteY);
+                    notePositionDict.setNote(mNote);
+                    mNoteDrawer = new NoteDrawer(notePositionDict);
+//                    Log.d(TAG, "onDrag: mNoteY " + newToneY);
                     invalidate();
                 }
                 return true;
@@ -171,7 +163,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
 
     @Override
     public void onLongPress(MotionEvent e) {
-        NoDragShadowBuilder builder =  new NoDragShadowBuilder(this); // Shadowless drag
+        NoDragShadowBuilder builder = new NoDragShadowBuilder(this); // Shadowless drag
         this.startDragAndDrop(null, builder, null, 0);
         builder.getView().setOnDragListener(this);
     }
@@ -182,12 +174,13 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     }
 
     /**
-     *  Class to enable drag and drop that does not create a shadow
+     * Class to enable drag and drop that does not create a shadow
      */
     class NoDragShadowBuilder extends View.DragShadowBuilder {
         public NoDragShadowBuilder(View view) {
             super(view);
         }
+
         @Override
         public void onDrawShadow(Canvas canvas) {
         }
