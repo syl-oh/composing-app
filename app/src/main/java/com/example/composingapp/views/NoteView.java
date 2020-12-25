@@ -3,7 +3,6 @@ package com.example.composingapp.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.DragEvent;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -15,9 +14,8 @@ import androidx.annotation.NonNull;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.Tone;
-import com.example.composingapp.utils.viewtools.NoDragShadowBuilder;
 import com.example.composingapp.utils.viewtools.PositionDict;
-import com.example.composingapp.utils.viewtools.notedrawer.NoteDrawer;
+import com.example.composingapp.utils.viewtools.noteviewdrawer.NoteDrawer;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -63,17 +61,6 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                     + this.getId());
         }
         mGestureDetector = new GestureDetector(getContext(), this);
-    }
-
-    /**
-     * Converts from dp to px
-     *
-     * @param dp (float) measure of density-independent pixel
-     * @return (float) measure of dp in pixels for the operating device
-     */
-    private float convertDpToPx(float dp) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                dp, getResources().getDisplayMetrics());
     }
 
 
@@ -192,5 +179,17 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
         return false;
+    }
+
+    /**
+     *  Class to enable drag and drop that does not create a shadow
+     */
+    class NoDragShadowBuilder extends View.DragShadowBuilder {
+        public NoDragShadowBuilder(View view) {
+            super(view);
+        }
+        @Override
+        public void onDrawShadow(Canvas canvas) {
+        }
     }
 }
