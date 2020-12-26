@@ -2,24 +2,21 @@ package com.example.composingapp.utils.viewtools;
 
 import androidx.annotation.NonNull;
 
-import com.example.composingapp.utils.interfaces.Observable;
 import com.example.composingapp.utils.interfaces.Observer;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 
 import java.util.ArrayList;
 
-public class NotePositionDict extends PositionDict{
+import static com.example.composingapp.utils.viewtools.ViewConstants.NOTE_W_TO_H_RATIO;
+
+public class NotePositionDict extends PositionDict {
     private static final String TAG = "NotePositionDict";
     private Note mNote;
     private Float mNoteX, mNoteY, mHeight, mWidth;
-    private Float mBaseLeftX;
-    private Float mBaseRightX;
-    private Float mBaseTopY;
-    private Float mBaseBottomY;
-    private Float mNoteRadius;
+    private Float mNoteVerticalRadius;
+    private Float mNoteHorizontalRadius;
     private ArrayList<Observer> observerArrayList;
-
     /**
      * Constructor
      *
@@ -35,12 +32,17 @@ public class NotePositionDict extends PositionDict{
         mWidth = width;
         mNoteX = (mWidth / 2);
         mNoteY = getNoteYOf(mNote);
-        mNoteRadius = getSingleSpaceHeight() / 2;
+        mNoteVerticalRadius = getSingleSpaceHeight() / 2;
+        mNoteHorizontalRadius = mNoteVerticalRadius * NOTE_W_TO_H_RATIO;
         observerArrayList = new ArrayList<>();
     }
 
-    public Float getNoteRadius() {
-        return mNoteRadius;
+    public Float getNoteHorizontalRadius() {
+        return mNoteHorizontalRadius;
+    }
+
+    public Float getNoteVerticalRadius() {
+        return mNoteVerticalRadius;
     }
 
     public Note getNote() {
