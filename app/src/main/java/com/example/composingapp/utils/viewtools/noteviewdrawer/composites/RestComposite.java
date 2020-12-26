@@ -25,7 +25,7 @@ public class RestComposite implements CompositeDrawer {
     private final Float mNoteX;
     private Float mThirdLineY;
     private final Music.Clef mClef;
-    private ArrayList<ComponentDrawer> mDrawers;
+    ArrayList<ComponentDrawer> mDrawers;
 
     public RestComposite(NotePositionDict notePositionDict, Paint paint) {
         mNotePositionDict = notePositionDict;
@@ -57,12 +57,6 @@ public class RestComposite implements CompositeDrawer {
     @Override
     public void remove(ComponentDrawer componentDrawer) {
         mDrawers.remove(componentDrawer);
-    }
-
-
-    @Override
-    public ArrayList<ComponentDrawer> getDrawerComponents() {
-        return null;
     }
 
     @Override
@@ -163,4 +157,5 @@ public class RestComposite implements CompositeDrawer {
             canvas.drawArc(curvedRect, 90, 180, false, restPaint);
         }
     }
+
 }

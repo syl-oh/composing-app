@@ -15,7 +15,7 @@ import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.Tone;
 import com.example.composingapp.utils.viewtools.NotePositionDict;
-import com.example.composingapp.utils.viewtools.noteviewdrawer.NoteDrawer;
+import com.example.composingapp.utils.viewtools.noteviewdrawer.NoteViewDrawer;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -27,7 +27,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     private Music.Clef mClef;
     private Note mNote;
     private GestureDetector mGestureDetector;
-    private NoteDrawer mNoteDrawer;
+    private NoteViewDrawer mNoteViewDrawer;
 
     /**
      * Constructor for programmatically creating a NoteView
@@ -64,7 +64,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         notePositionDict = new NotePositionDict(mNote, mClef, (float) w, (float) h);
-        mNoteDrawer = new NoteDrawer(notePositionDict);
+        mNoteViewDrawer = new NoteViewDrawer(notePositionDict);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
 
     @Override
     protected void onDraw(Canvas canvas) {
-        mNoteDrawer.draw(canvas);
+        mNoteViewDrawer.draw(canvas);
     }
 
 
@@ -115,7 +115,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                             nextTone.getOctave(),
                             mNote.getNoteLength());
                     notePositionDict.setNote(mNote);
-                    mNoteDrawer = new NoteDrawer(notePositionDict);
+                    mNoteViewDrawer = new NoteViewDrawer(notePositionDict);
 //                    Log.d(TAG, "onDrag: mNoteY " + newToneY);
                     invalidate();
                 }

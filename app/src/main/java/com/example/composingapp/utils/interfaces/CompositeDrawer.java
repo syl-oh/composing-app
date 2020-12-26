@@ -5,5 +5,4 @@ import java.util.ArrayList;
 public interface CompositeDrawer extends ComponentDrawer {
     void add(ComponentDrawer drawerComponent);
     void remove(ComponentDrawer drawerComponent);
-    ArrayList<ComponentDrawer> getDrawerComponents();
 }
