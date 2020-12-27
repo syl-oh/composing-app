@@ -116,5 +116,4 @@ public final class Music extends Application {
             FLAT;
         }
     }
-
 }

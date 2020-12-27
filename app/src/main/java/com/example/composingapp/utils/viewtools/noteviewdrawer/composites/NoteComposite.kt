@@ -2,6 +2,7 @@ package com.example.composingapp.utils.viewtools.noteviewdrawer.composites
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.util.Log
 import androidx.core.graphics.withTranslation
 import com.example.composingapp.utils.interfaces.ComponentDrawer
 import com.example.composingapp.utils.interfaces.CompositeDrawer
@@ -27,15 +28,7 @@ class NoteComposite(
         if (notePositionDict.note.noteLength != Music.NoteLength.WHOLE_NOTE) {
             add(StemLeaf(notePositionDict, paint))
         }
-
-        val maxBarlineY: Float = notePositionDict.toneToBarlineYMap.maxByOrNull { it.value }!!.value
-        val minBarlineY: Float = notePositionDict.toneToBarlineYMap.minByOrNull { it.value }!!.value
-        val noteY: Float = notePositionDict.noteY
-
-        if (noteY < minBarlineY || noteY > maxBarlineY) {
-            TODO("Draw ledger lines at the correct spots and at the right time")
-            add(LedgerLineLeaf(notePositionDict, paint))
-        }
+        add(LedgerLineComposite(notePositionDict, paint))
     }
 
     override fun draw(canvas: Canvas?) {
@@ -50,18 +43,8 @@ class NoteComposite(
         drawers.remove(drawerComponent)
     }
 
-    class LedgerLineLeaf(
-            val notePositionDict: NotePositionDict,
-            val paint: Paint
-    ) : LeafDrawer {
-        val ledgerLineHalfWidth: Float = 3 * notePositionDict.noteHorizontalRadius / 2
-        val noteX: Float = notePositionDict.noteX
-        val noteY: Float = notePositionDict.noteY
 
-        override fun draw(canvas: Canvas?) {
-            canvas?.withTranslation(noteX, noteY) {
-                canvas.drawLine(-ledgerLineHalfWidth, 0f, ledgerLineHalfWidth, 0f, paint)
-            }
-        }
+    companion object {
+        private const val TAG = "NoteComposite"
     }
 }

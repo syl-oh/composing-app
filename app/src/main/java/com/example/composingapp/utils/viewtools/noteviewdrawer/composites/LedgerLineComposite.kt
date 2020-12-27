@@ -63,8 +63,6 @@ class LedgerLineComposite(
                 }
             }
         }
-        TODO("Remove floor() and ceil(), and implement ledger lines without relying" +
-                " on y positions but instead the tones themselves")
     }
 
     class LedgerLineLeaf(

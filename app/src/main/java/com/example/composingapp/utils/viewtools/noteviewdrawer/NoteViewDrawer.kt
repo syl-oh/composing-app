@@ -41,4 +41,8 @@ class NoteViewDrawer(private val notePositionDict: NotePositionDict) : Composite
     override fun remove(drawerComponent: ComponentDrawer) {
         drawers.remove(drawerComponent)
     }
+
+    companion object {
+        private const val TAG = "NoteViewDrawer"
+    }
 }
