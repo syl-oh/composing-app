@@ -1,7 +1,7 @@
 package com.example.composingapp.utils.music;
 
 public class Note extends Tone {
-    private Music.NoteLength noteLength;
+    private final Music.NoteLength noteLength;
 
     /**
      * Constructor for Note
@@ -15,12 +15,18 @@ public class Note extends Tone {
         this.noteLength = noteLength;
     }
 
+    /**
+     * Constructor for Rest
+     *
+     * @param noteLength From the Enum in Music.class
+     */
+    public Note(Music.NoteLength noteLength) {
+        super(Music.PitchClass.REST, -1);
+        this.noteLength = noteLength;
+    }
+
     public Music.NoteLength getNoteLength() {
         return noteLength;
     }
 
-    public Note setNoteLength(Music.NoteLength noteLength) {
-        this.noteLength = noteLength;
-        return this;
-    }
 }

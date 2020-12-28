@@ -12,11 +12,13 @@ import static com.example.composingapp.views.viewtools.ViewConstants.NOTE_W_TO_H
 
 public class NotePositionDict extends PositionDict {
     private static final String TAG = "NotePositionDict";
+    private final Float mNoteX, mHeight, mWidth;
+    private final Float mNoteVerticalRadius;
+    private final Float mNoteHorizontalRadius;
+    private final ArrayList<Observer> observerArrayList;
     private Note mNote;
-    private Float mNoteX, mNoteY, mHeight, mWidth;
-    private Float mNoteVerticalRadius;
-    private Float mNoteHorizontalRadius;
-    private ArrayList<Observer> observerArrayList;
+    private Float mNoteY;
+
     /**
      * Constructor
      *
