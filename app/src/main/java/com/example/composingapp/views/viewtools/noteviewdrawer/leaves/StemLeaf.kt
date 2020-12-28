@@ -1,10 +1,10 @@
-package com.example.composingapp.utils.viewtools.noteviewdrawer.leaves
+package com.example.composingapp.views.viewtools.noteviewdrawer.leaves
 
 import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.core.graphics.withTranslation
 import com.example.composingapp.utils.interfaces.LeafDrawer
-import com.example.composingapp.utils.viewtools.NotePositionDict
+import com.example.composingapp.views.viewtools.NotePositionDict
 
 class StemLeaf(
         val notePositionDict: NotePositionDict,

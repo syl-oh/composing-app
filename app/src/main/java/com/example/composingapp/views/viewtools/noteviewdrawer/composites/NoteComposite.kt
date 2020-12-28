@@ -1,17 +1,14 @@
-package com.example.composingapp.utils.viewtools.noteviewdrawer.composites
+package com.example.composingapp.views.viewtools.noteviewdrawer.composites
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.util.Log
-import androidx.core.graphics.withTranslation
 import com.example.composingapp.utils.interfaces.ComponentDrawer
 import com.example.composingapp.utils.interfaces.CompositeDrawer
-import com.example.composingapp.utils.interfaces.LeafDrawer
 import com.example.composingapp.utils.music.Music
-import com.example.composingapp.utils.viewtools.NotePositionDict
-import com.example.composingapp.utils.viewtools.noteviewdrawer.leaves.StemLeaf
-import com.example.composingapp.utils.viewtools.noteviewdrawer.leaves.bases.FilledBaseLeaf
-import com.example.composingapp.utils.viewtools.noteviewdrawer.leaves.bases.HollowBaseLeaf
+import com.example.composingapp.views.viewtools.NotePositionDict
+import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
+import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.bases.FilledBaseLeaf
+import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.bases.HollowBaseLeaf
 
 class NoteComposite(
         private val notePositionDict: NotePositionDict,

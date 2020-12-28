@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.Tone;
-import com.example.composingapp.utils.viewtools.NotePositionDict;
-import com.example.composingapp.utils.viewtools.noteviewdrawer.NoteViewDrawer;
+import com.example.composingapp.views.viewtools.NotePositionDict;
+import com.example.composingapp.views.viewtools.noteviewdrawer.NoteViewDrawer;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -106,8 +106,8 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                     // Find the new tone
                     Float newToneY = dy > 0 ? noteY - semiSpace : noteY + semiSpace;
                     Tone nextTone = notePositionDict.getYToToneMap().get(newToneY);
-                    Log.d(TAG, "onDrag: nextTone: " + nextTone.getPitchClass() + " octave " +
-                            nextTone.getOctave());
+//                    Log.d(TAG, "onDrag: nextTone: " + nextTone.getPitchClass() + " octave " +
+//                            nextTone.getOctave());
 
                     // Update the note and the NoteView, then redraw
                     mNote = new Note(
@@ -163,9 +163,11 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
 
     @Override
     public void onLongPress(MotionEvent e) {
-        NoDragShadowBuilder builder = new NoDragShadowBuilder(this); // Shadowless drag
-        this.startDragAndDrop(null, builder, null, 0);
-        builder.getView().setOnDragListener(this);
+        if (mNote.getPitchClass() != Music.PitchClass.REST) {
+            NoDragShadowBuilder builder = new NoDragShadowBuilder(this); // Shadowless drag
+            this.startDragAndDrop(null, builder, null, 0);
+            builder.getView().setOnDragListener(this);
+        }
     }
 
     @Override

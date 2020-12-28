@@ -1,10 +1,10 @@
-package com.example.composingapp.utils.viewtools.noteviewdrawer.leaves.accidentals;
+package com.example.composingapp.views.viewtools.noteviewdrawer.leaves.accidentals;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.example.composingapp.utils.viewtools.NotePositionDict;
-import com.example.composingapp.utils.viewtools.ViewConstants;
+import com.example.composingapp.views.viewtools.NotePositionDict;
+import com.example.composingapp.views.viewtools.ViewConstants;
 
 public class NaturalLeaf extends AccidentalLeaf {
     private static final float SLOPE = (float) 1 / 20;

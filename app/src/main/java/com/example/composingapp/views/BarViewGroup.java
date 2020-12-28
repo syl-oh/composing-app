@@ -12,15 +12,15 @@ import androidx.core.view.ViewCompat;
 import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.Tone;
-import com.example.composingapp.utils.viewtools.PositionDict;
+import com.example.composingapp.views.viewtools.PositionDict;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static com.example.composingapp.utils.viewtools.ViewConstants.BARLINE_SIZE;
-import static com.example.composingapp.utils.viewtools.ViewConstants.BARS_PER_LINE;
-import static com.example.composingapp.utils.viewtools.ViewConstants.TOTAL_LINES;
+import static com.example.composingapp.views.viewtools.ViewConstants.BARLINE_SIZE;
+import static com.example.composingapp.views.viewtools.ViewConstants.BARS_PER_LINE;
+import static com.example.composingapp.views.viewtools.ViewConstants.TOTAL_LINES;
 
 public class BarViewGroup extends LinearLayout {
     private static final String TAG = "BarViewGroup";
@@ -127,7 +127,7 @@ public class BarViewGroup extends LinearLayout {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        Log.d(TAG, "onDraw: " + this.getId());
+//        Log.d(TAG, "onDraw: " + this.getId());
         drawBarLines(canvas);
         drawSideLines(canvas);
     }

@@ -11,7 +11,7 @@ import com.example.composingapp.utils.music.ScoreObservable;
 
 import java.util.ArrayList;
 
-import static com.example.composingapp.utils.viewtools.ViewConstants.BARS_PER_LINE;
+import static com.example.composingapp.views.viewtools.ViewConstants.BARS_PER_LINE;
 
 
 public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarViewGroupHolder> {

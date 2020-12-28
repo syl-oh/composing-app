@@ -1,4 +1,4 @@
-package com.example.composingapp.utils.viewtools.noteviewdrawer.composites;
+package com.example.composingapp.views.viewtools.noteviewdrawer.composites;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -10,11 +10,11 @@ import com.example.composingapp.utils.interfaces.CompositeDrawer;
 import com.example.composingapp.utils.interfaces.LeafDrawer;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
-import com.example.composingapp.utils.viewtools.NotePositionDict;
+import com.example.composingapp.views.viewtools.NotePositionDict;
 
 import java.util.ArrayList;
 
-import static com.example.composingapp.utils.viewtools.ViewConstants.STEM_WIDTH;
+import static com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH;
 
 public class RestComposite implements CompositeDrawer {
     private static final String TAG = "RestComposite";
@@ -42,10 +42,13 @@ public class RestComposite implements CompositeDrawer {
         mDrawers = new ArrayList<>();
 
         // Add the required drawers
-        if (mNote.getNoteLength() == Music.NoteLength.QUARTER_NOTE) {
+        Music.NoteLength noteLength = mNote.getNoteLength();
+        if (noteLength == Music.NoteLength.QUARTER_NOTE) {
             add(new QuarterRestLeaf());
-        } else {
+        } else if (noteLength == Music.NoteLength.WHOLE_NOTE || noteLength == Music.NoteLength.HALF_NOTE) {
             add(new LongRestLeaf(mNote.getNoteLength()));
+        } else {
+            add(new ShortRestComposite(notePositionDict, paint));
         }
     }
 
@@ -61,7 +64,9 @@ public class RestComposite implements CompositeDrawer {
 
     @Override
     public void draw(Canvas canvas) {
-        mDrawers.forEach((drawer) -> drawer.draw(canvas));
+        for (ComponentDrawer drawer : mDrawers) {
+            drawer.draw(canvas);
+        }
     }
 
 
@@ -109,7 +114,6 @@ public class RestComposite implements CompositeDrawer {
     }
 
     class QuarterRestLeaf implements LeafDrawer {
-        private final float QUARTER_REST_X_DEVIANCE_FACTOR = (float) 0.05;
         private final RectF curvedRect;
         float firstX, firstY, secondX, secondY, thirdY, fourthY;
         Paint restPaint;
@@ -119,7 +123,7 @@ public class RestComposite implements CompositeDrawer {
             restPaint.setStrokeWidth(REST_STROKE_WIDTH);
             restPaint.setStyle(Paint.Style.STROKE);
             // x positions: deviance from the initial mNoteX
-            float dx = QUARTER_REST_X_DEVIANCE_FACTOR * mNoteX;
+            float dx = (float) 0.05 * mNoteX;
             firstX = mNoteX - dx;
             secondX = mNoteX + dx;
 

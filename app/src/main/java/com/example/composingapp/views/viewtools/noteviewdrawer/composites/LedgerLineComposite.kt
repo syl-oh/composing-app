@@ -1,17 +1,14 @@
-package com.example.composingapp.utils.viewtools.noteviewdrawer.composites
+package com.example.composingapp.views.viewtools.noteviewdrawer.composites
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.util.Log
 import androidx.core.graphics.withTranslation
 import com.example.composingapp.utils.interfaces.ComponentDrawer
 import com.example.composingapp.utils.interfaces.CompositeDrawer
 import com.example.composingapp.utils.interfaces.LeafDrawer
-import com.example.composingapp.utils.viewtools.NotePositionDict
-import java.lang.NullPointerException
+import com.example.composingapp.views.viewtools.NotePositionDict
 import kotlin.math.ceil
 import kotlin.math.floor
-import kotlin.math.sin
 
 class LedgerLineComposite(
         notePositionDict: NotePositionDict,
@@ -58,8 +55,6 @@ class LedgerLineComposite(
                 while (ceil(notePositionDict.noteY) >= currentY) {
                     add(LedgerLineLeaf(notePositionDict, paint, y = currentY))
                     currentY += singleSpaceHeight
-                    Log.d(TAG, "addNeededLedgerLineLeaves: currentY is $currentY and noteY is" +
-                            " ${notePositionDict.noteY}")
                 }
             }
         }

@@ -1,8 +1,8 @@
-package com.example.composingapp.utils.viewtools.noteviewdrawer.leaves.bases
+package com.example.composingapp.views.viewtools.noteviewdrawer.leaves.bases
 
 import android.graphics.Color
 import android.graphics.Paint
-import com.example.composingapp.utils.viewtools.NotePositionDict
+import com.example.composingapp.views.viewtools.NotePositionDict
 
 class HollowBaseLeaf(
         notePositionDict: NotePositionDict,

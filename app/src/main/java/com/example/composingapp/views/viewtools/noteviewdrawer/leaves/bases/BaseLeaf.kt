@@ -1,12 +1,11 @@
-package com.example.composingapp.utils.viewtools.noteviewdrawer.leaves.bases
+package com.example.composingapp.views.viewtools.noteviewdrawer.leaves.bases
 
 import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.core.graphics.withRotation
 import androidx.core.graphics.withTranslation
 import com.example.composingapp.utils.interfaces.LeafDrawer
-import com.example.composingapp.utils.viewtools.NotePositionDict
-import com.example.composingapp.utils.viewtools.ViewConstants.NOTE_W_TO_H_RATIO
+import com.example.composingapp.views.viewtools.NotePositionDict
 
 abstract class BaseLeaf(
         val notePositionDict: NotePositionDict,

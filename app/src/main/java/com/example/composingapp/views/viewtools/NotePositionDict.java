@@ -1,4 +1,4 @@
-package com.example.composingapp.utils.viewtools;
+package com.example.composingapp.views.viewtools;
 
 import androidx.annotation.NonNull;
 
@@ -8,7 +8,7 @@ import com.example.composingapp.utils.music.Note;
 
 import java.util.ArrayList;
 
-import static com.example.composingapp.utils.viewtools.ViewConstants.NOTE_W_TO_H_RATIO;
+import static com.example.composingapp.views.viewtools.ViewConstants.NOTE_W_TO_H_RATIO;
 
 public class NotePositionDict extends PositionDict {
     private static final String TAG = "NotePositionDict";

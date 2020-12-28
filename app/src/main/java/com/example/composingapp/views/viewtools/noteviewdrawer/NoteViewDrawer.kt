@@ -1,4 +1,4 @@
-package com.example.composingapp.utils.viewtools.noteviewdrawer
+package com.example.composingapp.views.viewtools.noteviewdrawer
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -6,10 +6,10 @@ import android.graphics.Paint
 import com.example.composingapp.utils.interfaces.ComponentDrawer
 import com.example.composingapp.utils.interfaces.CompositeDrawer
 import com.example.composingapp.utils.music.Music
-import com.example.composingapp.utils.viewtools.NotePositionDict
-import com.example.composingapp.utils.viewtools.ViewConstants.STEM_WIDTH
-import com.example.composingapp.utils.viewtools.noteviewdrawer.composites.NoteComposite
-import com.example.composingapp.utils.viewtools.noteviewdrawer.composites.RestComposite
+import com.example.composingapp.views.viewtools.NotePositionDict
+import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
+import com.example.composingapp.views.viewtools.noteviewdrawer.composites.NoteComposite
+import com.example.composingapp.views.viewtools.noteviewdrawer.composites.RestComposite
 
 class NoteViewDrawer(private val notePositionDict: NotePositionDict) : CompositeDrawer {
     private val drawers = mutableListOf<ComponentDrawer>()

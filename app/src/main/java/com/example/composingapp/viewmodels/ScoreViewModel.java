@@ -30,7 +30,7 @@ public class ScoreViewModel extends ViewModel {
         BarObserver barObserver2 = new BarObserver(scoreObservable);
         BarObserver barObserver3 = new BarObserver(scoreObservable);
         BarObserver barObserver4 = new BarObserver(scoreObservable);
-        Note note = new Note(Music.PitchClass.C_NATURAL, 4, Music.NoteLength.HALF_NOTE);
+        Note note = new Note(Music.PitchClass.REST, -1, Music.NoteLength.EIGHTH_NOTE);
         barObserver1.addNote(note);
         barObserver2.addNote(note);
         barObserver3.addNote(note);

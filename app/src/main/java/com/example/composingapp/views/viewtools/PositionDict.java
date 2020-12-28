@@ -1,4 +1,4 @@
-package com.example.composingapp.utils.viewtools;
+package com.example.composingapp.views.viewtools;
 
 import android.util.Log;
 
@@ -24,14 +24,18 @@ public class PositionDict {
     private HashMap<Tone, Float> toneToBarlineYMap;
     private MidiNoteDict midiNoteDict;
     private Float mBarHeight;
+    private Float mThirdLineY;
     private Music.Clef mClef;
-
     public PositionDict(float barHeight, Music.Clef clef) {
         mBarHeight = barHeight;
         mClef = clef;
         midiNoteDict = new MidiNoteDict();
         initMaps(barHeight, clef);
         initBarlineMaps(clef);
+    }
+
+    public Float getThirdLineY() {
+        return mThirdLineY;
     }
 
     public Music.Clef getClef() {
@@ -156,11 +160,15 @@ public class PositionDict {
     private void initBarlineMaps(@NotNull Music.Clef clef) {
         barlineYToToneMap = new FloatToneHashMap();
         toneToBarlineYMap = new HashMap();
-        for (Tone tone : clef.getBarlineTones()) {
+        for (int i = 0; i < 5; i++) {
+            Tone tone = clef.getBarlineTones()[i];
             try {
                 Float toneY = toneToYMap.get(tone);
                 toneToBarlineYMap.put(tone, toneY);
                 barlineYToToneMap.put(toneToBarlineYMap.get(tone), tone);
+                if (i == 2) {  // If this is the third barline
+                    mThirdLineY = toneY; // store it
+                }
             } catch (NullPointerException e) {
                 Log.e(TAG, "initBarlineMaps: NullPointerException, could not retrieve " +
                         "y position from toneToYMap for tone with pitchclass " + tone.getPitchClass()

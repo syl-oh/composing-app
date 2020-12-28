@@ -1,4 +1,4 @@
-package com.example.composingapp.utils.viewtools;
+package com.example.composingapp.views.viewtools;
 
 public final class ViewConstants {
     public static final int TOTAL_LINES = 19; // Keep this < 20 to avoid Midi Numbers > 108
