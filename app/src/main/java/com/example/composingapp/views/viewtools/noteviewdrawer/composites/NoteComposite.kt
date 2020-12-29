@@ -5,10 +5,9 @@ import android.graphics.Paint
 import com.example.composingapp.utils.interfaces.ComponentDrawer
 import com.example.composingapp.utils.interfaces.CompositeDrawer
 import com.example.composingapp.utils.music.Music
-import com.example.composingapp.views.viewtools.NotePositionDict
-import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
-import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.bases.FilledBaseLeaf
-import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.bases.HollowBaseLeaf
+import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
+import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.FilledBaseLeaf
+import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.HollowBaseLeaf
 
 class NoteComposite(
         private val notePositionDict: NotePositionDict,
@@ -22,9 +21,9 @@ class NoteComposite(
                 notePositionDict.note.noteLength == Music.NoteLength.HALF_NOTE) {
             add(HollowBaseLeaf(notePositionDict, paint))
         }
-        if (notePositionDict.note.noteLength != Music.NoteLength.WHOLE_NOTE) {
-            add(StemLeaf(notePositionDict, paint))
-        }
+//        if (notePositionDict.note.noteLength != Music.NoteLength.WHOLE_NOTE) {
+//            add(StemLeaf(notePositionDict, paint))
+//        }
         add(LedgerLineComposite(notePositionDict, paint))
     }
 

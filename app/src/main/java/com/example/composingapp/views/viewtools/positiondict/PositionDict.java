@@ -1,4 +1,4 @@
-package com.example.composingapp.views.viewtools;
+package com.example.composingapp.views.viewtools.positiondict;
 
 import android.util.Log;
 
@@ -8,6 +8,7 @@ import com.example.composingapp.utils.music.MidiNoteDict;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.Tone;
+import com.example.composingapp.views.viewtools.ViewConstants;
 
 import org.jetbrains.annotations.NotNull;
 

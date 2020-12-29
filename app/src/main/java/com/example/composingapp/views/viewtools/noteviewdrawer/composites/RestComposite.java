@@ -10,7 +10,7 @@ import com.example.composingapp.utils.interfaces.CompositeDrawer;
 import com.example.composingapp.utils.interfaces.LeafDrawer;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
-import com.example.composingapp.views.viewtools.NotePositionDict;
+import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 
 import java.util.ArrayList;
 

@@ -1,10 +1,10 @@
-package com.example.composingapp.views.viewtools.noteviewdrawer.leaves.accidentals;
+package com.example.composingapp.views.viewtools.accidentals;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
-import com.example.composingapp.views.viewtools.NotePositionDict;
+import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 import com.example.composingapp.views.viewtools.ViewConstants;
 
 import static com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH;

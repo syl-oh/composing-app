@@ -14,8 +14,8 @@ import androidx.annotation.NonNull;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.Tone;
-import com.example.composingapp.views.viewtools.NotePositionDict;
 import com.example.composingapp.views.viewtools.noteviewdrawer.NoteViewDrawer;
+import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,7 +28,6 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     private Note mNote;
     private GestureDetector mGestureDetector;
     private NoteViewDrawer mNoteViewDrawer;
-
     /**
      * Constructor for programmatically creating a NoteView
      *
@@ -38,6 +37,10 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     public NoteView(Context context, @NonNull Note note, @NonNull Music.Clef clef) {
         super(context);
         init(note, clef);
+    }
+
+    public NotePositionDict getNotePositionDict() {
+        return notePositionDict;
     }
 
     /**
@@ -65,7 +68,9 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         notePositionDict = new NotePositionDict(mNote, mClef, (float) w, (float) h);
         mNoteViewDrawer = new NoteViewDrawer(notePositionDict);
+        Log.d(TAG, "onSizeChanged: noteViewDrawer created");
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -115,7 +120,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                             nextTone.getOctave(),
                             mNote.getNoteLength());
                     notePositionDict.setNote(mNote);
-                    mNoteViewDrawer = new NoteViewDrawer(notePositionDict);
+                    mNoteViewDrawer.resetWith(notePositionDict);
 //                    Log.d(TAG, "onDrag: mNoteY " + newToneY);
                     invalidate();
                 }

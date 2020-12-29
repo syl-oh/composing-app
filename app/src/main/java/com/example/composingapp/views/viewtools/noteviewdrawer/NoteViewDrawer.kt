@@ -6,7 +6,7 @@ import android.graphics.Paint
 import com.example.composingapp.utils.interfaces.ComponentDrawer
 import com.example.composingapp.utils.interfaces.CompositeDrawer
 import com.example.composingapp.utils.music.Music
-import com.example.composingapp.views.viewtools.NotePositionDict
+import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
 import com.example.composingapp.views.viewtools.noteviewdrawer.composites.NoteComposite
 import com.example.composingapp.views.viewtools.noteviewdrawer.composites.RestComposite
@@ -23,6 +23,11 @@ class NoteViewDrawer(private val notePositionDict: NotePositionDict) : Composite
     }
 
     init {
+        resetWith(notePositionDict)
+    }
+
+    fun resetWith(notePositionDict: NotePositionDict) {
+        drawers.clear()
         if (notePositionDict.note.pitchClass == Music.PitchClass.REST) {
             add(RestComposite(notePositionDict, paint))
         } else {

@@ -1,7 +1,7 @@
-package com.example.composingapp.views.viewtools.noteviewdrawer.leaves.bases
+package com.example.composingapp.views.viewtools.noteviewdrawer.leaves
 
 import android.graphics.Paint
-import com.example.composingapp.views.viewtools.NotePositionDict
+import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 
 class FilledBaseLeaf(
         notePositionDict: NotePositionDict,

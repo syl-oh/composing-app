@@ -1,9 +1,9 @@
-package com.example.composingapp.views.viewtools.noteviewdrawer.leaves.accidentals;
+package com.example.composingapp.views.viewtools.accidentals;
 
 import android.graphics.Paint;
 
 import com.example.composingapp.utils.interfaces.LeafDrawer;
-import com.example.composingapp.views.viewtools.NotePositionDict;
+import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 
 public abstract class AccidentalLeaf implements LeafDrawer {
     protected static final double W_TO_H_RATIO = (double) 1 / 2;

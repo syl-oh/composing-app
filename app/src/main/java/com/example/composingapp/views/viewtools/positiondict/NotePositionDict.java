@@ -1,12 +1,9 @@
-package com.example.composingapp.views.viewtools;
+package com.example.composingapp.views.viewtools.positiondict;
 
 import androidx.annotation.NonNull;
 
-import com.example.composingapp.utils.interfaces.Observer;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
-
-import java.util.ArrayList;
 
 import static com.example.composingapp.views.viewtools.ViewConstants.NOTE_W_TO_H_RATIO;
 
@@ -15,7 +12,6 @@ public class NotePositionDict extends PositionDict {
     private final Float mNoteX, mHeight, mWidth;
     private final Float mNoteVerticalRadius;
     private final Float mNoteHorizontalRadius;
-    private final ArrayList<Observer> observerArrayList;
     private Note mNote;
     private Float mNoteY;
 
@@ -36,7 +32,6 @@ public class NotePositionDict extends PositionDict {
         mNoteY = getNoteYOf(mNote);
         mNoteVerticalRadius = getSingleSpaceHeight() / 2;
         mNoteHorizontalRadius = mNoteVerticalRadius * NOTE_W_TO_H_RATIO;
-        observerArrayList = new ArrayList<>();
     }
 
     public Float getNoteHorizontalRadius() {

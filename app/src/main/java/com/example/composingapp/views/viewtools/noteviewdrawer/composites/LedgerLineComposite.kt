@@ -6,7 +6,7 @@ import androidx.core.graphics.withTranslation
 import com.example.composingapp.utils.interfaces.ComponentDrawer
 import com.example.composingapp.utils.interfaces.CompositeDrawer
 import com.example.composingapp.utils.interfaces.LeafDrawer
-import com.example.composingapp.views.viewtools.NotePositionDict
+import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import kotlin.math.ceil
 import kotlin.math.floor
 

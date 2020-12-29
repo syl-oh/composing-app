@@ -1,9 +1,9 @@
-package com.example.composingapp.views.viewtools.noteviewdrawer.leaves.accidentals;
+package com.example.composingapp.views.viewtools.accidentals;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.example.composingapp.views.viewtools.NotePositionDict;
+import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 import com.example.composingapp.views.viewtools.ViewConstants;
 
 public class NaturalLeaf extends AccidentalLeaf {
