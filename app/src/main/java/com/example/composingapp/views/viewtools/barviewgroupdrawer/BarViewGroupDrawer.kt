@@ -8,16 +8,18 @@ import com.example.composingapp.utils.interfaces.ComponentDrawer
 import com.example.composingapp.utils.interfaces.CompositeDrawer
 import com.example.composingapp.views.NoteView
 import com.example.composingapp.views.viewtools.ViewConstants
+import com.example.composingapp.views.viewtools.barviewgroupdrawer.composites.BeamComposite
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.BarlineLeaf
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.SidelineLeaf
+import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.PrimaryBeamLeaf
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict
-import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
-import java.util.ArrayList
 
 class BarViewGroupDrawer(
         private val barPositionDict: BarPositionDict,
 ) : CompositeDrawer {
-    private var noteViewPositionDicts = mutableListOf<NotePositionDict>()
+    private var noteViewList = mutableListOf<NoteView>()
+    private var beamGroups = mutableListOf<List<NoteView>>()
+
     private val drawers = mutableListOf<ComponentDrawer>()
     private val paint = Paint().apply {
         style = Paint.Style.STROKE
@@ -26,16 +28,28 @@ class BarViewGroupDrawer(
     }
 
     init {
-        add(BarlineLeaf(barPositionDict, paint))
-        add(SidelineLeaf(barPositionDict, paint))
+        resetDrawers()
     }
 
-    fun setPositionDictsFromNoteViews(noteViewList: ArrayList<NoteView>) {
-        noteViewPositionDicts = noteViewList.map { it.notePositionDict } as MutableList<NotePositionDict>
+    fun setNoteViews(noteViewList: List<NoteView>) {
+        this.noteViewList = noteViewList as MutableList<NoteView>
+        collectBeamGroups()
+    }
+
+    private fun collectBeamGroups() {
+        beamGroups.add(noteViewList.subList(0, 4))
+        resetDrawers()
+    }
+
+    fun resetDrawers() {
+        drawers.clear()
+        add(BarlineLeaf(barPositionDict, paint))
+        add(SidelineLeaf(barPositionDict, paint))
+        beamGroups.forEach { add(BeamComposite(it, paint)) }
     }
 
     override fun draw(canvas: Canvas?) {
-        drawers.map {it.draw(canvas)}
+        drawers.forEach { it.draw(canvas) }
     }
 
     override fun add(drawerComponent: ComponentDrawer) {
@@ -49,4 +63,5 @@ class BarViewGroupDrawer(
     companion object {
         private const val TAG = "BarViewGroupDrawer"
     }
+
 }

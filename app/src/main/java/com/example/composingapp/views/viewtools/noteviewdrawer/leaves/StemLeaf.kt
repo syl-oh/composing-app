@@ -1,7 +1,8 @@
-package com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves
+package com.example.composingapp.views.viewtools.noteviewdrawer.leaves
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.util.Log
 import androidx.core.graphics.withTranslation
 import com.example.composingapp.utils.interfaces.LeafDrawer
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
@@ -9,7 +10,9 @@ import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 class StemLeaf(
         val notePositionDict: NotePositionDict,
         val paint: Paint,
-        val pointsDown: Boolean = notePositionDict.noteY > notePositionDict.thirdLineY,
+        val stemDirection: StemDirection =
+                if (notePositionDict.noteY > notePositionDict.thirdLineY) StemDirection.POINTS_UP
+                else StemDirection.POINTS_DOWN,
         val stemHeight: Float = notePositionDict.octaveHeight
 ) : LeafDrawer {
     private val noteX: Float = notePositionDict.noteX
@@ -18,8 +21,9 @@ class StemLeaf(
     private val xDistanceFromCenter: Float = notePositionDict.noteHorizontalRadius - stemWidth
 
     override fun draw(canvas: Canvas?) {
+        Log.d(TAG, "draw: stemDirection is: $stemDirection")
         canvas?.withTranslation(noteX, noteY) {
-            if (pointsDown) {
+            if (stemDirection == StemDirection.POINTS_UP) {
                 canvas.drawLine(xDistanceFromCenter, 0f, xDistanceFromCenter,
                         -stemHeight, paint)
             } else {
@@ -31,5 +35,10 @@ class StemLeaf(
 
     private companion object {
         const val TAG = "StraightStemLeaf"
+    }
+
+    enum class StemDirection {
+        POINTS_UP,
+        POINTS_DOWN
     }
 }

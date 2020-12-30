@@ -3,16 +3,19 @@ package com.example.composingapp.views.viewtools.noteviewdrawer
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import com.example.composingapp.utils.interfaces.ComponentDrawer
-import com.example.composingapp.utils.interfaces.CompositeDrawer
+import android.util.Log
+import com.example.composingapp.utils.interfaces.*
 import com.example.composingapp.utils.music.Music
-import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
+import com.example.composingapp.views.viewtools.barviewgroupdrawer.BarViewGroupDrawer
 import com.example.composingapp.views.viewtools.noteviewdrawer.composites.NoteComposite
 import com.example.composingapp.views.viewtools.noteviewdrawer.composites.RestComposite
+import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
+import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 
 class NoteViewDrawer(private val notePositionDict: NotePositionDict) : CompositeDrawer {
-    private val drawers = mutableListOf<ComponentDrawer>()
+    private var drawers = mutableListOf<ComponentDrawer>()
+    private val observers = mutableListOf<Observer>()
     private val paint = Paint().apply {
         color = Color.BLACK
         isAntiAlias = true
@@ -40,6 +43,9 @@ class NoteViewDrawer(private val notePositionDict: NotePositionDict) : Composite
     }
 
     override fun add(drawerComponent: ComponentDrawer) {
+        if (drawerComponent is StemLeaf) {
+            drawers.removeAll { it is StemLeaf }
+        }
         drawers.add(drawerComponent)
     }
 

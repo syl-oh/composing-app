@@ -28,15 +28,21 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     private Note mNote;
     private GestureDetector mGestureDetector;
     private NoteViewDrawer mNoteViewDrawer;
+    private BarViewGroup mBarViewGroup;
+
     /**
      * Constructor for programmatically creating a NoteView
      *
      * @param context Context of the view
      * @param note    Note object
      */
-    public NoteView(Context context, @NonNull Note note, @NonNull Music.Clef clef) {
+    public NoteView(Context context, BarViewGroup barViewGroup, @NonNull Note note, @NonNull Music.Clef clef) {
         super(context);
-        init(note, clef);
+        init(note, clef, barViewGroup);
+    }
+
+    public NoteViewDrawer getNoteViewDrawer() {
+        return mNoteViewDrawer;
     }
 
     public NotePositionDict getNotePositionDict() {
@@ -46,7 +52,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     /**
      * Initializes all objects used for drawing
      */
-    private void init(Note note, Music.Clef clef) {
+    private void init(Note note, Music.Clef clef, BarViewGroup barViewGroup) {
         if (note != null) {
             mNote = note;
         } else {
@@ -61,6 +67,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                     + this.getId());
         }
         mGestureDetector = new GestureDetector(getContext(), this);
+        mBarViewGroup = barViewGroup;
     }
 
 
@@ -121,8 +128,8 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
                             mNote.getNoteLength());
                     notePositionDict.setNote(mNote);
                     mNoteViewDrawer.resetWith(notePositionDict);
+                    mBarViewGroup.invalidate();
 //                    Log.d(TAG, "onDrag: mNoteY " + newToneY);
-                    invalidate();
                 }
                 return true;
 
@@ -183,7 +190,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     /**
      * Class to enable drag and drop that does not create a shadow
      */
-    class NoDragShadowBuilder extends View.DragShadowBuilder {
+    static class NoDragShadowBuilder extends View.DragShadowBuilder {
         public NoDragShadowBuilder(View view) {
             super(view);
         }

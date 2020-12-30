@@ -25,14 +25,35 @@ public class PositionDict {
     private HashMap<Tone, Float> toneToBarlineYMap;
     private MidiNoteDict midiNoteDict;
     private Float mBarHeight;
+    private Float mFirstLineY;
+    private Float mSecondLineY;
     private Float mThirdLineY;
+    private Float mFourthLineY;
+    private Float mFifthLineY;
     private Music.Clef mClef;
+
     public PositionDict(float barHeight, Music.Clef clef) {
         mBarHeight = barHeight;
         mClef = clef;
         midiNoteDict = new MidiNoteDict();
         initMaps(barHeight, clef);
         initBarlineMaps(clef);
+    }
+
+    public Float getFirstLineY() {
+        return mFirstLineY;
+    }
+
+    public Float getSecondLineY() {
+        return mSecondLineY;
+    }
+
+    public Float getFourthLineY() {
+        return mFourthLineY;
+    }
+
+    public Float getFifthLineY() {
+        return mFifthLineY;
     }
 
     public Float getThirdLineY() {
@@ -167,8 +188,17 @@ public class PositionDict {
                 Float toneY = toneToYMap.get(tone);
                 toneToBarlineYMap.put(tone, toneY);
                 barlineYToToneMap.put(toneToBarlineYMap.get(tone), tone);
-                if (i == 2) {  // If this is the third barline
-                    mThirdLineY = toneY; // store it
+                switch (i) {
+                    case 0:
+                        mFirstLineY = toneY;
+                    case 1:
+                        mSecondLineY = toneY;
+                    case 2:
+                        mThirdLineY = toneY;
+                    case 3:
+                        mFourthLineY = toneY;
+                    case 4:
+                        mFifthLineY = toneY;
                 }
             } catch (NullPointerException e) {
                 Log.e(TAG, "initBarlineMaps: NullPointerException, could not retrieve " +

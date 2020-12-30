@@ -19,7 +19,7 @@ class ShortRestComposite(
 
     init {
         val x = notePositionDict.noteX
-        val y = notePositionDict.thirdLineY - notePositionDict.singleSpaceHeight
+        val y = notePositionDict.fourthLineY
         val dy = notePositionDict.singleSpaceHeight
         val dx = notePositionDict.singleSpaceHeight / 4 + paint.strokeWidth / 2
 
