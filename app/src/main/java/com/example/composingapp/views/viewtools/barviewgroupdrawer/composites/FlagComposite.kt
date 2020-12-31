@@ -3,6 +3,7 @@ package com.example.composingapp.views.viewtools.barviewgroupdrawer.composites
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
+import android.util.Log
 import androidx.core.graphics.withTranslation
 import com.example.composingapp.utils.interfaces.ComponentDrawer
 import com.example.composingapp.utils.interfaces.CompositeDrawer
@@ -11,6 +12,7 @@ import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
+import kotlin.math.roundToInt
 
 class FlagComposite(
         val notePositionDict: NotePositionDict,
@@ -27,7 +29,7 @@ class FlagComposite(
                 add(FlagLeaf(this, paint))
             } else if (this.note.noteLength == Music.NoteLength.SIXTEENTH_NOTE) {
                 add(FlagLeaf(this, paint))
-                add(FlagLeaf(this, paint, dy = this.singleSpaceHeight))
+                add(FlagLeaf(this, paint, dy = this.singleSpaceHeight/2))
             }
         }
     }
@@ -62,18 +64,28 @@ class FlagComposite(
         private val dx: Float = (noteHorzRadius * 1.5).toFloat()
         private val arcRect: RectF = RectF(-dx, -fourthDistance, dx, fourthDistance)
         private val originalStrokeWidth = originalPaint.strokeWidth
+        private val flagWidth: Int = (notePositionDict.singleSpaceHeight/4).roundToInt()
 
         override fun draw(canvas: Canvas?) {
             canvas?.apply {
                 if (flagPointsDown) {
                     withTranslation(x + noteHorzRadius - originalStrokeWidth,
                             y - fourthDistance + dy) {
-                        drawArc(arcRect, -90f, 90f, false, flagPaint)
+                        for (i in 0..flagWidth) {
+                            withTranslation(y = i.toFloat()) {
+                                drawArc(arcRect, -90f, 90f, false, flagPaint)
+                            }
+                        }
                     }
                 } else {
                     withTranslation(x - noteHorzRadius + originalStrokeWidth,
                             y + fourthDistance - dy) {
-                        drawArc(arcRect, 90f, -90f, false, flagPaint)
+                        for (i in 0..flagWidth) {
+                            withTranslation(y = -i.toFloat()) {
+
+                                drawArc(arcRect, 90f, -90f, false, flagPaint)
+                            }
+                        }
                     }
                 }
             }

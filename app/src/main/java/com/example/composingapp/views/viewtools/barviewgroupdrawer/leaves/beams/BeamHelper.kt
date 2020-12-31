@@ -1,19 +1,63 @@
 package com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams
 
 import android.graphics.Paint
+import android.util.Log
 import com.example.composingapp.utils.Line
+import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.NoteView
 import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import kotlin.math.abs
 
 object BeamHelper {
+    private const val TAG = "BeamHelper"
+    /**
+     *   Produces a 2D list where each element is a group of notes that satisfy the given condition
+     *
+     *   @param condition (Music.NoteLength -> Boolean) The condition to collect by
+     *
+     *   @return 2D list containing groups of NoteViews (groups.size >= 1) who meet the condition
+     */
+    fun List<NoteView>.onlyGroupsWithNoteLengthCondition(condition: (Music.NoteLength) -> Boolean)
+            : List<List<NoteView>> {
+        return (this.groupByNoteLengthCondition(condition)
+                .filter { condition(it.first().notePositionDict.note.noteLength) })
+    }
+
+    /**
+     *  Produces a 2D list where each element is a group of notes where each subelement either satisfies
+     *     or does not satisfy a condition.
+     *
+     *  @param noteViewList NoteViewList to find consecutive notes to make the 2D array
+     *  @param accumulator List that collects the groups that meet the condition or not: used for tail recursion
+     *  @param condition (Music.NoteLength -> Boolean) The condition to collect by
+     *
+     *  @return 2D list containing groups of NoteViews (groups.size >= 1) who meet the condition or do not
+     */
+    tailrec fun List<NoteView>.groupByNoteLengthCondition(
+            condition: (Music.NoteLength) -> Boolean,
+            accumulator: List<List<NoteView>> = emptyList(),
+    ): List<List<NoteView>> {
+        // Collect all proceeding notes that have the same condition as the first
+        val firstGroup: List<NoteView> = this.takeWhile {
+            condition(it.notePositionDict.note.noteLength) ==
+                    condition(this.first().notePositionDict.note.noteLength)
+        }
+        // Once we hit an element that has a different condition, store the rest of the list
+        val restOfGroup: List<NoteView> = this.takeLast(this.size - firstGroup.size)
+        return when {
+            restOfGroup.isEmpty() -> accumulator + listOf(firstGroup)
+            else -> restOfGroup.groupByNoteLengthCondition(condition, accumulator + listOf(firstGroup))
+        }
+    }
+
     /**
      *  Produces the StemDirection of a group of NoteViews that need to be beamed together
      *
      *  @param notePositionDicts List of NotePositionDicts containing coordinate information for NoteViews
      *
-     *  @return StemDirection according to musical conventions
+     *  @return StemDirection: POINTS_DOWN if half of the group or more points down individually,
+     *                         and POINTS_UP otherwise
      */
     fun findStemDirection(notePositionDicts: List<NotePositionDict>): StemLeaf.StemDirection {
         // If half of the notes point down, the entire group will point down
@@ -70,4 +114,6 @@ object BeamHelper {
                     - this.notePositionDict.noteY)
         }
     }
+
+
 }

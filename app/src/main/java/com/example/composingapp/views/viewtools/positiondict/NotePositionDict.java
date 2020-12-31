@@ -29,7 +29,11 @@ public class NotePositionDict extends PositionDict {
         mHeight = height;
         mWidth = width;
         mNoteX = (mWidth / 2);
-        mNoteY = getNoteYOf(mNote);
+        if (note.getPitchClass() != Music.PitchClass.REST) {
+            mNoteY = getNoteYOf(mNote);
+        } else {
+            mNoteY = height / 2;
+        }
         mNoteVerticalRadius = getSingleSpaceHeight() / 2;
         mNoteHorizontalRadius = mNoteVerticalRadius * NOTE_W_TO_H_RATIO;
     }

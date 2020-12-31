@@ -75,7 +75,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         notePositionDict = new NotePositionDict(mNote, mClef, (float) w, (float) h);
         mNoteViewDrawer = new NoteViewDrawer(notePositionDict);
-        Log.d(TAG, "onSizeChanged: noteViewDrawer created");
+//        Log.d(TAG, "onSizeChanged: noteViewDrawer created");
     }
 
 

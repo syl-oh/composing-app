@@ -5,7 +5,7 @@ data class Line(
         val y: Float,
         val slope: Float,
 ) {
-    var yIntercept = y - slope * x
+    val yIntercept = y - slope * x
 
     constructor(x1: Float, x2: Float, y1: Float, y2: Float) : this(x1, y1, ((y2 - y1) / (x2 - x1)))
 
@@ -18,7 +18,7 @@ data class Line(
         return (y - yIntercept) / slope
     }
 
-    fun moveVertically(yTranslation: Float) {
-        yIntercept += yTranslation
+    fun moveVertically(yTranslation: Float): Line {
+        return Line(x, y + yTranslation, slope)
     }
 }
