@@ -17,4 +17,8 @@ data class Line(
     fun xAt(y: Float): Float {
         return (y - yIntercept) / slope
     }
+
+    fun moveVertically(yTranslation: Float) {
+        yIntercept += yTranslation
+    }
 }

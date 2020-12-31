@@ -16,6 +16,7 @@ class BarlineLeaf(
 
     override fun draw(canvas: Canvas?) {
         canvas?.apply {
+            // Draw at each barline y position
             barlineYPositions.map {
                 drawLine(startX, it, endX, it, paint)
             }

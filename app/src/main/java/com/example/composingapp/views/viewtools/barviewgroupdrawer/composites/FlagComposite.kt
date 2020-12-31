@@ -1,4 +1,4 @@
-package com.example.composingapp.views.viewtools.noteviewdrawer.composites
+package com.example.composingapp.views.viewtools.barviewgroupdrawer.composites
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -8,6 +8,7 @@ import com.example.composingapp.utils.interfaces.ComponentDrawer
 import com.example.composingapp.utils.interfaces.CompositeDrawer
 import com.example.composingapp.utils.interfaces.LeafDrawer
 import com.example.composingapp.utils.music.Music
+import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
 
@@ -18,8 +19,10 @@ class FlagComposite(
     private val drawers = mutableListOf<ComponentDrawer>()
 
     init {
+        paint.strokeWidth = STEM_WIDTH
         with(notePositionDict) {
             add(StemLeaf(this, paint))
+            // Eighth notes require 1 flag, sixteenth notes need 2
             if (this.note.noteLength == Music.NoteLength.EIGHTH_NOTE) {
                 add(FlagLeaf(this, paint))
             } else if (this.note.noteLength == Music.NoteLength.SIXTEENTH_NOTE) {
@@ -42,7 +45,10 @@ class FlagComposite(
     }
 
 
-    class FlagLeaf(
+    /**
+     * Class for drawing a single flag to the screen
+     */
+    private class FlagLeaf(
             val notePositionDict: NotePositionDict,
             originalPaint: Paint,
             val x: Float = notePositionDict.noteX,

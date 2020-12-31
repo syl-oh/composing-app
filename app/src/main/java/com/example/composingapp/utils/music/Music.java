@@ -43,18 +43,24 @@ public final class Music extends Application {
      * Duration of a note in music
      */
     public enum NoteLength {
-        WHOLE_NOTE(1),
-        HALF_NOTE((double) 1 / 2),
-        QUARTER_NOTE((double) 1 / 4),
-        EIGHTH_NOTE((double) 1 / 8),
-        SIXTEENTH_NOTE((double) 1 /  16);
+        WHOLE_NOTE(1, false),
+        HALF_NOTE((double) 1 / 2, false),
+        QUARTER_NOTE((double) 1 / 4, false),
+        EIGHTH_NOTE((double) 1 / 8, true),
+        SIXTEENTH_NOTE((double) 1 / 16, true);
 
         // Value relative to whole note. Actual value does not matter - only its value
         //    relative to WHOLE_NOTE's
         private double valueToWholeNote;
+        private boolean needsFlag;
 
-        NoteLength(double valueToWholeNote) {
+        NoteLength(double valueToWholeNote, boolean needsFlag) {
             this.valueToWholeNote = valueToWholeNote;
+            this.needsFlag = needsFlag;
+        }
+
+        public boolean needsFlag() {
+            return needsFlag;
         }
 
         public double getValueToWholeNote() {

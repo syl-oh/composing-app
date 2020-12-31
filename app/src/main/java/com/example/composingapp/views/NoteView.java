@@ -190,7 +190,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     /**
      * Class to enable drag and drop that does not create a shadow
      */
-    static class NoDragShadowBuilder extends View.DragShadowBuilder {
+    private static class NoDragShadowBuilder extends View.DragShadowBuilder {
         public NoDragShadowBuilder(View view) {
             super(view);
         }

@@ -5,10 +5,10 @@ import android.graphics.Paint
 import com.example.composingapp.utils.interfaces.ComponentDrawer
 import com.example.composingapp.utils.interfaces.CompositeDrawer
 import com.example.composingapp.utils.music.Music
-import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
-import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.FilledBaseLeaf
 import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.HollowBaseLeaf
+import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
+import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 
 class NoteComposite(
         private val notePositionDict: NotePositionDict,

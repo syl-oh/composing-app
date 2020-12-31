@@ -2,7 +2,6 @@ package com.example.composingapp.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.util.Log;
 import android.widget.LinearLayout;
 
 import androidx.core.view.ViewCompat;
@@ -28,8 +27,12 @@ public class BarViewGroup extends LinearLayout {
         super(context);
         init();
     }
-    
 
+    /**
+     * Assigns the barObserver for this BarViewGroup, then updates/ creates its NoteView children
+     *
+     * @param barObserver The BarObserver for this BarViewGroup
+     */
     public void setBarObserver(BarObserver barObserver) {
         this.mBarObserver = barObserver;
         updateChildrenFromBarObserver();

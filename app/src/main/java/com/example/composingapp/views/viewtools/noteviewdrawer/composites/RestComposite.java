@@ -21,24 +21,18 @@ public class RestComposite implements CompositeDrawer {
     private final float REST_STROKE_WIDTH = 2 * STEM_WIDTH;
     private final NotePositionDict mNotePositionDict;
     private final Paint mRestPaint;
-    private final Note mNote;
     private final Float mNoteX;
-    private Float mThirdLineY;
+    private final Float mThirdLineY;
     private final Music.Clef mClef;
     ArrayList<ComponentDrawer> mDrawers;
 
     public RestComposite(NotePositionDict notePositionDict, Paint paint) {
         mNotePositionDict = notePositionDict;
-        mNote = mNotePositionDict.getNote();
+        Note mNote = mNotePositionDict.getNote();
         mClef = mNotePositionDict.getClef();
         mNoteX = mNotePositionDict.getNoteX();
+        mThirdLineY = mNotePositionDict.getThirdLineY();
         mRestPaint = paint;
-        try {
-            mThirdLineY = mNotePositionDict.getToneToBarlineYMap().get(mClef.getBarlineTones()[2]);
-        } catch (NullPointerException e) {
-            Log.e(TAG, "RestComposite: NullPointerException: could not retrieve y position of " +
-                    "the third barline");
-        }
         mDrawers = new ArrayList<>();
 
         // Add the required drawers
@@ -70,8 +64,11 @@ public class RestComposite implements CompositeDrawer {
     }
 
 
-    class LongRestLeaf implements LeafDrawer {
-        private final float LONG_REST_X_DEVIANCE_FACTOR = (float) 0.08;
+    /**
+     * Class for drawing either half or whole rests
+     */
+    private class LongRestLeaf implements LeafDrawer {
+        private final float xDevianceFactor = (float) 0.08;
         private final RectF rect;
         private final Float bottomLeftX;
         private final Float bottomRightX;
@@ -80,9 +77,9 @@ public class RestComposite implements CompositeDrawer {
 
         public LongRestLeaf(Music.NoteLength noteLength) {
             // X position
-            Float dx = mNoteX * LONG_REST_X_DEVIANCE_FACTOR;
-            Float rectLeftX = mNoteX - dx;
-            Float rectRightX = mNoteX + dx;
+            float dx = mNoteX * xDevianceFactor;
+            float rectLeftX = mNoteX - dx;
+            float rectRightX = mNoteX + dx;
             bottomLeftX = rectLeftX - dx;
             bottomRightX = rectRightX + dx;
 
@@ -113,7 +110,10 @@ public class RestComposite implements CompositeDrawer {
         }
     }
 
-    class QuarterRestLeaf implements LeafDrawer {
+    /**
+     * Class for drawing quarter rests
+     */
+    private class QuarterRestLeaf implements LeafDrawer {
         private final RectF curvedRect;
         float firstX, firstY, secondX, secondY, thirdY, fourthY;
         Paint restPaint;

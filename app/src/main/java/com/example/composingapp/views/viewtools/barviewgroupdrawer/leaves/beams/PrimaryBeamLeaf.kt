@@ -2,6 +2,7 @@ package com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.util.Log
 import com.example.composingapp.utils.Line
 import com.example.composingapp.views.NoteView
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.BeamHelper.getStemX
@@ -20,7 +21,7 @@ class PrimaryBeamLeaf(
     override val endY: Float
 
     init {
-        beamLine.yIntercept += yTranslation
+        beamLine.moveVertically(yTranslation)
         startY = beamLine.yAt(startX)
         endY = beamLine.yAt(endX)
     }

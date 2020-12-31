@@ -29,6 +29,11 @@ class NoteViewDrawer(private val notePositionDict: NotePositionDict) : Composite
         resetWith(notePositionDict)
     }
 
+    /**
+     *  Resets all drawers with the information provided from a given NotePositionDict
+     *
+     *  @param notePositionDict NotePositionDict containing coordinate information for the note
+     */
     fun resetWith(notePositionDict: NotePositionDict) {
         drawers.clear()
         if (notePositionDict.note.pitchClass == Music.PitchClass.REST) {

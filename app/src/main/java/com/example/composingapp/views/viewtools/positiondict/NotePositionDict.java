@@ -46,6 +46,11 @@ public class NotePositionDict extends PositionDict {
         return mNote;
     }
 
+    /**
+     * Sets the note for this NotePositionDict and recalculates its y position
+     *
+     * @param note The new Note 
+     */
     public void setNote(@NonNull Note note) {
         this.mNote = note;
         mNoteY = getNoteYOf(mNote);

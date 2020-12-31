@@ -17,6 +17,7 @@ class SidelineLeaf(
 
     override fun draw(canvas: Canvas?) {
         canvas?.apply {
+            // Draw at both ends of the bar
             listOf(startX, endX).map {
                 drawLine(it, topBarlineY, it, bottomBarlineY, paint)
             }

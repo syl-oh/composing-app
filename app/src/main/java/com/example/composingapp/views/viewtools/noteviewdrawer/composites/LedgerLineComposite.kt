@@ -32,9 +32,15 @@ class LedgerLineComposite(
         drawers.remove(drawerComponent)
     }
 
+    /**
+     *  Determines and adds the necessary LegderLineLeaf drawers according to notePositionDict
+     *
+     *  @param notePositionDict NotePositionDict containing coordinate information
+     *  @param paint Paint with which to draw
+     */
     private fun addNeededLedgerLineLeaves(notePositionDict: NotePositionDict, paint: Paint) {
         val barlineYAt: (Int) -> Float? =
-                { i -> notePositionDict.toneToBarlineYMap[notePositionDict.clef.barlineTones[i]]!!}
+                { i -> notePositionDict.toneToBarlineYMap[notePositionDict.clef.barlineTones[i]]}
         val topBarlineY: Float? =  barlineYAt(4)
         val bottomBarlineY: Float? = barlineYAt(0)
         val singleSpaceHeight: Float = notePositionDict.singleSpaceHeight
@@ -60,7 +66,10 @@ class LedgerLineComposite(
         }
     }
 
-    class LedgerLineLeaf(
+    /**
+     * Class for drawing a single ledger line to the screen
+     */
+    private class LedgerLineLeaf(
             val notePositionDict: NotePositionDict,
             val paint: Paint,
             val x: Float = notePositionDict.noteX,

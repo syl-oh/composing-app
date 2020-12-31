@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.util.Log
 import androidx.core.graphics.withTranslation
 import com.example.composingapp.utils.interfaces.LeafDrawer
+import com.example.composingapp.views.viewtools.ViewConstants
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 
 class StemLeaf(
@@ -19,6 +20,10 @@ class StemLeaf(
     private val noteY: Float = notePositionDict.noteY
     private val stemWidth: Float = paint.strokeWidth
     private val xDistanceFromCenter: Float = notePositionDict.noteHorizontalRadius - stemWidth
+
+    init {
+        paint.apply { strokeWidth = ViewConstants.STEM_WIDTH }
+    }
 
     override fun draw(canvas: Canvas?) {
         Log.d(TAG, "draw: stemDirection is: $stemDirection")
@@ -37,6 +42,9 @@ class StemLeaf(
         const val TAG = "StraightStemLeaf"
     }
 
+    /**
+     *  Enum class for specifying which direction the stem should point
+     */
     enum class StemDirection {
         POINTS_UP,
         POINTS_DOWN
