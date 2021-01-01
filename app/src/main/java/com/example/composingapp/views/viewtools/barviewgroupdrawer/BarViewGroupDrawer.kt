@@ -13,6 +13,7 @@ import com.example.composingapp.views.viewtools.barviewgroupdrawer.composites.Be
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.composites.FlagComposite
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.BarlineLeaf
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.SidelineLeaf
+import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.BeamHelper.groupByNoteLengthCondition
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.BeamHelper.onlyGroupsWithNoteLengthCondition
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict
 
@@ -42,6 +43,7 @@ class BarViewGroupDrawer(
         flaggableGroups =
                 noteViewList.filterNot { it.notePositionDict.note.pitchClass == Music.PitchClass.REST }
                         .onlyGroupsWithNoteLengthCondition { it.needsFlag() }
+
         resetDrawers()
     }
 
@@ -57,7 +59,6 @@ class BarViewGroupDrawer(
                 it.noteViewDrawer.add(FlagComposite(it.notePositionDict, paint))
             }
         }
-        Log.d(TAG, "resetDrawers: ${flaggableGroups.size}")
         flaggableGroups.filter { it.size >= 2 }.map { add(BeamComposite(it, paint)) }
     }
 

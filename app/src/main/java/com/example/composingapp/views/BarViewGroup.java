@@ -2,12 +2,18 @@ package com.example.composingapp.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.core.view.ViewCompat;
 
 import com.example.composingapp.utils.music.BarObserver;
+import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
+import com.example.composingapp.views.viewtools.LayoutWeightMap;
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.BarViewGroupDrawer;
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict;
 
@@ -36,6 +42,7 @@ public class BarViewGroup extends LinearLayout {
     public void setBarObserver(BarObserver barObserver) {
         this.mBarObserver = barObserver;
         updateChildrenFromBarObserver();
+//        testAddButtons();
     }
 
     /**
@@ -46,10 +53,9 @@ public class BarViewGroup extends LinearLayout {
         setWillNotDraw(false); // Enable drawing of the ViewGroup
         setOrientation(LinearLayout.HORIZONTAL);
         mBarViewGroupParams = new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT / BARS_PER_LINE,
-                LayoutParams.WRAP_CONTENT);
-        mBarViewGroupParams.weight = 1;
-
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                LayoutParams.MATCH_PARENT);
+        this.getWidth();
         // Initialize bar properties
         mNoteViewList = new ArrayList<>();
     }
@@ -60,9 +66,14 @@ public class BarViewGroup extends LinearLayout {
     private void updateChildrenFromBarObserver() {
         ArrayList<Note> noteArrayList = mBarObserver.getNoteArrayList();
         for (Note note : noteArrayList) {
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LayoutWeightMap.widthOf(note, noteArrayList, this.getLayoutParams().width),
+                    ViewGroup.LayoutParams.MATCH_PARENT
+            );
+
             NoteView noteView = new NoteView(getContext(), this, note, mBarObserver.getClef());
             noteView.setId(ViewCompat.generateViewId());
-            noteView.setLayoutParams(mBarViewGroupParams);
+            noteView.setLayoutParams(layoutParams);
             this.addView(noteView);
             mNoteViewList.add(noteView);
         }

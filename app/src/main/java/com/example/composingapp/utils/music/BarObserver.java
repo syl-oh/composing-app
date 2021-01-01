@@ -114,8 +114,7 @@ public class BarObserver implements Observer {
      * @param note The Note to remove
      */
     public void removeNote(Note note) {
-        int noteIndex = mNoteArrayList.indexOf(note);
-        mNoteArrayList.remove(noteIndex);
+        mNoteArrayList.remove(note);
     }
 
     /**

@@ -123,7 +123,7 @@ public class RestComposite implements CompositeDrawer {
             restPaint.setStrokeWidth(REST_STROKE_WIDTH);
             restPaint.setStyle(Paint.Style.STROKE);
             // x positions: deviance from the initial mNoteX
-            float dx = (float) 0.05 * mNoteX;
+            float dx = mNotePositionDict.getSingleSpaceHeight() / 2;
             firstX = mNoteX - dx;
             secondX = mNoteX + dx;
 

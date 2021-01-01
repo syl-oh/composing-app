@@ -20,15 +20,17 @@ object BeamHelper {
      */
     fun List<NoteView>.onlyGroupsWithNoteLengthCondition(condition: (Music.NoteLength) -> Boolean)
             : List<List<NoteView>> {
-        return (this.groupByNoteLengthCondition(condition)
-                .filter { condition(it.first().notePositionDict.note.noteLength) })
+        return when {
+            this.isEmpty() -> emptyList()
+            else ->(this.groupByNoteLengthCondition(condition)
+                    .filter { condition(it.first().notePositionDict.note.noteLength) })
+        }
     }
 
     /**
      *  Produces a 2D list where each element is a group of notes where each subelement either satisfies
      *     or does not satisfy a condition.
      *
-     *  @param noteViewList NoteViewList to find consecutive notes to make the 2D array
      *  @param accumulator List that collects the groups that meet the condition or not: used for tail recursion
      *  @param condition (Music.NoteLength -> Boolean) The condition to collect by
      *

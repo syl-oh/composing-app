@@ -28,6 +28,8 @@ class NoteViewDrawer(private val notePositionDict: NotePositionDict) : Composite
 
     init {
         resetWith(notePositionDict)
+//        Log.d(TAG, "Drawer for ${notePositionDict.note.pitchClass}, ${notePositionDict.note.octave}, " +
+//                "${notePositionDict.note.noteLength} ")
     }
 
     /**

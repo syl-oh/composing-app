@@ -1,7 +1,9 @@
 package com.example.composingapp.views;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,14 +34,15 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
     @NonNull
     @Override
     public BarViewGroupHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        Log.d(TAG, "onCreateViewHolder: ");
         BarViewGroup barViewGroup = new BarViewGroup(parent.getContext());
         barViewGroup.setId(View.generateViewId());
 
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 (parent.getWidth() / BARS_PER_LINE) - parent.getPaddingLeft() - parent.getPaddingRight(),
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
+        Log.d(TAG, "onCreateViewHolder: " +
+                ((parent.getWidth() / BARS_PER_LINE) - parent.getPaddingLeft() - parent.getPaddingRight()));
 
         barViewGroup.setLayoutParams(layoutParams);
         return new BarViewGroupHolder(barViewGroup);
