@@ -68,7 +68,6 @@ public class RestComposite implements CompositeDrawer {
      * Class for drawing either half or whole rests
      */
     private class LongRestLeaf implements LeafDrawer {
-        private final float xDevianceFactor = (float) 0.08;
         private final RectF rect;
         private final Float bottomLeftX;
         private final Float bottomRightX;
@@ -77,7 +76,7 @@ public class RestComposite implements CompositeDrawer {
 
         public LongRestLeaf(Music.NoteLength noteLength) {
             // X position
-            float dx = mNoteX * xDevianceFactor;
+            float dx = 3*mNotePositionDict.getSingleSpaceHeight() / 4;
             float rectLeftX = mNoteX - dx;
             float rectRightX = mNoteX + dx;
             bottomLeftX = rectLeftX - dx;

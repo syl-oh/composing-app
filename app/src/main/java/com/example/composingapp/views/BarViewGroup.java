@@ -70,7 +70,6 @@ public class BarViewGroup extends LinearLayout {
                     LayoutWeightMap.widthOf(note, noteArrayList, this.getLayoutParams().width),
                     ViewGroup.LayoutParams.MATCH_PARENT
             );
-
             NoteView noteView = new NoteView(getContext(), this, note, mBarObserver.getClef());
             noteView.setId(ViewCompat.generateViewId());
             noteView.setLayoutParams(layoutParams);

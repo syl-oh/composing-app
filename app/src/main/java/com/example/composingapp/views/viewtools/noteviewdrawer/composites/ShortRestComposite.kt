@@ -66,7 +66,7 @@ class ShortRestComposite(
 
         override fun draw(canvas: Canvas?) {
             canvas?.apply {
-                withTranslation(x + halfSpace / 2, y + halfSpace / 2) {
+                withTranslation(x - halfSpace/2, y + halfSpace / 2) {
                     drawOval(0F, 0F, halfSpace, halfSpace, paint)
                     drawArc(arcRect, startAngle, sweepAngle, false, arcPaint)
                     withTranslation(arcRect.width() / 2, -lineRise + halfSpace / 2) {

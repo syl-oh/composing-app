@@ -34,9 +34,17 @@ public class ScoreViewModel extends ViewModel {
         Note note2 = new Note(Music.PitchClass.A_NATURAL, 4, Music.NoteLength.SIXTEENTH_NOTE);
         Note note3 = new Note(Music.PitchClass.A_FLAT, 4, Music.NoteLength.HALF_NOTE);
         Note note4 = new Note(Music.PitchClass.D_NATURAL, 4, Music.NoteLength.EIGHTH_NOTE);
-        Note note5 = new Note(Music.NoteLength.WHOLE_NOTE);
+        Note note5 = new Note(Music.NoteLength.SIXTEENTH_NOTE);
 
         for (BarObserver barObserver : scoreObservable.getBarObserverList()) {
+            barObserver.addNote(note5);
+            barObserver.addNote(note5);
+            barObserver.addNote(note5);
+            barObserver.addNote(note5);
+
+            barObserver.addNote(note5);
+            barObserver.addNote(note5);
+            barObserver.addNote(note5);
             barObserver.addNote(note5);
         }
 
