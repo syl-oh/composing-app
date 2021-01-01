@@ -7,6 +7,7 @@ import android.util.Log
 import com.example.composingapp.utils.interfaces.*
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
+import com.example.composingapp.views.viewtools.accidentals.SharpLeaf
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.BarViewGroupDrawer
 import com.example.composingapp.views.viewtools.noteviewdrawer.composites.NoteComposite
 import com.example.composingapp.views.viewtools.noteviewdrawer.composites.RestComposite

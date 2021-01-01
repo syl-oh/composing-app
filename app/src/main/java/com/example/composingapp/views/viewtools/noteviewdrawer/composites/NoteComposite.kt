@@ -9,6 +9,9 @@ import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.FilledBase
 import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.HollowBaseLeaf
 import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
+import com.example.composingapp.utils.music.Music.PitchClass.Accidental
+import com.example.composingapp.views.viewtools.accidentals.FlatLeaf
+import com.example.composingapp.views.viewtools.accidentals.SharpLeaf
 
 class NoteComposite(
         private val notePositionDict: NotePositionDict,
@@ -17,17 +20,29 @@ class NoteComposite(
     private val drawers = mutableListOf<ComponentDrawer>()
 
     init {
+        // Add the base
         add(FilledBaseLeaf(notePositionDict, paint))
-        with(notePositionDict.note.noteLength) {
-            if (this == Music.NoteLength.WHOLE_NOTE ||
-                    this == Music.NoteLength.HALF_NOTE) {
+
+        // Add a hollow base, if needed
+        with(notePositionDict.note) {
+            if (this.noteLength == Music.NoteLength.WHOLE_NOTE ||
+                    this.noteLength == Music.NoteLength.HALF_NOTE) {
                 add(HollowBaseLeaf(notePositionDict, paint))
             }
-            if (this == Music.NoteLength.HALF_NOTE || this == Music.NoteLength.QUARTER_NOTE) {
+            if (this.noteLength == Music.NoteLength.HALF_NOTE ||
+                    this.noteLength == Music.NoteLength.QUARTER_NOTE) {
                 add(StemLeaf(notePositionDict, paint))
+            }
+
+            // Add any accidentals
+            with(pitchClass.accidental) {
+                if (this == Accidental.SHARP) add(SharpLeaf(notePositionDict, paint))
+                else if (this == Accidental.FLAT) add(FlatLeaf(notePositionDict, paint))
             }
         }
 
+
+        // Add the ledger lines
         add(LedgerLineComposite(notePositionDict, paint))
     }
 

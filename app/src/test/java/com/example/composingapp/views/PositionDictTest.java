@@ -23,8 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-@DisplayName("When notePositionDict is created ")
-class NotePositionDictTest {
+@DisplayName("When PositionDict is created ")
+class PositionDictTest {
     PositionDict notePositionDict;
     float barHeight;
     Music.Clef clef;

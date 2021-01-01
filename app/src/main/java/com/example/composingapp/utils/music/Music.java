@@ -4,6 +4,15 @@ import android.app.Application;
 
 import java.util.ArrayList;
 
+import static com.example.composingapp.utils.music.Music.PitchClass.Letter.A;
+import static com.example.composingapp.utils.music.Music.PitchClass.Letter.B;
+import static com.example.composingapp.utils.music.Music.PitchClass.Letter.C;
+import static com.example.composingapp.utils.music.Music.PitchClass.Letter.D;
+import static com.example.composingapp.utils.music.Music.PitchClass.Letter.E;
+import static com.example.composingapp.utils.music.Music.PitchClass.Letter.F;
+import static com.example.composingapp.utils.music.Music.PitchClass.Letter.G;
+import static com.example.composingapp.utils.music.Music.PitchClass.Letter.NONE;
+
 public final class Music extends Application {
     /**
      * Types of clefs used in music
@@ -72,33 +81,39 @@ public final class Music extends Application {
      * Pitch class (letter-name) of a note in music
      */
     public enum PitchClass {
-        A_FLAT(Accidental.FLAT),
-        A_NATURAL(Accidental.NATURAL),
-        A_SHARP(Accidental.SHARP),
-        B_FLAT(Accidental.FLAT),
-        B_NATURAL(Accidental.NATURAL),
-        B_SHARP(Accidental.SHARP),
-        C_FLAT(Accidental.FLAT),
-        C_NATURAL(Accidental.NATURAL),
-        C_SHARP(Accidental.SHARP),
-        D_FLAT(Accidental.FLAT),
-        D_NATURAL(Accidental.NATURAL),
-        D_SHARP(Accidental.SHARP),
-        E_FLAT(Accidental.FLAT),
-        E_NATURAL(Accidental.NATURAL),
-        E_SHARP(Accidental.SHARP),
-        F_FLAT(Accidental.FLAT),
-        F_NATURAL(Accidental.NATURAL),
-        F_SHARP(Accidental.SHARP),
-        G_FLAT(Accidental.FLAT),
-        G_NATURAL(Accidental.NATURAL),
-        G_SHARP(Accidental.SHARP),
-        REST(Accidental.NONE);
+        A_FLAT(A, Accidental.FLAT),
+        A_NATURAL(A, Accidental.NATURAL),
+        A_SHARP(A, Accidental.SHARP),
+        B_FLAT(B, Accidental.FLAT),
+        B_NATURAL(B, Accidental.NATURAL),
+        B_SHARP(B, Accidental.SHARP),
+        C_FLAT(C, Accidental.FLAT),
+        C_NATURAL(C, Accidental.NATURAL),
+        C_SHARP(C, Accidental.SHARP),
+        D_FLAT(D, Accidental.FLAT),
+        D_NATURAL(D, Accidental.NATURAL),
+        D_SHARP(D, Accidental.SHARP),
+        E_FLAT(E, Accidental.FLAT),
+        E_NATURAL(E, Accidental.NATURAL),
+        E_SHARP(E, Accidental.SHARP),
+        F_FLAT(F, Accidental.FLAT),
+        F_NATURAL(F, Accidental.NATURAL),
+        F_SHARP(F, Accidental.SHARP),
+        G_FLAT(G, Accidental.FLAT),
+        G_NATURAL(G, Accidental.NATURAL),
+        G_SHARP(G, Accidental.SHARP),
+        REST(NONE, Accidental.NONE);
 
+        private Letter letter;
         private Accidental accidental;
 
-        PitchClass(Accidental accidental) {
+        PitchClass(Letter letter, Accidental accidental) {
+            this.letter = letter;
             this.accidental = accidental;
+        }
+
+        public Letter getLetter() {
+            return letter;
         }
 
         public Accidental getAccidental() {
@@ -120,6 +135,10 @@ public final class Music extends Application {
             NATURAL,
             SHARP,
             FLAT;
+        }
+
+        public enum Letter {
+            A, B, C, D, E, F, G, NONE;
         }
     }
 }

@@ -20,9 +20,9 @@ public class PositionDict {
     private static final String TAG = "NotePositionDict";
     private final int totalPositions = ViewConstants.TOTAL_SPACES + ViewConstants.TOTAL_LINES;
     private FloatToneHashMap yToToneMap;
-    private HashMap<Tone, Float> toneToYMap;
+    private ToneFloatHashMap toneToYMap;
     private FloatToneHashMap barlineYToToneMap;
-    private HashMap<Tone, Float> toneToBarlineYMap;
+    private ToneFloatHashMap toneToBarlineYMap;
     private MidiNoteDict midiNoteDict;
     private Float mBarHeight;
     private Float mFirstLineY;
@@ -69,7 +69,7 @@ public class PositionDict {
      *
      * @return Hasmap with tones as keys and y positions of barlines as values
      */
-    public HashMap<Tone, Float> getToneToBarlineYMap() {
+    public ToneFloatHashMap getToneToBarlineYMap() {
         return toneToBarlineYMap;
     }
 
@@ -78,7 +78,7 @@ public class PositionDict {
      *
      * @return Hashmap with tones as keys and y positions as values
      */
-    public HashMap<Tone, Float> getToneToYMap() {
+    public ToneFloatHashMap getToneToYMap() {
         return toneToYMap;
     }
 
@@ -148,7 +148,7 @@ public class PositionDict {
         float currentY;
         Tone currentTone = null;
         yToToneMap = new FloatToneHashMap();
-        toneToYMap = new HashMap<>();
+        toneToYMap = new ToneFloatHashMap();
 
         for (int i = 0; i <= totalPositions; i++) {
             try {
@@ -181,7 +181,7 @@ public class PositionDict {
      */
     private void initBarlineMaps(@NotNull Music.Clef clef) {
         barlineYToToneMap = new FloatToneHashMap();
-        toneToBarlineYMap = new HashMap();
+        toneToBarlineYMap = new ToneFloatHashMap();
         for (int i = 0; i < 5; i++) {
             Tone tone = clef.getBarlineTones()[i];
             try {
@@ -208,34 +208,8 @@ public class PositionDict {
         }
     }
 
-    /**
-     * Hashmap that produces the value of the closest key
-     */
-    class FloatToneHashMap extends HashMap<Float, Tone> {
-        @Nullable
-        @Override
-        public Tone get(@Nullable Object key) {
-            return super.get(closestKey((Float) key));
-        }
 
 
-        /**
-         * Produces the key closest to the givenKey in the hashmap
-         *
-         * @param givenKey The key provided
-         * @return The closest key in the hashmap to the given key
-         */
-        private Float closestKey(Float givenKey) {
-            double minDiff = Double.MAX_VALUE;
-            Float closestKey = null;
-            for (Float currentKey : this.keySet()) {
-                double currentDiff = Math.abs(givenKey - currentKey);
-                if (currentDiff < minDiff) {
-                    closestKey = currentKey;
-                    minDiff = currentDiff;
-                }
-            }
-            return closestKey;
-        }
-    }
+
+
 }
