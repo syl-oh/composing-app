@@ -37,17 +37,13 @@ public class ScoreViewModel extends ViewModel {
         Note note5 = new Note(Music.NoteLength.SIXTEENTH_NOTE);
 
         for (BarObserver barObserver : scoreObservable.getBarObserverList()) {
-            barObserver.addNote(note5);
-            barObserver.addNote(note5);
-            barObserver.addNote(note5);
-            barObserver.addNote(note5);
-
-            barObserver.addNote(note5);
-            barObserver.addNote(note5);
-            barObserver.addNote(note5);
-            barObserver.addNote(note5);
+            barObserver.addNote(note);
+            barObserver.addNote(note);
+            barObserver.addNote(note4);
+            barObserver.addNote(note4);
+            barObserver.addNote(note4);
+            barObserver.addNote(note4);
         }
-
         mScoreObservableLiveData.setValue(scoreObservable);
     }
 

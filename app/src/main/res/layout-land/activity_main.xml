@@ -64,6 +64,5 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_quarter_note" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </LinearLayout>
 

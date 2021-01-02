@@ -2,8 +2,8 @@ package com.example.composingapp.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import androidx.core.view.ViewCompat;
 
 import com.example.composingapp.utils.music.BarObserver;
-import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.views.viewtools.LayoutWeightMap;
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.BarViewGroupDrawer;
@@ -19,10 +18,10 @@ import com.example.composingapp.views.viewtools.positiondict.BarPositionDict;
 
 import java.util.ArrayList;
 
-import static com.example.composingapp.views.viewtools.ViewConstants.BARS_PER_LINE;
-
 public class BarViewGroup extends LinearLayout {
     private static final String TAG = "BarViewGroup";
+    private ClefView clefView = new ClefView(getContext(), this);
+    private LayoutParams clefViewParams;
     private BarPositionDict mBarPositionDict;
     private LinearLayout.LayoutParams mBarViewGroupParams;
     private BarViewGroupDrawer mBarViewGroupDrawer;
@@ -34,6 +33,10 @@ public class BarViewGroup extends LinearLayout {
         init();
     }
 
+    public BarPositionDict getBarPositionDict() {
+        return mBarPositionDict;
+    }
+
     /**
      * Assigns the barObserver for this BarViewGroup, then updates/ creates its NoteView children
      *
@@ -41,8 +44,8 @@ public class BarViewGroup extends LinearLayout {
      */
     public void setBarObserver(BarObserver barObserver) {
         this.mBarObserver = barObserver;
+        this.addView(clefView);
         updateChildrenFromBarObserver();
-//        testAddButtons();
     }
 
     /**
@@ -52,10 +55,8 @@ public class BarViewGroup extends LinearLayout {
         // Initialize layout parameters
         setWillNotDraw(false); // Enable drawing of the ViewGroup
         setOrientation(LinearLayout.HORIZONTAL);
-        mBarViewGroupParams = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                LayoutParams.MATCH_PARENT);
-        this.getWidth();
+        setBackgroundColor(Color.TRANSPARENT);
+
         // Initialize bar properties
         mNoteViewList = new ArrayList<>();
     }
@@ -67,15 +68,17 @@ public class BarViewGroup extends LinearLayout {
         ArrayList<Note> noteArrayList = mBarObserver.getNoteArrayList();
         for (Note note : noteArrayList) {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    LayoutWeightMap.widthOf(note, noteArrayList, this.getLayoutParams().width),
-                    ViewGroup.LayoutParams.MATCH_PARENT
-            );
+                    0,
+                    ViewGroup.LayoutParams.MATCH_PARENT);
+            layoutParams.weight = LayoutWeightMap.weightOf(note);
             NoteView noteView = new NoteView(getContext(), this, note, mBarObserver.getClef());
             noteView.setId(ViewCompat.generateViewId());
             noteView.setLayoutParams(layoutParams);
             this.addView(noteView);
             mNoteViewList.add(noteView);
         }
+        // Force the relayout of only the children (do not call
+        forceLayout();
     }
 
     @Override
@@ -84,13 +87,19 @@ public class BarViewGroup extends LinearLayout {
         if (mBarObserver != null) {
             mBarPositionDict = new BarPositionDict(w, h, mBarObserver.getClef());
             mBarViewGroupDrawer = new BarViewGroupDrawer(mBarPositionDict);
+            int singleSpace = mBarPositionDict.getSingleSpaceHeight().intValue();
+            clefViewParams = new LinearLayout.LayoutParams(singleSpace * 4, singleSpace * 7);
         }
+
     }
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
         mBarViewGroupDrawer.setNoteViews(mNoteViewList);
+        clefView.setLayoutParams(clefViewParams);
+        clefView.setTranslationY(mBarPositionDict.getFifthLineY() -
+                3*mBarPositionDict.getSingleSpaceHeight()/2);
     }
 
     @Override

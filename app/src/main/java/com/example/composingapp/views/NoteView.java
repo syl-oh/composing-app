@@ -2,6 +2,7 @@ package com.example.composingapp.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.DragEvent;
 import android.view.GestureDetector;
@@ -69,6 +70,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
         }
         mGestureDetector = new GestureDetector(getContext(), this);
         mBarViewGroup = barViewGroup;
+        this.setBackgroundColor(Color.TRANSPARENT);
     }
 
 
@@ -76,7 +78,7 @@ public class NoteView extends View implements OnGestureListener, View.OnDragList
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         notePositionDict = new NotePositionDict(mNote, mClef, (float) w, (float) h);
         mNoteViewDrawer = new NoteViewDrawer(notePositionDict);
-//        Log.d(TAG, "onSizeChanged: x:" + getX() +" y:" + getY() + " w:" + w + " h:" + h);
+        Log.d(TAG, "onSizeChanged: x:" + getX() +" y:" + getY() + " w:" + w + " h:" + h);
     }
 
 
