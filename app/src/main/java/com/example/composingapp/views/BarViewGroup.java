@@ -3,9 +3,7 @@ package com.example.composingapp.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 
 import androidx.core.view.ViewCompat;
@@ -20,7 +18,6 @@ import java.util.ArrayList;
 
 public class BarViewGroup extends LinearLayout {
     private static final String TAG = "BarViewGroup";
-    private ClefView clefView = new ClefView(getContext(), this);
     private LayoutParams clefViewParams;
     private BarPositionDict mBarPositionDict;
     private LinearLayout.LayoutParams mBarViewGroupParams;
@@ -44,7 +41,6 @@ public class BarViewGroup extends LinearLayout {
      */
     public void setBarObserver(BarObserver barObserver) {
         this.mBarObserver = barObserver;
-        this.addView(clefView);
         updateChildrenFromBarObserver();
     }
 
@@ -77,7 +73,6 @@ public class BarViewGroup extends LinearLayout {
             this.addView(noteView);
             mNoteViewList.add(noteView);
         }
-        // Force the relayout of only the children (do not call
         forceLayout();
     }
 
@@ -87,8 +82,6 @@ public class BarViewGroup extends LinearLayout {
         if (mBarObserver != null) {
             mBarPositionDict = new BarPositionDict(w, h, mBarObserver.getClef());
             mBarViewGroupDrawer = new BarViewGroupDrawer(mBarPositionDict);
-            int singleSpace = mBarPositionDict.getSingleSpaceHeight().intValue();
-            clefViewParams = new LinearLayout.LayoutParams(singleSpace * 4, singleSpace * 7);
         }
 
     }
@@ -97,9 +90,6 @@ public class BarViewGroup extends LinearLayout {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
         mBarViewGroupDrawer.setNoteViews(mNoteViewList);
-        clefView.setLayoutParams(clefViewParams);
-        clefView.setTranslationY(mBarPositionDict.getFifthLineY() -
-                3*mBarPositionDict.getSingleSpaceHeight()/2);
     }
 
     @Override

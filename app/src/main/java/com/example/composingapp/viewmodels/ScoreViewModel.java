@@ -8,6 +8,7 @@ import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.ScoreObservable;
+import com.example.composingapp.views.viewtools.positiondict.PositionDict;
 
 public class ScoreViewModel extends ViewModel {
     private MutableLiveData<ScoreObservable> mScoreObservableLiveData;
@@ -37,12 +38,15 @@ public class ScoreViewModel extends ViewModel {
         Note note5 = new Note(Music.NoteLength.SIXTEENTH_NOTE);
 
         for (BarObserver barObserver : scoreObservable.getBarObserverList()) {
-            barObserver.addNote(note);
-            barObserver.addNote(note);
-            barObserver.addNote(note4);
-            barObserver.addNote(note4);
-            barObserver.addNote(note4);
-            barObserver.addNote(note4);
+            barObserver.addNote(note3);
+            barObserver.addNote(note2);
+            barObserver.addNote(note2);
+            barObserver.addNote(note2);
+            barObserver.addNote(note2);
+            barObserver.addNote(note2);
+            barObserver.addNote(note2);
+            barObserver.addNote(note2);
+            barObserver.addNote(note2);
         }
         mScoreObservableLiveData.setValue(scoreObservable);
     }

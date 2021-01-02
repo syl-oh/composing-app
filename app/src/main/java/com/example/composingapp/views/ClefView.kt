@@ -2,15 +2,12 @@ package com.example.composingapp.views
 
 import android.content.Context
 import android.graphics.Color
-import android.util.AttributeSet
-import android.view.View
-import android.widget.ImageButton
-import androidx.appcompat.widget.AppCompatImageButton
+import androidx.core.view.updateLayoutParams
 import com.example.composingapp.R
+import com.example.composingapp.views.viewtools.positiondict.PositionDict
 
 class ClefView(
         context: Context,
-        val barViewGroup: BarViewGroup
 ) : androidx.appcompat.widget.AppCompatImageButton(context) {
     init {
         setImageResource(R.drawable.ic_treble_clef)
@@ -18,4 +15,7 @@ class ClefView(
         scaleType = ScaleType.FIT_CENTER
     }
 
+    companion object {
+        private const val TAG = "ClefView"
+    }
 }
