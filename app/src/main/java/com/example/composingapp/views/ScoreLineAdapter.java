@@ -69,6 +69,7 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
             clefView.setLayoutParams(clefViewParams);
             clefView.setTranslationY(positionDict.getFifthLineY() -
                      2*positionDict.getSingleSpaceHeight() );
+            clefView.setClef(mScoreObservable.getClef());
             holder.barViewGroup.addView(clefView, 0);
         }
     }
