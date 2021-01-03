@@ -3,6 +3,8 @@ package com.example.composingapp.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -10,6 +12,7 @@ import androidx.core.view.ViewCompat;
 
 import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Note;
+import com.example.composingapp.views.touchlisteners.ToggleColourListener;
 import com.example.composingapp.views.viewtools.LayoutWeightMap;
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.BarViewGroupDrawer;
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict;
@@ -18,12 +21,10 @@ import java.util.ArrayList;
 
 public class BarViewGroup extends LinearLayout {
     private static final String TAG = "BarViewGroup";
-    private LayoutParams clefViewParams;
+    private final ArrayList<NoteView> mNoteViewList = new ArrayList<>();
     private BarPositionDict mBarPositionDict;
-    private LinearLayout.LayoutParams mBarViewGroupParams;
     private BarViewGroupDrawer mBarViewGroupDrawer;
     private BarObserver mBarObserver;
-    private ArrayList<NoteView> mNoteViewList;
 
     public BarViewGroup(Context context) {
         super(context);
@@ -52,9 +53,6 @@ public class BarViewGroup extends LinearLayout {
         setWillNotDraw(false); // Enable drawing of the ViewGroup
         setOrientation(LinearLayout.HORIZONTAL);
         setBackgroundColor(Color.TRANSPARENT);
-
-        // Initialize bar properties
-        mNoteViewList = new ArrayList<>();
     }
 
     /**
@@ -95,6 +93,20 @@ public class BarViewGroup extends LinearLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         mBarViewGroupDrawer.draw(canvas);
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            // Reset the clicked status of any clicked children
+            for (NoteView noteView : mNoteViewList) {
+//                noteView.setClicked(!noteView.isClicked());
+                if (noteView.isClicked()) {
+                    ToggleColourListener.INSTANCE.toggleColour(noteView);
+                }
+            }
+        }
+        return false;
     }
 
     @Override

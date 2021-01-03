@@ -17,7 +17,7 @@ import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 class NoteViewDrawer(private val notePositionDict: NotePositionDict) : CompositeDrawer {
     private var drawers = mutableListOf<ComponentDrawer>()
     private val observers = mutableListOf<Observer>()
-    private val paint = Paint().apply {
+    val paint = Paint().apply {
         color = Color.BLACK
         isAntiAlias = true
         isDither = true

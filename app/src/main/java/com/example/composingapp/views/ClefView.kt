@@ -2,11 +2,10 @@ package com.example.composingapp.views
 
 import android.content.Context
 import android.graphics.Color
-import androidx.core.content.res.ResourcesCompat
 import com.example.composingapp.R
 import com.example.composingapp.utils.interfaces.Clickable
 import com.example.composingapp.utils.music.Music
-import com.example.composingapp.views.onclicklisteners.ToggleColourListener
+import com.example.composingapp.views.touchlisteners.ToggleColourListener
 
 class ClefView(
         context: Context,
@@ -19,7 +18,7 @@ class ClefView(
         setImageResource(R.drawable.ic_treble_clef)
         setBackgroundColor(Color.TRANSPARENT)
         scaleType = ScaleType.FIT_CENTER
-        setOnClickListener(toggleColourListener)
+        setOnTouchListener(toggleColourListener)
     }
 
     fun setClef(clef: Music.Clef) {
