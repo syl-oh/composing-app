@@ -3,7 +3,6 @@ package com.example.composingapp.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -12,7 +11,7 @@ import androidx.core.view.ViewCompat;
 
 import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Note;
-import com.example.composingapp.views.touchlisteners.ToggleColourListener;
+import com.example.composingapp.views.touchhandlers.ToggleColourHandler;
 import com.example.composingapp.views.viewtools.LayoutWeightMap;
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.BarViewGroupDrawer;
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict;
@@ -25,10 +24,19 @@ public class BarViewGroup extends LinearLayout {
     private BarPositionDict mBarPositionDict;
     private BarViewGroupDrawer mBarViewGroupDrawer;
     private BarObserver mBarObserver;
+    private NoteView lastClickedNoteView;
 
     public BarViewGroup(Context context) {
         super(context);
         init();
+    }
+
+    public NoteView getLastClickedNoteView() {
+        return lastClickedNoteView;
+    }
+
+    public void setLastClickedNoteView(NoteView lastClickedNoteView) {
+        this.lastClickedNoteView = lastClickedNoteView;
     }
 
     public BarPositionDict getBarPositionDict() {
@@ -102,8 +110,11 @@ public class BarViewGroup extends LinearLayout {
             for (NoteView noteView : mNoteViewList) {
 //                noteView.setClicked(!noteView.isClicked());
                 if (noteView.isClicked()) {
-                    ToggleColourListener.INSTANCE.toggleColour(noteView);
+                    ToggleColourHandler.INSTANCE.toggleColour(noteView);
+                    noteView.setClicked(false);
                 }
+//                Log.d(TAG, "onInterceptTouchEvent: " + noteView.getNotePositionDict().getNote().getNoteLength()
+//                        + " is clicked: " + noteView.isClicked());
             }
         }
         return false;

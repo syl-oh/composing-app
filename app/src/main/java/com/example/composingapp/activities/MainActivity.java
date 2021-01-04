@@ -2,6 +2,10 @@ package com.example.composingapp.activities;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -41,13 +45,14 @@ public class MainActivity extends AppCompatActivity {
      * Creates the RecyclerView and adds a listener to attach the RecyclerView to the ViewModel
      */
     private void initBars() {
-        // Init the RecyclerView
+        // Init the RecyclerVie
         RecyclerView scoreLineView = findViewById(R.id.scorelineview);
         final ScoreLineAdapter scoreLineAdapter = new ScoreLineAdapter(
                 mScoreViewModel.getScoreObservableMutableLiveData().getValue());
         scoreLineView.setAdapter(scoreLineAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        layoutManager.canScrollHorizontally();
         scoreLineView.setLayoutManager(layoutManager);
 
         // Observer which updates the RecyclerView

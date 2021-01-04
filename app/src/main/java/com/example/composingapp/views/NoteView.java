@@ -4,27 +4,31 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.util.Log;
-import android.view.GestureDetector;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
 import com.example.composingapp.utils.interfaces.Clickable;
+import com.example.composingapp.utils.interfaces.TouchHandler;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
-import com.example.composingapp.views.touchlisteners.ToggleColourListener;
+import com.example.composingapp.views.touchhandlers.DragHandler;
+import com.example.composingapp.views.touchhandlers.MoveHandler;
+import com.example.composingapp.views.touchhandlers.ToggleColourHandler;
 import com.example.composingapp.views.viewtools.noteviewdrawer.NoteViewDrawer;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
+
+import java.util.ArrayList;
 
 public class NoteView extends View implements Clickable {
     private static final String TAG = "NoteView";
     private NotePositionDict notePositionDict;
     private Music.Clef mClef;
     private Note mNote;
-    private GestureDetector mGestureDetector;
     private NoteViewDrawer mNoteViewDrawer;
     private BarViewGroup mBarViewGroup;
     private boolean mIsClicked = false;
+    private ArrayList<TouchHandler> touchHandlers = new ArrayList<>();
 
     /**
      * Constructor for programmatically creating a NoteView
@@ -35,6 +39,10 @@ public class NoteView extends View implements Clickable {
     public NoteView(Context context, BarViewGroup barViewGroup, @NonNull Note note, @NonNull Music.Clef clef) {
         super(context);
         init(note, clef, barViewGroup);
+    }
+
+    public BarViewGroup getBarViewGroup() {
+        return mBarViewGroup;
     }
 
     public NoteViewDrawer getNoteViewDrawer() {
@@ -55,7 +63,6 @@ public class NoteView extends View implements Clickable {
             Log.e(TAG, "init: FATAL: Recieved null note for NoteView with ID "
                     + this.getId());
         }
-
         if (clef != null) {
             mClef = clef;
         } else {
@@ -64,7 +71,17 @@ public class NoteView extends View implements Clickable {
         }
 //        mGestureDetector = new GestureDetector(getContext(), this);
         mBarViewGroup = barViewGroup;
-        setOnTouchListener(ToggleColourListener.INSTANCE);
+
+        // Add the drag handler
+        touchHandlers.add(ToggleColourHandler.INSTANCE);
+        touchHandlers.add(MoveHandler.INSTANCE);
+
+        // Set the touch listener for events
+        setOnTouchListener((v, event) -> {
+            touchHandlers.forEach(handler -> handler.handleTouch(v, event));
+            performClick();
+            return true;
+        });
         this.setBackgroundColor(Color.TRANSPARENT);
     }
 
@@ -101,6 +118,9 @@ public class NoteView extends View implements Clickable {
     @Override
     public void setClicked(boolean isClicked) {
         mIsClicked = isClicked;
+        if (mIsClicked) {
+            mBarViewGroup.setLastClickedNoteView(this);
+        }
     }
 
 
@@ -203,16 +223,16 @@ public class NoteView extends View implements Clickable {
 //    }
 
 
-    /**
-     * Class to enable drag and drop that does not create a shadow
-     */
-    private static class NoDragShadowBuilder extends View.DragShadowBuilder {
-        public NoDragShadowBuilder(View view) {
-            super(view);
-        }
-
-        @Override
-        public void onDrawShadow(Canvas canvas) {
-        }
-    }
+//    /**
+//     * Class to enable drag and drop that does not create a shadow
+//     */
+//    private static class NoDragShadowBuilder extends View.DragShadowBuilder {
+//        public NoDragShadowBuilder(View view) {
+//            super(view);
+//        }
+//
+//        @Override
+//        public void onDrawShadow(Canvas canvas) {
+//        }
+//    }
 }

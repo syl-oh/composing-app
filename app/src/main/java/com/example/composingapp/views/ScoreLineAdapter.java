@@ -23,6 +23,7 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
     private ScoreObservable mScoreObservable; // Copy of scoreObservable
     private ArrayList<BarObserver> mBarObservers;
 
+
     public ScoreLineAdapter(ScoreObservable scoreObservable) {
         mScoreObservable = scoreObservable;
         mBarObservers = mScoreObservable.getBarObserverList();
@@ -42,6 +43,13 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
         }
         if (clefView == null) {
             clefView = new ClefView(parent.getContext());
+            int singleSpace = positionDict.getSingleSpaceHeight().intValue();
+            LinearLayout.LayoutParams clefViewParams =
+                    new LinearLayout.LayoutParams(singleSpace * 3, singleSpace * 8);
+            clefView.setLayoutParams(clefViewParams);
+            clefView.setTranslationY(positionDict.getFifthLineY() -
+                    2*positionDict.getSingleSpaceHeight() );
+            clefView.setClef(mScoreObservable.getClef());
         }
 
         BarViewGroup barViewGroup = new BarViewGroup(parent.getContext());
@@ -63,13 +71,6 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
         holder.barViewGroup.setBarObserver(currentBarObserver);
 
         if (position == 0) {
-            int singleSpace = positionDict.getSingleSpaceHeight().intValue();
-            LinearLayout.LayoutParams clefViewParams =
-                    new LinearLayout.LayoutParams(singleSpace * 3, singleSpace * 8);
-            clefView.setLayoutParams(clefViewParams);
-            clefView.setTranslationY(positionDict.getFifthLineY() -
-                     2*positionDict.getSingleSpaceHeight() );
-            clefView.setClef(mScoreObservable.getClef());
             holder.barViewGroup.addView(clefView, 0);
         }
     }
@@ -85,7 +86,6 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
 
         public BarViewGroupHolder(@NonNull View itemView) {
             super(itemView);
-//            Log.d(TAG, "ScoreLineViewHolder: ");
             barViewGroup = (BarViewGroup) itemView;
         }
 
