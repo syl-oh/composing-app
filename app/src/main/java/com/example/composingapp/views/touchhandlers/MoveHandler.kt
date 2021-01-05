@@ -2,8 +2,9 @@ package com.example.composingapp.views.touchhandlers
 
 import android.util.Log
 import android.view.MotionEvent
-import android.view.MotionEvent.*
+import android.view.MotionEvent.ACTION_MOVE
 import android.view.View
+import android.view.ViewConfiguration
 import com.example.composingapp.utils.interfaces.TouchHandler
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.utils.music.Note
@@ -14,9 +15,10 @@ import kotlin.math.abs
 
 object MoveHandler : TouchHandler {
     private const val TAG = "MoveHandler"
+
     override fun handleTouch(v: View, event: MotionEvent) {
-        if (event.action == ACTION_MOVE && v is NoteView && v.isClicked &&
-                v.notePositionDict.note.pitchClass != Music.PitchClass.REST) {
+        if (isMovableNoteView(v, event)) {
+            v as NoteView
             val notePositionDict: NotePositionDict = v.notePositionDict
             var note = notePositionDict.note
             val semiSpace: Float = notePositionDict.singleSpaceHeight / 2
@@ -44,7 +46,8 @@ object MoveHandler : TouchHandler {
         }
     }
 
-    private fun moveNote(view: NoteView, event: MotionEvent) {
-
+    private fun isMovableNoteView(v: View, event: MotionEvent): Boolean {
+        return event.action == ACTION_MOVE && v is NoteView && v.isClicked &&
+                v.notePositionDict.note.pitchClass != Music.PitchClass.REST
     }
 }

@@ -3,6 +3,9 @@ package com.example.composingapp.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.util.Log;
 import android.view.View;
 
@@ -12,11 +15,12 @@ import com.example.composingapp.utils.interfaces.Clickable;
 import com.example.composingapp.utils.interfaces.TouchHandler;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
-import com.example.composingapp.views.touchhandlers.DragHandler;
 import com.example.composingapp.views.touchhandlers.MoveHandler;
-import com.example.composingapp.views.touchhandlers.ToggleColourHandler;
+import com.example.composingapp.views.touchhandlers.ToggleClickedHandler;
 import com.example.composingapp.views.viewtools.noteviewdrawer.NoteViewDrawer;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -73,7 +77,7 @@ public class NoteView extends View implements Clickable {
         mBarViewGroup = barViewGroup;
 
         // Add the drag handler
-        touchHandlers.add(ToggleColourHandler.INSTANCE);
+        touchHandlers.add(ToggleClickedHandler.INSTANCE);
         touchHandlers.add(MoveHandler.INSTANCE);
 
         // Set the touch listener for events
@@ -102,6 +106,7 @@ public class NoteView extends View implements Clickable {
     @Override
     protected void onDraw(Canvas canvas) {
         mNoteViewDrawer.draw(canvas);
+//        canvas.drawRect(notePositionDict.getTouchAreaRectF(), mNoteViewDrawer.getPaint());
     }
 
     @Override
@@ -123,116 +128,9 @@ public class NoteView extends View implements Clickable {
         }
     }
 
-
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-////        mGestureDetector.onTouchEvent(event);
-//        return true;
-//    }
-
-
-//    @Override
-//    public boolean onDrag(View v, @NotNull DragEvent event) {
-//        switch (event.getAction()) {
-//            case DragEvent.ACTION_DRAG_STARTED:
-////                Log.d(TAG, "onDrag: drag started.");
-//                return true;
-//
-//            case DragEvent.ACTION_DRAG_ENTERED:
-////                Log.d(TAG, "onDrag: drag entered.");
-//                return true;
-//
-//            case DragEvent.ACTION_DRAG_LOCATION:
-//                Float semiSpace = notePositionDict.getSingleSpaceHeight() / 2; // Semispace distance
-//                Float noteY = notePositionDict.getNoteY();
-//                float dy = noteY - event.getY();                          // Change in y position
-//
-//                // Move up to the note a semispace above if the note has been dragged that far
-//                if (abs(dy) >= semiSpace) {
-//                    // Find the new tone
-//                    Float newToneY = dy > 0 ? noteY - semiSpace : noteY + semiSpace;
-//                    Tone nextTone = notePositionDict.getYToToneMap().get(newToneY);
-////                    Log.d(TAG, "onDrag: nextTone: " + nextTone.getPitchClass() + " octave " +
-////                            nextTone.getOctave());
-//
-//                    // Update the note and the NoteView, then redraw
-//                    mNote = new Note(
-//                            nextTone.getPitchClass(),
-//                            nextTone.getOctave(),
-//                            mNote.getNoteLength());
-//                    notePositionDict.setNote(mNote);
-//                    mNoteViewDrawer.resetWith(notePositionDict);
-//                    mBarViewGroup.invalidate();
-////                    Log.d(TAG, "onDrag: mNoteY " + newToneY);
-//                }
-//                return true;
-//
-//            case DragEvent.ACTION_DRAG_EXITED:
-////                Log.d(TAG, "onDrag: exited.");
-//                return true;
-//
-//            case DragEvent.ACTION_DROP:
-////                Log.d(TAG, "onDrag: dropped.");
-//                return true;
-//
-//            case DragEvent.ACTION_DRAG_ENDED:
-////                Log.d(TAG, "onDrag: ended.");
-//                return true;
-//
-//            // An unknown action type was received.
-//            default:
-//                Log.e(TAG, "Unknown action type received by OnStartDragListener.");
-//                break;
-//        }
-//        return false;
-//    }
-
-//    @Override
-//    public boolean onDown(MotionEvent e) {
-//        Log.d(TAG, "onDown: here");
-//        return false;
-//    }
-//
-//    @Override
-//    public void onShowPress(MotionEvent e) {
-//
-//    }
-//
-//    @Override
-//    public boolean onSingleTapUp(MotionEvent e) {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-//        return false;
-//    }
-//
-//    @Override
-//    public void onLongPress(MotionEvent e) {
-//        if (mNote.getPitchClass() != Music.PitchClass.REST) {
-//            NoDragShadowBuilder builder = new NoDragShadowBuilder(this); // Shadowless drag
-//            this.startDragAndDrop(null, builder, null, 0);
-//            builder.getView().setOnDragListener(this);
-//        }
-//    }
-//
-//    @Override
-//    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-//        return false;
-//    }
-
-
-//    /**
-//     * Class to enable drag and drop that does not create a shadow
-//     */
-//    private static class NoDragShadowBuilder extends View.DragShadowBuilder {
-//        public NoDragShadowBuilder(View view) {
-//            super(view);
-//        }
-//
-//        @Override
-//        public void onDrawShadow(Canvas canvas) {
-//        }
-//    }
+    @NotNull
+    @Override
+    public RectF getTouchAreaRectF() {
+        return notePositionDict.getTouchAreaRectF();
+    }
 }

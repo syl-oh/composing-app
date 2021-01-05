@@ -11,7 +11,7 @@ import androidx.core.view.ViewCompat;
 
 import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Note;
-import com.example.composingapp.views.touchhandlers.ToggleColourHandler;
+import com.example.composingapp.views.touchhandlers.ToggleClickedHandler;
 import com.example.composingapp.views.viewtools.LayoutWeightMap;
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.BarViewGroupDrawer;
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict;
@@ -110,7 +110,7 @@ public class BarViewGroup extends LinearLayout {
             for (NoteView noteView : mNoteViewList) {
 //                noteView.setClicked(!noteView.isClicked());
                 if (noteView.isClicked()) {
-                    ToggleColourHandler.INSTANCE.toggleColour(noteView);
+                    ToggleClickedHandler.INSTANCE.toggleClicked(noteView);
                     noteView.setClicked(false);
                 }
 //                Log.d(TAG, "onInterceptTouchEvent: " + noteView.getNotePositionDict().getNote().getNoteLength()

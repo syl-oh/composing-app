@@ -1,6 +1,6 @@
 package com.example.composingapp.views.viewtools.positiondict;
 
-import android.util.Log;
+import android.graphics.RectF;
 
 import androidx.annotation.NonNull;
 
@@ -11,11 +11,12 @@ import static com.example.composingapp.views.viewtools.ViewConstants.NOTE_W_TO_H
 
 public class NotePositionDict extends PositionDict {
     private static final String TAG = "NotePositionDict";
-    private final Float mNoteX, mHeight, mWidth;
-    private final Float mNoteVerticalRadius;
-    private final Float mNoteHorizontalRadius;
+    private final float mNoteX, mHeight, mWidth;
+    private final float mNoteVerticalRadius;
+    private final float mNoteHorizontalRadius;
+    private RectF mTouchAreaRectF;
     private Note mNote;
-    private Float mNoteY;
+    private float mNoteY;
 
     /**
      * Constructor
@@ -38,13 +39,18 @@ public class NotePositionDict extends PositionDict {
         }
         mNoteVerticalRadius = getSingleSpaceHeight() / 2;
         mNoteHorizontalRadius = mNoteVerticalRadius * NOTE_W_TO_H_RATIO;
+        updateTouchAreaRectF();
     }
 
-    public Float getNoteHorizontalRadius() {
+    public RectF getTouchAreaRectF() {
+        return mTouchAreaRectF;
+    }
+
+    public float getNoteHorizontalRadius() {
         return mNoteHorizontalRadius;
     }
 
-    public Float getNoteVerticalRadius() {
+    public float getNoteVerticalRadius() {
         return mNoteVerticalRadius;
     }
 
@@ -55,26 +61,32 @@ public class NotePositionDict extends PositionDict {
     /**
      * Sets the note for this NotePositionDict and recalculates its y position
      *
-     * @param note The new Note 
+     * @param note The new Note
      */
     public void setNote(@NonNull Note note) {
         this.mNote = note;
         mNoteY = getNoteYOf(mNote);
+        updateTouchAreaRectF();
     }
 
-    public Float getNoteX() {
+    public float getNoteX() {
         return mNoteX;
     }
 
-    public Float getNoteY() {
+    public float getNoteY() {
         return mNoteY;
     }
 
-    public Float getHeight() {
+    public float getHeight() {
         return mHeight;
     }
 
-    public Float getWidth() {
+    public float getWidth() {
         return mWidth;
+    }
+
+    private void updateTouchAreaRectF() {
+        mTouchAreaRectF = new RectF(-mWidth / 2 + mNoteX, -2 * getSingleSpaceHeight() + mNoteY,
+                mWidth / 2 + mNoteX, 2 * getSingleSpaceHeight() + mNoteY);
     }
 }

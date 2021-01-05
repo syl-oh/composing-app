@@ -2,18 +2,21 @@ package com.example.composingapp.views
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.RectF
 import com.example.composingapp.R
 import com.example.composingapp.utils.interfaces.Clickable
 import com.example.composingapp.utils.interfaces.TouchHandler
 import com.example.composingapp.utils.music.Music
-import com.example.composingapp.views.touchhandlers.ToggleColourHandler
+import com.example.composingapp.views.touchhandlers.ToggleClickedHandler
 
 class ClefView(
         context: Context,
 ) : androidx.appcompat.widget.AppCompatImageButton(context), Clickable {
-    private val handlers = listOf<TouchHandler>(ToggleColourHandler)
-    override var isClicked: Boolean = false;
+    private val handlers = listOf<TouchHandler>(ToggleClickedHandler)
+    override lateinit var touchAreaRectF: RectF
 
+
+    override var isClicked: Boolean = false;
     init {
         setImageResource(R.drawable.ic_treble_clef)
         setBackgroundColor(Color.TRANSPARENT)
@@ -23,7 +26,11 @@ class ClefView(
             handlers.map { it.handleTouch(v, event) }
             true   // Return true at the end
         }
+    }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        touchAreaRectF = RectF(0f, 0f, w.toFloat(), h.toFloat())
     }
 
     fun setClef(clef: Music.Clef) {

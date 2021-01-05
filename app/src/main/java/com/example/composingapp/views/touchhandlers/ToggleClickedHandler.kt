@@ -9,12 +9,12 @@ import com.example.composingapp.R
 import com.example.composingapp.utils.interfaces.Clickable
 import com.example.composingapp.utils.interfaces.TouchHandler
 
-object ToggleColourHandler : TouchHandler {
+object ToggleClickedHandler : TouchHandler {
     private const val notClickedColourID = R.color.black_note
     private const val clickedColourID = R.color.lavender
-    private const val TAG = "ToggleColourListener"
+    private const val TAG = "ToggleClickedHandler"
 
-    fun toggleColour(v: View?): Boolean {
+    fun toggleClicked(v: View?) {
         if (v is Clickable) {
             v.apply {
                 performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY)
@@ -27,12 +27,18 @@ object ToggleColourHandler : TouchHandler {
                 isClicked = !isClicked
             }
         }
-        return false
     }
 
     override fun handleTouch(v: View, event: MotionEvent) {
-        when (event.action) {
-            MotionEvent.ACTION_DOWN -> toggleColour(v)
+        if (shouldBeClicked(v, event)) {
+            v.parent.requestDisallowInterceptTouchEvent(true)
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> toggleClicked(v)
+            }
         }
+    }
+
+    private fun shouldBeClicked(v: View, event: MotionEvent): Boolean {
+        return (v is Clickable) && (v.touchAreaRectF.contains(event.x, event.y))
     }
 }

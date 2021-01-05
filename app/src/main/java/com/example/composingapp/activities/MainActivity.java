@@ -1,11 +1,6 @@
 package com.example.composingapp.activities;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.GestureDetector;
-import android.view.MotionEvent;
-import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -17,6 +12,7 @@ import com.example.composingapp.R;
 import com.example.composingapp.utils.music.ScoreObservable;
 import com.example.composingapp.viewmodels.ScoreViewModel;
 import com.example.composingapp.views.ScoreLineAdapter;
+import com.example.composingapp.views.ScoreLineView;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -46,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initBars() {
         // Init the RecyclerVie
-        RecyclerView scoreLineView = findViewById(R.id.scorelineview);
+        ScoreLineView scoreLineView = findViewById(R.id.scorelineview);
         final ScoreLineAdapter scoreLineAdapter = new ScoreLineAdapter(
                 mScoreViewModel.getScoreObservableMutableLiveData().getValue());
         scoreLineView.setAdapter(scoreLineAdapter);
@@ -54,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         layoutManager.canScrollHorizontally();
         scoreLineView.setLayoutManager(layoutManager);
+        scoreLineView.setNestedScrollingEnabled(false);
 
         // Observer which updates the RecyclerView
         final Observer<ScoreObservable> scoreObserver = scoreLineAdapter::setScoreObservable;
