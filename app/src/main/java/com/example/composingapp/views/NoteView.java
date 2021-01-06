@@ -13,7 +13,7 @@ import com.example.composingapp.utils.interfaces.ui.Clickable;
 import com.example.composingapp.utils.interfaces.ui.TouchHandler;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
-import com.example.composingapp.views.touchhandlers.MoveHandler;
+import com.example.composingapp.views.touchhandlers.NoteViewMoveHandler;
 import com.example.composingapp.views.touchhandlers.ToggleClickedHandler;
 import com.example.composingapp.views.viewtools.noteviewdrawer.NoteViewDrawer;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
@@ -76,7 +76,7 @@ public class NoteView extends View implements Clickable {
 
         // Add the drag handler
         touchHandlers.add(ToggleClickedHandler.INSTANCE);
-        touchHandlers.add(MoveHandler.INSTANCE);
+        touchHandlers.add(NoteViewMoveHandler.INSTANCE);
 
         // Set the touch listener for events
         setOnTouchListener((v, event) -> {

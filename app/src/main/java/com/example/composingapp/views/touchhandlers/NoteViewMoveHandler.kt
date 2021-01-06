@@ -1,7 +1,9 @@
 package com.example.composingapp.views.touchhandlers
 
+import android.util.Log
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_MOVE
+import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import com.example.composingapp.utils.interfaces.ui.TouchHandler
 import com.example.composingapp.utils.music.Music
@@ -11,11 +13,18 @@ import com.example.composingapp.views.NoteView
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import kotlin.math.abs
 
-object MoveHandler : TouchHandler {
-    private const val TAG = "MoveHandler"
+object NoteViewMoveHandler : TouchHandler {
+    private const val TAG = "NoteViewMoveHandler"
 
     override fun handleTouch(v: View, event: MotionEvent) {
-        if (isMovableNoteView(v, event)) {
+        when (event.action) {
+            ACTION_MOVE -> moveNoteView(v, event)
+            ACTION_UP -> Log.d(TAG, "handleTouch: ${(v as NoteView).notePositionDict.note.pitchClass}")
+        }
+    }
+
+    private fun moveNoteView(v: View, event: MotionEvent) {
+        if (v is NoteView && isMovableNoteView(v)) {
             v as NoteView  // Cast v as a NoteView (which is true since it passed isMovableNoteView)
             val notePositionDict: NotePositionDict = v.notePositionDict
             var note = notePositionDict.note
@@ -43,8 +52,7 @@ object MoveHandler : TouchHandler {
         }
     }
 
-    private fun isMovableNoteView(v: View, event: MotionEvent): Boolean {
-        return event.action == ACTION_MOVE && v is NoteView && v.isClicked &&
-                v.notePositionDict.note.pitchClass != Music.PitchClass.REST
+    private fun isMovableNoteView(v: View): Boolean {
+        return v is NoteView && v.isClicked && v.notePositionDict.note.pitchClass != Music.PitchClass.REST
     }
 }

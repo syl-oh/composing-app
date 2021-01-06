@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class BarObserver implements Observer {
     private static final String TAG = "BarObserver";
@@ -39,6 +40,7 @@ public class BarObserver implements Observer {
 
     /**
      * Getter method for this BarObserver's list of Note objects
+     *
      * @return ArrayList of Note objects
      */
     public ArrayList<Note> getNoteArrayList() {
@@ -56,6 +58,7 @@ public class BarObserver implements Observer {
 
     /**
      * Getter method for this BarObserver's BeatsPerBar
+     *
      * @return Int representing the total beats allowed in this bar
      */
     public int getBeatsPerBar() {
@@ -64,6 +67,7 @@ public class BarObserver implements Observer {
 
     /**
      * Getter method for this BarObserver's Clef
+     *
      * @return The clef of this BarObserver
      */
     public Music.Clef getClef() {
@@ -83,36 +87,107 @@ public class BarObserver implements Observer {
 
 
     /**
-     * Adds a given Note to this BarObserver to the end of the bar
+     * Adds a given Note to this BarObserver to the end of the bar. Should only be called on
+     * initialization of a BarObserver
      *
      * @param note The Note to add
      */
     public void addNote(Note note) {
         mNoteArrayList.add(note);
-        // Assert the bar contains a valid amount of notes
-        mNoteArrayList = resizeNoteArrayListToFitBar(mNoteArrayList);
     }
 
     /**
-     * Adds a given Note to this BarObserver at a specific index
+     * Replaces the note at a given index with a replacement, and fills any extra space with rest
+     * Notes. If the replacement is longer than the note at the given index, the proceeding note
+     * will also be replaced. If the proceeding note cannot be replaced, the transaction fails and
+     * nothing happens.
      *
-     * @param index The index of where to add the note
-     * @param note  The Note to add
+     * @param index       index of the note to replace
+     * @param replacement Note to replace with
      */
-    public void addNoteAt(int index, Note note) {
-        mNoteArrayList.add(index, note);
-        // Assert the bar contains a valid amount of notes
-        mNoteArrayList = resizeNoteArrayListToFitBar(mNoteArrayList);
+    public void replaceNoteAt(int index, Note replacement) {
+        // Verify that the index is within the Note ArrayList
+        if (index <= mNoteArrayList.size() - 1) {
+            Note targetNote = mNoteArrayList.get(index);
+            double targetNoteBeatWeight = mNoteLengthToBeatsMap.get(targetNote.getNoteLength());
+            double replacementNoteBeatWeight = mNoteLengthToBeatsMap.get(replacement.getNoteLength());
+
+            // If the replacement is less than the target in beat weight
+            if (replacementNoteBeatWeight < targetNoteBeatWeight) {
+                // Replace the target with the replacement and move the index pointer one forward
+                mNoteArrayList.remove(index);
+                mNoteArrayList.add(index, replacement);
+                index += 1;
+                addRestsWithWeightSumAt(index, targetNoteBeatWeight - replacementNoteBeatWeight);
+
+            } else if (replacementNoteBeatWeight == targetNoteBeatWeight) {
+                mNoteArrayList.remove(index);
+                mNoteArrayList.add(index, replacement);
+            } else {
+                double proceedingNotesBeatWeightSum = 0;
+                for (int i = 0; i < mNoteArrayList.size(); i++) {
+                    // Add the beat weights of Notes after the given index to get the sum
+                    if (i > index) {
+                        proceedingNotesBeatWeightSum +=
+                                mNoteLengthToBeatsMap.get(mNoteArrayList.get(i).getNoteLength());
+                    }
+
+                    // Check if the there is enough weight to complete the replacement of the Note
+                    if ((proceedingNotesBeatWeightSum + targetNoteBeatWeight) >= replacementNoteBeatWeight) {
+                        double weightDifference =
+                                (proceedingNotesBeatWeightSum + targetNoteBeatWeight) - replacementNoteBeatWeight;
+                        // Remove all notes between the given index and i
+                        for (int k = 0; k <= i - index; k++) {
+                            mNoteArrayList.remove(index);
+                        }
+                        mNoteArrayList.add(index, replacement);
+                        addRestsWithWeightSumAt(++index, weightDifference);
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     /**
-     * Removes a given Note from this BarObserver
+     * Fills the remainingWeight beat sum with rest Notes
      *
-     * @param note The Note to remove
+     * @param index index at which to add the rests
+     * @param weightSum sum of beat weight of the rests to be added
      */
-    public void removeNote(Note note) {
-        mNoteArrayList.remove(note);
+    private void addRestsWithWeightSumAt(int index, double weightSum) {
+        // Fill the remaining weight with Rest Notes
+        while (weightSum > 0) {
+            Music.NoteLength maxNoteLength = getMaxNoteLengthThatFits(weightSum);
+            // Add the Rest and move the index pointer
+            mNoteArrayList.add(index, new Note(maxNoteLength));
+            index++;
+            weightSum -= mNoteLengthToBeatsMap.get(maxNoteLength);
+        }
     }
+
+    /**
+     * Produces the largest NoteLength that fits within a given beatWeight
+     *
+     * @param beatWeight double value representing the beat weight to fit in
+     * @return NoteLength with the largest beat weight that fits within the given beatWeight
+     */
+    private Music.NoteLength getMaxNoteLengthThatFits(double beatWeight) {
+        // Set the default maximum to the lowest NoteLength
+        Music.NoteLength maxThatFits = Music.NoteLength.SIXTEENTH_NOTE;
+
+        for (Map.Entry entry : mNoteLengthToBeatsMap.entrySet()) {
+            Music.NoteLength currentNoteLength = (Music.NoteLength) entry.getKey();
+            double currentWeight = (double) entry.getValue();
+            // If we have found a larger NoteLength that fits in the extra space
+            if (currentWeight > mNoteLengthToBeatsMap.get(maxThatFits) &&
+                    currentWeight < beatWeight) {
+                maxThatFits = currentNoteLength;
+            }
+        }
+        return maxThatFits;
+    }
+
 
     /**
      * Resizes a Note ArrayList so that it does not contain more beats than permitted in this

@@ -3,7 +3,9 @@ package com.example.composingapp.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
+import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
+import com.example.composingapp.utils.interfaces.ui.Clickable
 import com.example.composingapp.views.touchhandlers.ToggleClickedHandler.toggleClicked
 
 
@@ -22,11 +24,12 @@ class ScoreLineView : RecyclerView {
             val child = getChildAt(i)
             // When the child is a BarViewGroup
             if (child is BarViewGroup) {
-                // Reset the clicked status of the BarViewGroup's NoteViews
-                for (noteView in child.noteViewList) {
-                    if (noteView.isClicked) {
-                        toggleClicked(noteView)
-                        noteView.isClicked = false
+                // Loop through BarViewGroup's children and reset Clickable views that are clicked
+                for (i in 0..child.childCount) {
+                    val barViewGroupChild = child.getChildAt(i)
+                    if (barViewGroupChild is Clickable && barViewGroupChild.isClicked) {
+                        toggleClicked(barViewGroupChild)
+                        barViewGroupChild.isClicked = false
                     }
                 }
             }
