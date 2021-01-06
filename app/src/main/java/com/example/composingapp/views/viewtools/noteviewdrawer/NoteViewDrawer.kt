@@ -3,12 +3,11 @@ package com.example.composingapp.views.viewtools.noteviewdrawer
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.Log
-import com.example.composingapp.utils.interfaces.*
+import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
+import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
+import com.example.composingapp.utils.interfaces.observer.Observer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
-import com.example.composingapp.views.viewtools.accidentals.SharpLeaf
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.BarViewGroupDrawer
 import com.example.composingapp.views.viewtools.noteviewdrawer.composites.NoteComposite
 import com.example.composingapp.views.viewtools.noteviewdrawer.composites.RestComposite
 import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf

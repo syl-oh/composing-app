@@ -1,7 +1,7 @@
 package com.example.composingapp.utils.music;
 
-import com.example.composingapp.utils.interfaces.Observable;
-import com.example.composingapp.utils.interfaces.Observer;
+import com.example.composingapp.utils.interfaces.observer.Observable;
+import com.example.composingapp.utils.interfaces.observer.Observer;
 
 import java.util.ArrayList;
 

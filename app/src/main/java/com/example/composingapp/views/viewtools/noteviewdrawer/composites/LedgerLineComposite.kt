@@ -3,9 +3,9 @@ package com.example.composingapp.views.viewtools.noteviewdrawer.composites
 import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.core.graphics.withTranslation
-import com.example.composingapp.utils.interfaces.ComponentDrawer
-import com.example.composingapp.utils.interfaces.CompositeDrawer
-import com.example.composingapp.utils.interfaces.LeafDrawer
+import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
+import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
+import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import kotlin.math.ceil
 import kotlin.math.floor

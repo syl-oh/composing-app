@@ -1,6 +1,9 @@
 package com.example.composingapp.activities;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -9,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.composingapp.R;
+import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.ScoreObservable;
 import com.example.composingapp.viewmodels.ScoreViewModel;
 import com.example.composingapp.views.ScoreLineAdapter;
@@ -27,20 +31,6 @@ public class MainActivity extends AppCompatActivity {
         mScoreViewModel = new ViewModelProvider(this).get(ScoreViewModel.class);
 
         // Create the RecyclerView for the BarViewGroups
-        initBars();
-
-        // Create the RecyclerView for the ImageButtons that the user can use to build scores
-        initMusicButtons();
-    }
-
-    private void initMusicButtons() {
-
-    }
-
-    /**
-     * Creates the RecyclerView and adds a listener to attach the RecyclerView to the ViewModel
-     */
-    private void initBars() {
         // Init the RecyclerVie
         ScoreLineView scoreLineView = findViewById(R.id.scorelineview);
         final ScoreLineAdapter scoreLineAdapter = new ScoreLineAdapter(
@@ -50,11 +40,15 @@ public class MainActivity extends AppCompatActivity {
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         layoutManager.canScrollHorizontally();
         scoreLineView.setLayoutManager(layoutManager);
-        scoreLineView.setNestedScrollingEnabled(false);
 
-        // Observer which updates the RecyclerView
-        final Observer<ScoreObservable> scoreObserver = scoreLineAdapter::setScoreObservable;
         // Observe the LiveData for the score in the ScoreViewModel
-        mScoreViewModel.getScoreObservableMutableLiveData().observe(this, scoreObserver);
+        mScoreViewModel.getScoreObservableMutableLiveData()
+                .observe(this, scoreLineAdapter::setScoreObservable);
+
+
+        ImageButton bassClefButton = findViewById(R.id.bassClefButton);
+        bassClefButton.setOnClickListener(v -> mScoreViewModel.setClef(Music.Clef.BASS_CLEF));
+        ImageButton trebleClefButton = findViewById(R.id.trebleClefButton);
+        trebleClefButton.setOnClickListener(v -> mScoreViewModel.setClef(Music.Clef.TREBLE_CLEF));
     }
 }

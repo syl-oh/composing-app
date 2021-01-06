@@ -1,4 +1,4 @@
-package com.example.composingapp.utils.interfaces;
+package com.example.composingapp.utils.interfaces.observer;
 
 public interface Observable {
     void addObserver(Observer observer);

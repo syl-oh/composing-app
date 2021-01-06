@@ -3,9 +3,8 @@ package com.example.composingapp.views.viewtools.barviewgroupdrawer
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.Log
-import com.example.composingapp.utils.interfaces.ComponentDrawer
-import com.example.composingapp.utils.interfaces.CompositeDrawer
+import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
+import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.NoteView
 import com.example.composingapp.views.viewtools.ViewConstants
@@ -13,7 +12,6 @@ import com.example.composingapp.views.viewtools.barviewgroupdrawer.composites.Be
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.composites.FlagComposite
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.BarlineLeaf
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.SidelineLeaf
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.BeamHelper.groupByNoteLengthCondition
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.BeamHelper.onlyGroupsWithNoteLengthCondition
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict
 

@@ -3,16 +3,14 @@ package com.example.composingapp.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.example.composingapp.utils.interfaces.Clickable;
-import com.example.composingapp.utils.interfaces.TouchHandler;
+import com.example.composingapp.utils.interfaces.ui.Clickable;
+import com.example.composingapp.utils.interfaces.ui.TouchHandler;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.views.touchhandlers.MoveHandler;

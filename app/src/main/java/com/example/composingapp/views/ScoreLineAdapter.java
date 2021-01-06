@@ -1,5 +1,6 @@
 package com.example.composingapp.views;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -31,6 +32,7 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
 
     public void setScoreObservable(ScoreObservable scoreObservable) {
         this.mScoreObservable = scoreObservable;
+        mBarObservers = scoreObservable.getBarObserverList();
         notifyDataSetChanged();
     }
 
@@ -41,27 +43,14 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
             positionDict = new PositionDict(parent.getHeight() - parent.getPaddingTop()
                     - parent.getPaddingBottom(), mScoreObservable.getClef());
         }
-        if (clefView == null) {
-            clefView = new ClefView(parent.getContext());
-            int singleSpace = positionDict.getSingleSpaceHeight().intValue();
-            LinearLayout.LayoutParams clefViewParams =
-                    new LinearLayout.LayoutParams(singleSpace * 3, singleSpace * 8);
-            clefView.setLayoutParams(clefViewParams);
-            clefView.setTranslationY(positionDict.getFifthLineY() -
-                    2*positionDict.getSingleSpaceHeight() );
-            clefView.setClef(mScoreObservable.getClef());
-        }
 
         BarViewGroup barViewGroup = new BarViewGroup(parent.getContext());
         barViewGroup.setId(View.generateViewId());
-
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 (parent.getWidth() / BARS_PER_LINE) - parent.getPaddingLeft() - parent.getPaddingRight(),
                 ViewGroup.LayoutParams.MATCH_PARENT);
-
-//        Log.d(TAG, "onCreateViewHolder: " +
-//                ((parent.getWidth() / BARS_PER_LINE) - parent.getPaddingLeft() - parent.getPaddingRight()));
         barViewGroup.setLayoutParams(layoutParams);
+
         return new BarViewGroupHolder(barViewGroup);
     }
 
@@ -71,17 +60,29 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
         holder.barViewGroup.setBarObserver(currentBarObserver);
 
         if (position == 0) {
-            holder.barViewGroup.addView(clefView, 0);
+            holder.barViewGroup.addView(createClefView(holder.barViewGroup), 0);
         }
     }
+
 
     @Override
     public int getItemCount() {
         return mBarObservers.size();
     }
 
+    private ClefView createClefView(View parent) {
+        clefView = new ClefView(parent.getContext());
+        int singleSpace = positionDict.getSingleSpaceHeight().intValue();
+        LinearLayout.LayoutParams clefViewParams =
+                new LinearLayout.LayoutParams(singleSpace * 3, singleSpace * 8);
+        clefView.setLayoutParams(clefViewParams);
+        clefView.setTranslationY(positionDict.getFifthLineY() -
+                2*positionDict.getSingleSpaceHeight() );
+        clefView.setClef(mScoreObservable.getClef());
+        return clefView;
+    }
 
-    class BarViewGroupHolder extends RecyclerView.ViewHolder {
+    static class BarViewGroupHolder extends RecyclerView.ViewHolder {
         private BarViewGroup barViewGroup;
 
         public BarViewGroupHolder(@NonNull View itemView) {

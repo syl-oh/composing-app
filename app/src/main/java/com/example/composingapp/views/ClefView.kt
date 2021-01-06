@@ -4,8 +4,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.RectF
 import com.example.composingapp.R
-import com.example.composingapp.utils.interfaces.Clickable
-import com.example.composingapp.utils.interfaces.TouchHandler
+import com.example.composingapp.utils.interfaces.ui.Clickable
+import com.example.composingapp.utils.interfaces.ui.TouchHandler
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.touchhandlers.ToggleClickedHandler
 

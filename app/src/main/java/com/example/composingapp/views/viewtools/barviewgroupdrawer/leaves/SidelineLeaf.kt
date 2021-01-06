@@ -2,7 +2,7 @@ package com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import com.example.composingapp.utils.interfaces.LeafDrawer
+import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict
 
 class SidelineLeaf(

@@ -2,10 +2,7 @@ package com.example.composingapp.utils.music;
 
 import android.util.Log;
 
-import com.example.composingapp.utils.interfaces.Observer;
-import com.example.composingapp.utils.music.Music;
-import com.example.composingapp.utils.music.Note;
-import com.example.composingapp.utils.music.ScoreObservable;
+import com.example.composingapp.utils.interfaces.observer.Observer;
 
 import org.jetbrains.annotations.NotNull;
 

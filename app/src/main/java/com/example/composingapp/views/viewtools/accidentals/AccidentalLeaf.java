@@ -2,7 +2,7 @@ package com.example.composingapp.views.viewtools.accidentals;
 
 import android.graphics.Paint;
 
-import com.example.composingapp.utils.interfaces.LeafDrawer;
+import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 
 public abstract class AccidentalLeaf implements LeafDrawer {

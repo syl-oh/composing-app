@@ -52,7 +52,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_bass_clef" />
 
-        <com.example.composingapp.views.NoteButtonView
+        <ImageButton
             android:id="@+id/quarterNoteButton"
             android:layout_width="0dp"
             android:layout_height="match_parent"

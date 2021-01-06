@@ -1,11 +1,9 @@
 package com.example.composingapp.views.touchhandlers
 
-import android.util.Log
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_MOVE
 import android.view.View
-import android.view.ViewConfiguration
-import com.example.composingapp.utils.interfaces.TouchHandler
+import com.example.composingapp.utils.interfaces.ui.TouchHandler
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.utils.music.Note
 import com.example.composingapp.utils.music.Tone
@@ -18,7 +16,7 @@ object MoveHandler : TouchHandler {
 
     override fun handleTouch(v: View, event: MotionEvent) {
         if (isMovableNoteView(v, event)) {
-            v as NoteView
+            v as NoteView  // Cast v as a NoteView (which is true since it passed isMovableNoteView)
             val notePositionDict: NotePositionDict = v.notePositionDict
             var note = notePositionDict.note
             val semiSpace: Float = notePositionDict.singleSpaceHeight / 2
@@ -27,7 +25,6 @@ object MoveHandler : TouchHandler {
 
             // Move up to the note a semispace above if the note has been dragged that far
             if (abs(dy) >= semiSpace) {
-//            Log.d(TAG, "dragNote: ${event.x}")
                 // Find the new tone
                 val newToneY = if (dy > 0) noteY - semiSpace else noteY + semiSpace
                 val nextTone: Tone? = notePositionDict.yToToneMap[newToneY]

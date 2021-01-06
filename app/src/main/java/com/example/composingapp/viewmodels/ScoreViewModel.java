@@ -1,6 +1,5 @@
 package com.example.composingapp.viewmodels;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -8,7 +7,6 @@ import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.utils.music.ScoreObservable;
-import com.example.composingapp.views.viewtools.positiondict.PositionDict;
 
 public class ScoreViewModel extends ViewModel {
     private MutableLiveData<ScoreObservable> mScoreObservableLiveData;
@@ -20,6 +18,11 @@ public class ScoreViewModel extends ViewModel {
 
     public MutableLiveData<ScoreObservable> getScoreObservableMutableLiveData() {
         return mScoreObservableLiveData;
+    }
+
+    public void setClef(Music.Clef clef) {
+        mScoreObservableLiveData.getValue().setClef(clef);
+        mScoreObservableLiveData.setValue(mScoreObservableLiveData.getValue());
     }
 
 

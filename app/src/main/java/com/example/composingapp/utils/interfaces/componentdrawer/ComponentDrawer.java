@@ -1,4 +1,4 @@
-package com.example.composingapp.utils.interfaces;
+package com.example.composingapp.utils.interfaces.componentdrawer;
 
 import android.graphics.Canvas;
 

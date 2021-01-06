@@ -2,9 +2,8 @@ package com.example.composingapp.views.viewtools.noteviewdrawer.composites
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.util.Log
-import com.example.composingapp.utils.interfaces.ComponentDrawer
-import com.example.composingapp.utils.interfaces.CompositeDrawer
+import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
+import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.FilledBaseLeaf
 import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.HollowBaseLeaf

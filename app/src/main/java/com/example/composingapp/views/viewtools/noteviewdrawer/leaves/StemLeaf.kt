@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.Log
 import androidx.core.graphics.withTranslation
-import com.example.composingapp.utils.interfaces.LeafDrawer
+import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
 import com.example.composingapp.views.viewtools.ViewConstants
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 

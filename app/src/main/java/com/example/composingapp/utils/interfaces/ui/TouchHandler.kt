@@ -1,4 +1,4 @@
-package com.example.composingapp.utils.interfaces
+package com.example.composingapp.utils.interfaces.ui
 
 import android.view.MotionEvent
 import android.view.View

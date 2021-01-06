@@ -1,6 +1,4 @@
-package com.example.composingapp.utils.interfaces;
-
-import java.util.ArrayList;
+package com.example.composingapp.utils.interfaces.componentdrawer;
 
 public interface CompositeDrawer extends ComponentDrawer {
     void add(ComponentDrawer drawerComponent);

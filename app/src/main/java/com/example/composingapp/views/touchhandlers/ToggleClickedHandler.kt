@@ -1,13 +1,12 @@
 package com.example.composingapp.views.touchhandlers
 
-import android.util.Log
 import android.view.HapticFeedbackConstants
 import android.view.MotionEvent
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import com.example.composingapp.R
-import com.example.composingapp.utils.interfaces.Clickable
-import com.example.composingapp.utils.interfaces.TouchHandler
+import com.example.composingapp.utils.interfaces.ui.Clickable
+import com.example.composingapp.utils.interfaces.ui.TouchHandler
 
 object ToggleClickedHandler : TouchHandler {
     private const val notClickedColourID = R.color.black_note

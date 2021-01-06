@@ -3,6 +3,7 @@ package com.example.composingapp.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -25,10 +26,13 @@ public class BarViewGroup extends LinearLayout {
     private BarViewGroupDrawer mBarViewGroupDrawer;
     private BarObserver mBarObserver;
     private NoteView lastClickedNoteView;
-
     public BarViewGroup(Context context) {
         super(context);
         init();
+    }
+
+    public ArrayList<NoteView> getNoteViewList() {
+        return mNoteViewList;
     }
 
     public NoteView getLastClickedNoteView() {
@@ -67,6 +71,11 @@ public class BarViewGroup extends LinearLayout {
      * Updates NoteView children based on Notes in BarObserver
      */
     private void updateChildrenFromBarObserver() {
+        // Clear the views and reset the NoteView list
+        mNoteViewList.clear();
+        removeAllViews();
+
+        // Create the new children and add them to the NoteView list
         ArrayList<Note> noteArrayList = mBarObserver.getNoteArrayList();
         for (Note note : noteArrayList) {
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -101,23 +110,6 @@ public class BarViewGroup extends LinearLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         mBarViewGroupDrawer.draw(canvas);
-    }
-
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            // Reset the clicked status of any clicked children
-            for (NoteView noteView : mNoteViewList) {
-//                noteView.setClicked(!noteView.isClicked());
-                if (noteView.isClicked()) {
-                    ToggleClickedHandler.INSTANCE.toggleClicked(noteView);
-                    noteView.setClicked(false);
-                }
-//                Log.d(TAG, "onInterceptTouchEvent: " + noteView.getNotePositionDict().getNote().getNoteLength()
-//                        + " is clicked: " + noteView.isClicked());
-            }
-        }
-        return false;
     }
 
     @Override
