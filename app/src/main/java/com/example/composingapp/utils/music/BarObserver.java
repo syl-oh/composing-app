@@ -152,7 +152,7 @@ public class BarObserver implements Observer {
     /**
      * Fills the remainingWeight beat sum with rest Notes
      *
-     * @param index index at which to add the rests
+     * @param index     index at which to add the rests
      * @param weightSum sum of beat weight of the rests to be added
      */
     private void addRestsWithWeightSumAt(int index, double weightSum) {

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.ScoreObservable;
+import com.example.composingapp.viewmodels.ScoreViewModel;
 import com.example.composingapp.views.viewtools.positiondict.PositionDict;
 
 import java.util.ArrayList;
@@ -19,14 +20,17 @@ import static com.example.composingapp.views.viewtools.ViewConstants.BARS_PER_LI
 
 public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarViewGroupHolder> {
     private static final String TAG = "ScoreLineAdapter";
+    private final ScoreViewModel mScoreViewModel;
     private PositionDict positionDict;
     private ClefView clefView;
     private ScoreObservable mScoreObservable; // Copy of scoreObservable
     private ArrayList<BarObserver> mBarObservers;
 
 
-    public ScoreLineAdapter(ScoreObservable scoreObservable) {
-        mScoreObservable = scoreObservable;
+    public ScoreLineAdapter(ScoreViewModel scoreViewModel) {
+        mScoreViewModel = scoreViewModel;
+        mScoreObservable = scoreViewModel.getScoreObservableMutableLiveData().getValue();
+        assert mScoreObservable != null;
         mBarObservers = mScoreObservable.getBarObserverList();
     }
 
@@ -44,7 +48,7 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
                     - parent.getPaddingBottom(), mScoreObservable.getClef());
         }
 
-        BarViewGroup barViewGroup = new BarViewGroup(parent.getContext());
+        BarViewGroup barViewGroup = new BarViewGroup(parent.getContext(), mScoreViewModel);
         barViewGroup.setId(View.generateViewId());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 (parent.getWidth() / BARS_PER_LINE) - parent.getPaddingLeft() - parent.getPaddingRight(),

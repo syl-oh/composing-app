@@ -1,22 +1,22 @@
 package com.example.composingapp.activities;
 
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.composingapp.R;
+import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Music;
-import com.example.composingapp.utils.music.ScoreObservable;
+import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.viewmodels.ScoreViewModel;
 import com.example.composingapp.views.ScoreLineAdapter;
 import com.example.composingapp.views.ScoreLineView;
+import com.example.composingapp.views.commands.ChangeClefCommand;
+import com.example.composingapp.views.commands.ChangeNoteCommand;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -26,15 +26,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // Init the ViewModel
         mScoreViewModel = new ViewModelProvider(this).get(ScoreViewModel.class);
 
         // Create the RecyclerView for the BarViewGroups
         // Init the RecyclerVie
         ScoreLineView scoreLineView = findViewById(R.id.scorelineview);
-        final ScoreLineAdapter scoreLineAdapter = new ScoreLineAdapter(
-                mScoreViewModel.getScoreObservableMutableLiveData().getValue());
+        final ScoreLineAdapter scoreLineAdapter = new ScoreLineAdapter(mScoreViewModel);
         scoreLineView.setAdapter(scoreLineAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
@@ -46,9 +44,18 @@ public class MainActivity extends AppCompatActivity {
                 .observe(this, scoreLineAdapter::setScoreObservable);
 
 
+        ImageButton quarterNoteButton = findViewById(R.id.quarterNoteButton);
+//        BarObserver targetBarObserver = mScoreViewModel.getScoreObservableMutableLiveData().getValue().getBarObserverList().get(0);
+//        ChangeNoteCommand quarterNoteCommand =
+//                new ChangeNoteCommand(mScoreViewModel, targetBarObserver, 0, new Note(Music.NoteLength.HALF_NOTE));
+//        quarterNoteButton.setOnClickListener(v -> quarterNoteCommand.execute());
+
         ImageButton bassClefButton = findViewById(R.id.bassClefButton);
-        bassClefButton.setOnClickListener(v -> mScoreViewModel.setClef(Music.Clef.BASS_CLEF));
+        ChangeClefCommand bassClefCommand = new ChangeClefCommand(mScoreViewModel, Music.Clef.BASS_CLEF);
+        bassClefButton.setOnClickListener(v -> bassClefCommand.execute());
+
         ImageButton trebleClefButton = findViewById(R.id.trebleClefButton);
-        trebleClefButton.setOnClickListener(v -> mScoreViewModel.setClef(Music.Clef.TREBLE_CLEF));
+        ChangeClefCommand trebleClefCommand = new ChangeClefCommand(mScoreViewModel, Music.Clef.TREBLE_CLEF);
+        trebleClefButton.setOnClickListener(v -> trebleClefCommand.execute());
     }
 }

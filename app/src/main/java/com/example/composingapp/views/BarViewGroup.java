@@ -3,8 +3,6 @@ package com.example.composingapp.views;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
@@ -12,7 +10,8 @@ import androidx.core.view.ViewCompat;
 
 import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Note;
-import com.example.composingapp.views.touchhandlers.ToggleClickedHandler;
+import com.example.composingapp.viewmodels.ScoreViewModel;
+import com.example.composingapp.views.commands.ChangeNoteCommand;
 import com.example.composingapp.views.viewtools.LayoutWeightMap;
 import com.example.composingapp.views.viewtools.barviewgroupdrawer.BarViewGroupDrawer;
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict;
@@ -26,9 +25,11 @@ public class BarViewGroup extends LinearLayout {
     private BarViewGroupDrawer mBarViewGroupDrawer;
     private BarObserver mBarObserver;
     private NoteView lastClickedNoteView;
-    public BarViewGroup(Context context) {
+    private ScoreViewModel mScoreViewModel;
+
+    public BarViewGroup(Context context, ScoreViewModel scoreViewModel) {
         super(context);
-        init();
+        init(scoreViewModel);
     }
 
     public ArrayList<NoteView> getNoteViewList() {
@@ -59,8 +60,11 @@ public class BarViewGroup extends LinearLayout {
 
     /**
      * Initializes the parameters, paints, and bar properties
+     *
+     * @param scoreViewModel
      */
-    private void init() {
+    private void init(ScoreViewModel scoreViewModel) {
+        mScoreViewModel = scoreViewModel;
         // Initialize layout parameters
         setWillNotDraw(false); // Enable drawing of the ViewGroup
         setOrientation(LinearLayout.HORIZONTAL);
@@ -91,6 +95,20 @@ public class BarViewGroup extends LinearLayout {
         forceLayout();
     }
 
+    /**
+     * Updates the ScoreViewModel on details of a NoteView child from this BarViewGroup. Called when
+     * a NoteView is dragged up or down
+     *
+     * @param noteView NoteView child of this BarViewGroup to update
+     */
+    public void updateScoreViewModel(NoteView noteView) {
+        // Find the index of the NoteView
+        int noteViewIndex = mNoteViewList.indexOf(noteView);
+        new ChangeNoteCommand(
+                mScoreViewModel, mBarObserver, noteViewIndex, noteView.getNotePositionDict().getNote()
+        ).execute();
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         // Update the y position dictionaries
@@ -98,7 +116,6 @@ public class BarViewGroup extends LinearLayout {
             mBarPositionDict = new BarPositionDict(w, h, mBarObserver.getClef());
             mBarViewGroupDrawer = new BarViewGroupDrawer(mBarPositionDict);
         }
-
     }
 
     @Override

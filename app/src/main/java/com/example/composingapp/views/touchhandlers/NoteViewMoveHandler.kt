@@ -9,23 +9,29 @@ import com.example.composingapp.utils.interfaces.ui.TouchHandler
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.utils.music.Note
 import com.example.composingapp.utils.music.Tone
+import com.example.composingapp.views.BarViewGroup
 import com.example.composingapp.views.NoteView
+import com.example.composingapp.views.commands.ChangeNoteCommand
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import kotlin.math.abs
 
 object NoteViewMoveHandler : TouchHandler {
     private const val TAG = "NoteViewMoveHandler"
-
     override fun handleTouch(v: View, event: MotionEvent) {
         when (event.action) {
             ACTION_MOVE -> moveNoteView(v, event)
-            ACTION_UP -> Log.d(TAG, "handleTouch: ${(v as NoteView).notePositionDict.note.pitchClass}")
+            ACTION_UP -> updateDataInViewModel(v)
+        }
+    }
+
+    private fun updateDataInViewModel(v: View) {
+        if (v is NoteView && v.parent is BarViewGroup) {
+            (v.parent as BarViewGroup).updateScoreViewModel(v)
         }
     }
 
     private fun moveNoteView(v: View, event: MotionEvent) {
         if (v is NoteView && isMovableNoteView(v)) {
-            v as NoteView  // Cast v as a NoteView (which is true since it passed isMovableNoteView)
             val notePositionDict: NotePositionDict = v.notePositionDict
             var note = notePositionDict.note
             val semiSpace: Float = notePositionDict.singleSpaceHeight / 2
