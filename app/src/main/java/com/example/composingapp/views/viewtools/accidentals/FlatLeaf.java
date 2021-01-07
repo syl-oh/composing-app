@@ -49,6 +49,8 @@ public class FlatLeaf extends AccidentalLeaf {
 
     @Override
     public void draw(Canvas canvas) {
+        // Reset the color, if needed
+        tempPaint.setColor(mPaint.getColor());
         // Draw the vertical line
         canvas.drawLine(centerX, centerY - mBoundingRectHeight / 2, centerX,
                 baseRectBottomY, mPaint);

@@ -2,7 +2,6 @@ package com.example.composingapp.views.viewtools.barviewgroupdrawer.composites
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.util.Log
 import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music
@@ -30,7 +29,7 @@ class BeamComposite(
         primaryBeam = PrimaryBeamLeaf(beamGroup, stemDirection, paint)
         add(primaryBeam)
         beamGroup.map {
-            it.noteViewDrawer.add(StemLeaf(it.notePositionDict, paint, stemDirection,
+            it.noteViewDrawer.add(StemLeaf(it.notePositionDict, it.noteViewDrawer.paint, stemDirection,
                     heightToBeam(it, primaryBeam.beamLine, paint, stemDirection)))
         }
 
@@ -44,7 +43,7 @@ class BeamComposite(
             // Function to simplify adding of secondary beams
             fun List<NoteView>.addSecondary(extendsBefore: Boolean, extendsAfter: Boolean) =
                     add(SecondaryBeamLeaf(this.first(), stemDirection, paint, beamYShift, extendsBefore,
-                    extendsAfter, primaryBeam.beamLine))
+                            extendsAfter, primaryBeam.beamLine))
 
             // Add secondary beam if the size of the sixteenth note group is 1, otherwise add
             //     another primary beam
@@ -53,13 +52,12 @@ class BeamComposite(
                 with(groupBySixteenth) {
                     when {
                         // If this is the first element in the group, extend after but not before
-                        this.indexOf(it) == 0 -> it.addSecondary(false, true)
-                        this.indexOf(it) == this.lastIndex -> it.addSecondary(true, false)
-                        else -> it.addSecondary(true, true)
+                        this.indexOf(it) == 0 -> it.addSecondary(extendsBefore = false, extendsAfter = true)
+                        this.indexOf(it) == this.lastIndex -> it.addSecondary(extendsBefore = true, extendsAfter = false)
+                        else -> it.addSecondary(extendsBefore = true, extendsAfter = true)
                     }
                 }
             } else {
-                Log.d(TAG, "added sixteenth note primary beam: $beamYShift")
                 add(PrimaryBeamLeaf(it, stemDirection, paint, beamYShift, primaryBeam.beamLine))
             }
         }

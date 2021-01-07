@@ -9,6 +9,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer;
 import com.example.composingapp.utils.interfaces.ui.Clickable;
 import com.example.composingapp.utils.interfaces.ui.TouchHandler;
 import com.example.composingapp.utils.music.Music;
@@ -16,6 +17,7 @@ import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.views.touchhandlers.NoteViewMoveHandler;
 import com.example.composingapp.views.touchhandlers.ToggleClickedHandler;
 import com.example.composingapp.views.viewtools.noteviewdrawer.NoteViewDrawer;
+import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 
 import org.jetbrains.annotations.NotNull;
