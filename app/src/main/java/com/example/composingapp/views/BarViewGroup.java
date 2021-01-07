@@ -137,4 +137,8 @@ public class BarViewGroup extends LinearLayout {
             noteView.invalidate();
         }
     }
+
+    public BarObserver getBarObserver() {
+        return mBarObserver;
+    }
 }

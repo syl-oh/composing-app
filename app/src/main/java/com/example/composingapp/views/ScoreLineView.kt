@@ -3,6 +3,7 @@ package com.example.composingapp.views
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.View
 import androidx.core.view.children
 import androidx.recyclerview.widget.RecyclerView
 import com.example.composingapp.utils.interfaces.ui.Clickable
@@ -19,21 +20,35 @@ class ScoreLineView : RecyclerView {
     }
 
     override fun onInterceptTouchEvent(e: MotionEvent?): Boolean {
-        // Reset the clicked status of any clicked NoteViews in the RecyclerView
+        when (e?.action) {
+            MotionEvent.ACTION_DOWN -> resetClickedChild()
+        }
+        return super.onInterceptTouchEvent(e)
+    }
+
+    private fun resetClickedChild() {
+        findClickedChild()?.let {
+            if (it is View) {
+                toggleClicked(it)
+            }
+        }
+    }
+
+    fun findClickedChild(): Clickable? {
         for (i in 0..childCount) {
             val child = getChildAt(i)
             // When the child is a BarViewGroup
             if (child is BarViewGroup) {
-                // Loop through BarViewGroup's children and reset Clickable views that are clicked
+                // Loop through BarViewGroup's children and find the Clickable that is clicked
                 for (i in 0..child.childCount) {
                     val barViewGroupChild = child.getChildAt(i)
                     if (barViewGroupChild is Clickable && barViewGroupChild.isClicked) {
-                        toggleClicked(barViewGroupChild)
-                        barViewGroupChild.isClicked = false
+                        return barViewGroupChild
                     }
                 }
             }
         }
-        return super.onInterceptTouchEvent(e)
+        // Return null if no children were clicked
+        return null
     }
 }

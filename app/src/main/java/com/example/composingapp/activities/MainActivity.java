@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.composingapp.R;
+import com.example.composingapp.utils.interfaces.ui.Clickable;
 import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.viewmodels.ScoreViewModel;
+import com.example.composingapp.views.NoteView;
 import com.example.composingapp.views.ScoreLineAdapter;
 import com.example.composingapp.views.ScoreLineView;
 import com.example.composingapp.views.commands.ChangeClefCommand;
@@ -45,10 +47,19 @@ public class MainActivity extends AppCompatActivity {
 
 
         ImageButton quarterNoteButton = findViewById(R.id.quarterNoteButton);
-//        BarObserver targetBarObserver = mScoreViewModel.getScoreObservableMutableLiveData().getValue().getBarObserverList().get(0);
-//        ChangeNoteCommand quarterNoteCommand =
-//                new ChangeNoteCommand(mScoreViewModel, targetBarObserver, 0, new Note(Music.NoteLength.HALF_NOTE));
-//        quarterNoteButton.setOnClickListener(v -> quarterNoteCommand.execute());
+        quarterNoteButton.setOnClickListener(view -> {
+            Clickable clickedChild = scoreLineView.findClickedChild();
+            if (clickedChild instanceof NoteView) {
+                Note oldNote = ((NoteView) clickedChild).getNotePositionDict().getNote();
+                BarObserver barObserver = ((NoteView) clickedChild).getBarViewGroup().getBarObserver();
+                int index = ((NoteView) clickedChild).getBarViewGroup().getNoteViewList().indexOf(clickedChild);
+                Note replacement = new Note(oldNote.getPitchClass(), oldNote.getOctave(), Music.NoteLength.QUARTER_NOTE);
+                ChangeNoteCommand command =
+                        new ChangeNoteCommand(mScoreViewModel, barObserver, index, replacement);
+                command.execute();
+                command.notifyScoreViewModelObservers();
+            }
+        });
 
         ImageButton bassClefButton = findViewById(R.id.bassClefButton);
         ChangeClefCommand bassClefCommand = new ChangeClefCommand(mScoreViewModel, Music.Clef.BASS_CLEF);

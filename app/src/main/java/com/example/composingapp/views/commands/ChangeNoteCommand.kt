@@ -4,6 +4,7 @@ import com.example.composingapp.utils.interfaces.ui.Command
 import com.example.composingapp.utils.music.BarObserver
 import com.example.composingapp.utils.music.Note
 import com.example.composingapp.viewmodels.ScoreViewModel
+import com.example.composingapp.viewmodels.ViewModelHelper.mutation
 
 class ChangeNoteCommand(
         private val scoreViewModel: ScoreViewModel,
@@ -22,5 +23,9 @@ class ChangeNoteCommand(
 
     override fun undo() {
         TODO("Not yet implemented")
+    }
+
+    fun notifyScoreViewModelObservers() {
+        scoreViewModel.scoreObservableMutableLiveData.mutation {  }
     }
 }
