@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class PositionDict {
     private static final int NUM_BARLINES = 5;
@@ -35,7 +36,7 @@ public class PositionDict {
     public PositionDict(float barHeight, Music.Clef clef) {
         mBarHeight = barHeight;
         mClef = clef;
-        midiNoteDict = new MidiNoteDict();
+        midiNoteDict = MidiNoteDict.getInstance();
         initMaps(barHeight, clef);
         initBarlineMaps(clef);
     }
@@ -158,7 +159,7 @@ public class PositionDict {
                         "midi index " + midiIndex + " from midiNoteDict");
             }
 
-            if (Arrays.asList(accPitchClasses).contains(currentTone.getPitchClass())) {
+            if (Arrays.asList(accPitchClasses).contains(Objects.requireNonNull(currentTone).getPitchClass())) {
                 i -= 1;
             }
             currentY = barHeight - ((barHeight * i) / totalPositions); // build from bottom to top

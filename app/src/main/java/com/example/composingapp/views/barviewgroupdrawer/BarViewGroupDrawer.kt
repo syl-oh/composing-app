@@ -1,4 +1,4 @@
-package com.example.composingapp.views.viewtools.barviewgroupdrawer
+package com.example.composingapp.views.barviewgroupdrawer
 
 import android.graphics.Canvas
 import android.graphics.Color
@@ -8,11 +8,11 @@ import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.NoteView
 import com.example.composingapp.views.viewtools.ViewConstants
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.composites.BeamComposite
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.composites.FlagComposite
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.BarlineLeaf
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.SidelineLeaf
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.BeamHelper.onlyGroupsWithNoteLengthCondition
+import com.example.composingapp.views.barviewgroupdrawer.composites.BeamComposite
+import com.example.composingapp.views.barviewgroupdrawer.composites.FlagComposite
+import com.example.composingapp.views.barviewgroupdrawer.leaves.BarlineLeaf
+import com.example.composingapp.views.barviewgroupdrawer.leaves.SidelineLeaf
+import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.onlyGroupsWithNoteLengthCondition
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict
 
 class BarViewGroupDrawer(

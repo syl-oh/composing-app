@@ -1,8 +1,7 @@
-package com.example.composingapp.views.viewtools.noteviewdrawer.leaves
+package com.example.composingapp.views.barviewgroupdrawer.leaves
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.util.Log
 import androidx.core.graphics.withTranslation
 import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
 import com.example.composingapp.views.viewtools.ViewConstants
@@ -26,7 +25,6 @@ class StemLeaf(
     }
 
     override fun draw(canvas: Canvas?) {
-        Log.d(TAG, "draw: stemDirection is: $stemDirection")
         canvas?.withTranslation(noteX, noteY) {
             if (stemDirection == StemDirection.POINTS_UP) {
                 canvas.drawLine(xDistanceFromCenter, 0f, xDistanceFromCenter,
@@ -39,7 +37,7 @@ class StemLeaf(
     }
 
     private companion object {
-        const val TAG = "StraightStemLeaf"
+//        const val TAG = "StraightStemLeaf"
     }
 
     /**

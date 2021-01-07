@@ -1,4 +1,4 @@
-package com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams
+package com.example.composingapp.views.barviewgroupdrawer.leaves.beams
 
 import android.graphics.Canvas
 import android.graphics.Paint

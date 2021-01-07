@@ -1,11 +1,10 @@
-package com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams
+package com.example.composingapp.views.barviewgroupdrawer.leaves.beams
 
 import android.graphics.Paint
-import android.util.Log
 import com.example.composingapp.utils.Line
 import com.example.composingapp.views.NoteView
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.BeamHelper.getStemX
-import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
+import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
+import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.getStemX
 
 class SecondaryBeamLeaf(
         val noteView: NoteView,
@@ -42,6 +41,6 @@ class SecondaryBeamLeaf(
     }
 
     companion object {
-        private const val TAG = "SecondaryBeamLeaf"
+//        private const val TAG = "SecondaryBeamLeaf"
     }
 }

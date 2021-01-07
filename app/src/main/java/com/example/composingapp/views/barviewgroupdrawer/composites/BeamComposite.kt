@@ -1,4 +1,4 @@
-package com.example.composingapp.views.viewtools.barviewgroupdrawer.composites
+package com.example.composingapp.views.barviewgroupdrawer.composites
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -6,13 +6,13 @@ import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.NoteView
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.BeamHelper.findStemDirection
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.BeamHelper.groupByNoteLengthCondition
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.BeamHelper.heightToBeam
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.BeamHelper.onlyGroupsWithNoteLengthCondition
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.PrimaryBeamLeaf
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams.SecondaryBeamLeaf
-import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
+import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.findStemDirection
+import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.groupByNoteLengthCondition
+import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.heightToBeam
+import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.onlyGroupsWithNoteLengthCondition
+import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.PrimaryBeamLeaf
+import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.SecondaryBeamLeaf
+import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 
 class BeamComposite(
@@ -76,6 +76,6 @@ class BeamComposite(
     }
 
     companion object {
-        private const val TAG = "BeamComposite"
+//        private const val TAG = "BeamComposite"
     }
 }

@@ -19,7 +19,7 @@ import static com.example.composingapp.views.viewtools.ViewConstants.BARS_PER_LI
 
 
 public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarViewGroupHolder> {
-    private static final String TAG = "ScoreLineAdapter";
+//    private static final String TAG = "ScoreLineAdapter";
     private final ScoreViewModel mScoreViewModel;
     private PositionDict positionDict;
     private ClefView clefView;

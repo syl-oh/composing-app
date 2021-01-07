@@ -1,4 +1,4 @@
-package com.example.composingapp.views.viewtools.accidentals;
+package com.example.composingapp.views.accidentals;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -7,7 +7,7 @@ import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 import com.example.composingapp.views.viewtools.ViewConstants;
 
 public class SharpLeaf extends AccidentalLeaf {
-    private static final String TAG = "SharpLeaf";
+//    private static final String TAG = "SharpLeaf";
     private static final double SLOPE = (double) 1 / 6;
     private Float vertStartX, vertStartY, horzStartX, horzStartY, verticalPadding, verticalHeight;
 

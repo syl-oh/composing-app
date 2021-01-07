@@ -1,16 +1,15 @@
-package com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams
+package com.example.composingapp.views.barviewgroupdrawer.leaves.beams
 
 import android.graphics.Paint
-import android.util.Log
 import com.example.composingapp.utils.Line
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.NoteView
-import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
+import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import kotlin.math.abs
 
 object BeamHelper {
-    private const val TAG = "BeamHelper"
+//    private const val TAG = "BeamHelper"
     /**
      *   Produces a 2D list where each element is a group of notes that satisfy the given condition
      *

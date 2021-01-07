@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 public class MidiNoteDict {
-    private static final String TAG = "MidiNoteDict";
+    private static MidiNoteDict INSTANCE;
     private final int startingMidiNum = 21;   // the first key on an 88-key piano
     private final int endingMidiNum = 108;    // the last key on an 88-key piano
     private HashMap<Integer, Tone> midiNumToToneMap;
@@ -13,8 +13,15 @@ public class MidiNoteDict {
     /**
      * Constructs MidiNoteDict. Immediately initializes the dictionary
      */
-    public MidiNoteDict() {
+    private MidiNoteDict() {
         buildMidiNoteDict();
+    }
+
+    public static MidiNoteDict getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new MidiNoteDict();
+        }
+        return INSTANCE;
     }
 
     /**
@@ -29,7 +36,7 @@ public class MidiNoteDict {
                 Music.PitchClass.C_SHARP, Music.PitchClass.D_NATURAL, Music.PitchClass.D_SHARP, Music.PitchClass.E_NATURAL,
                 Music.PitchClass.F_NATURAL, Music.PitchClass.F_SHARP, Music.PitchClass.G_NATURAL, Music.PitchClass.G_SHARP};
 
-        midiNumToToneMap = new HashMap<Integer, Tone>();  // initialize the dictionary
+        midiNumToToneMap = new HashMap<>();  // initialize the dictionary
         toneToMidiNumMap = new HashMap<>();
 
         // Prepare for the loop:

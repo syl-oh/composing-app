@@ -1,4 +1,4 @@
-package com.example.composingapp.views.viewtools.noteviewdrawer.leaves
+package com.example.composingapp.views.noteviewdrawer.leaves
 
 import android.graphics.Paint
 import com.example.composingapp.utils.music.Music
@@ -10,7 +10,7 @@ class FilledBaseLeaf(
 ) : BaseLeaf(notePositionDict) {
     override val vertRadius: Float = notePositionDict.noteVerticalRadius
     override val angle: Float = when (notePositionDict.note.noteLength) {
-        Music.NoteLength.WHOLE_NOTE -> WHOLE_NOTE_BASE_ANGLE
-        else -> FILLED_NOTE_ANGLE
+        Music.NoteLength.WHOLE_NOTE -> wholeNoteBaseAngle
+        else -> filledNoteAngle
     }
 }

@@ -6,7 +6,6 @@ import com.example.composingapp.utils.interfaces.observer.Observer;
 import java.util.ArrayList;
 
 public class ScoreObservable implements Observable {
-    private static final String TAG = "Staff";
     private ArrayList<BarObserver> mBarObserverList;
     private Music.Clef mClef;
     private Music.NoteLength mBeatUnit;

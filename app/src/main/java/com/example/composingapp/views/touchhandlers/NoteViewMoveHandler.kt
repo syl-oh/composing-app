@@ -16,7 +16,6 @@ import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import kotlin.math.abs
 
 object NoteViewMoveHandler : TouchHandler {
-    private const val TAG = "NoteViewMoveHandler"
     override fun handleTouch(v: View, event: MotionEvent) {
         when (event.action) {
             ACTION_MOVE -> moveNoteView(v, event)

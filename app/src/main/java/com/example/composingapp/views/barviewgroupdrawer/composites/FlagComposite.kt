@@ -1,4 +1,4 @@
-package com.example.composingapp.views.viewtools.barviewgroupdrawer.composites
+package com.example.composingapp.views.barviewgroupdrawer.composites
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -9,7 +9,7 @@ import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
-import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
+import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import kotlin.math.roundToInt
 

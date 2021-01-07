@@ -16,7 +16,7 @@ class ScoreLineView : RecyclerView {
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     companion object {
-        private const val TAG = "ScoreLineView"
+//        private const val TAG = "ScoreLineView"
     }
 
     override fun onInterceptTouchEvent(e: MotionEvent?): Boolean {

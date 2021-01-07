@@ -1,4 +1,4 @@
-package com.example.composingapp.views.viewtools.accidentals;
+package com.example.composingapp.views.accidentals;
 
 import android.graphics.Paint;
 

@@ -1,4 +1,4 @@
-package com.example.composingapp.views.viewtools.noteviewdrawer.leaves
+package com.example.composingapp.views.noteviewdrawer.leaves
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -13,10 +13,10 @@ abstract class BaseLeaf(
     abstract val notePaint: Paint
     abstract val vertRadius: Float
     abstract val angle: Float
-    protected val FILLED_NOTE_ANGLE = 330f
-    protected val HALF_NOTE_ANGLE_INSIDE = FILLED_NOTE_ANGLE
-    protected val WHOLE_NOTE_BASE_ANGLE = 0f
-    protected val WHOLE_NOTE_INNER_ANGLE = 75f
+    protected val filledNoteAngle = 330f
+    protected val halfNoteAngleInside = filledNoteAngle
+    protected val wholeNoteBaseAngle = 0f
+    protected val wholeNoteInnerAngle = 75f
     private val horzRadius = notePositionDict.noteHorizontalRadius
     private val noteX = notePositionDict.noteX
     private val noteY = notePositionDict.noteY
@@ -30,6 +30,6 @@ abstract class BaseLeaf(
     }
 
     companion object {
-        private const val TAG = "BaseLeaf"
+//        private const val TAG = "BaseLeaf"
     }
 }

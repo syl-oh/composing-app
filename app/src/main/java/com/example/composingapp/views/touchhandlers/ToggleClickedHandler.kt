@@ -11,7 +11,6 @@ import com.example.composingapp.utils.interfaces.ui.TouchHandler
 object ToggleClickedHandler : TouchHandler {
     private const val notClickedColourID = R.color.black_note
     private const val clickedColourID = R.color.lavender
-    private const val TAG = "ToggleClickedHandler"
 
     fun toggleClicked(v: View?) {
         if (v is Clickable) {

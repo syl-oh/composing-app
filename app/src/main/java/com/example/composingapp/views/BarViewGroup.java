@@ -13,13 +13,12 @@ import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.viewmodels.ScoreViewModel;
 import com.example.composingapp.views.commands.ChangeNoteCommand;
 import com.example.composingapp.views.viewtools.LayoutWeightMap;
-import com.example.composingapp.views.viewtools.barviewgroupdrawer.BarViewGroupDrawer;
+import com.example.composingapp.views.barviewgroupdrawer.BarViewGroupDrawer;
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict;
 
 import java.util.ArrayList;
 
 public class BarViewGroup extends LinearLayout {
-    private static final String TAG = "BarViewGroup";
     private final ArrayList<NoteView> mNoteViewList = new ArrayList<>();
     private BarPositionDict mBarPositionDict;
     private BarViewGroupDrawer mBarViewGroupDrawer;

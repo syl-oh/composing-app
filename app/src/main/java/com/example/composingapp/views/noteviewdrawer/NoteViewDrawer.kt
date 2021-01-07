@@ -1,16 +1,19 @@
-package com.example.composingapp.views.viewtools.noteviewdrawer
+package com.example.composingapp.views.noteviewdrawer
 
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
-import com.example.composingapp.utils.interfaces.observer.Observer
 import com.example.composingapp.utils.music.Music
+import com.example.composingapp.views.accidentals.FlatLeaf
+import com.example.composingapp.views.accidentals.SharpLeaf
+import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
+import com.example.composingapp.views.noteviewdrawer.composites.LedgerLineComposite
 import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
-import com.example.composingapp.views.viewtools.noteviewdrawer.composites.NoteComposite
-import com.example.composingapp.views.viewtools.noteviewdrawer.composites.RestComposite
-import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
+import com.example.composingapp.views.noteviewdrawer.composites.ShortRestComposite
+import com.example.composingapp.views.noteviewdrawer.leaves.*
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 
 class NoteViewDrawer(private val notePositionDict: NotePositionDict) : CompositeDrawer {
@@ -37,10 +40,33 @@ class NoteViewDrawer(private val notePositionDict: NotePositionDict) : Composite
      */
     fun resetWith(notePositionDict: NotePositionDict) {
         drawers.clear()
+
         if (notePositionDict.note.pitchClass == Music.PitchClass.REST) {
-            add(RestComposite(notePositionDict, paint))
+            when (notePositionDict.note.noteLength) {
+                Music.NoteLength.QUARTER_NOTE -> add(QuarterRestLeaf(notePositionDict, paint))
+                Music.NoteLength.HALF_NOTE, Music.NoteLength.WHOLE_NOTE ->
+                    add(LongRestLeaf(notePositionDict, paint))
+                else -> add(ShortRestComposite(notePositionDict, paint))
+            }
         } else {
-            add(NoteComposite(notePositionDict, paint))
+            add(FilledBaseLeaf(notePositionDict, paint))
+
+            with(notePositionDict.note.noteLength) {
+                if (this == Music.NoteLength.WHOLE_NOTE || this == Music.NoteLength.HALF_NOTE) {
+                    add(HollowBaseLeaf(notePositionDict, paint))
+                }
+                if (this == Music.NoteLength.QUARTER_NOTE || this == Music.NoteLength.HALF_NOTE) {
+                    add(StemLeaf(notePositionDict, paint))
+                }
+            }
+
+            // Add any accidentals
+            with(notePositionDict.note.pitchClass.accidental) {
+                if (this == Music.PitchClass.Accidental.SHARP) add(SharpLeaf(notePositionDict, paint))
+                else if (this == Music.PitchClass.Accidental.FLAT) add(FlatLeaf(notePositionDict, paint))
+            }
+
+            add(LedgerLineComposite(notePositionDict, paint))
         }
     }
 

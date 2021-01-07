@@ -1,9 +1,9 @@
-package com.example.composingapp.views.viewtools.barviewgroupdrawer.leaves.beams
+package com.example.composingapp.views.barviewgroupdrawer.leaves.beams
 
 import android.graphics.Paint
 import com.example.composingapp.utils.Line
 import com.example.composingapp.views.NoteView
-import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf
+import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
 import kotlin.math.max
 import kotlin.math.min
 
@@ -95,6 +95,6 @@ class PrimaryBeamLeaf(
     }
 
     companion object {
-        private const val TAG = "PrimaryBeamLeaf"
+//        private const val TAG = "PrimaryBeamLeaf"
     }
 }

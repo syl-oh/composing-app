@@ -4,20 +4,17 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer;
 import com.example.composingapp.utils.interfaces.ui.Clickable;
 import com.example.composingapp.utils.interfaces.ui.TouchHandler;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.views.touchhandlers.NoteViewMoveHandler;
 import com.example.composingapp.views.touchhandlers.ToggleClickedHandler;
-import com.example.composingapp.views.viewtools.noteviewdrawer.NoteViewDrawer;
-import com.example.composingapp.views.viewtools.noteviewdrawer.leaves.StemLeaf;
+import com.example.composingapp.views.noteviewdrawer.NoteViewDrawer;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class NoteView extends View implements Clickable {
-    private static final String TAG = "NoteView";
+//    private static final String TAG = "NoteView";
     private NotePositionDict notePositionDict;
     private Music.Clef mClef;
     private Note mNote;
@@ -63,17 +60,10 @@ public class NoteView extends View implements Clickable {
     private void init(Note note, Music.Clef clef, BarViewGroup barViewGroup) {
         if (note != null) {
             mNote = note;
-        } else {
-            Log.e(TAG, "init: FATAL: Recieved null note for NoteView with ID "
-                    + this.getId());
         }
         if (clef != null) {
             mClef = clef;
-        } else {
-            Log.e(TAG, "init: FATAL: Recieved null clef for NoteView with ID "
-                    + this.getId());
         }
-//        mGestureDetector = new GestureDetector(getContext(), this);
         mBarViewGroup = barViewGroup;
 
         // Add the drag handler

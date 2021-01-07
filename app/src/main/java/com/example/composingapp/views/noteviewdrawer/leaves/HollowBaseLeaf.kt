@@ -1,4 +1,4 @@
-package com.example.composingapp.views.viewtools.noteviewdrawer.leaves
+package com.example.composingapp.views.noteviewdrawer.leaves
 
 import android.graphics.Color
 import android.graphics.Paint
@@ -12,7 +12,7 @@ class HollowBaseLeaf(
     override val notePaint: Paint = Paint(paint).apply { color = Color.WHITE }
     override val vertRadius: Float = notePositionDict.noteVerticalRadius / 2
     override val angle: Float = when (notePositionDict.note.noteLength) {
-        Music.NoteLength.HALF_NOTE -> HALF_NOTE_ANGLE_INSIDE
-        else -> WHOLE_NOTE_INNER_ANGLE
+        Music.NoteLength.HALF_NOTE -> halfNoteAngleInside
+        else -> wholeNoteInnerAngle
     }
 }

@@ -9,12 +9,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.example.composingapp.views.viewtools.ViewConstants.TOTAL_LINES;
 import static com.example.composingapp.views.viewtools.ViewConstants.TOTAL_SPACES;
 
 public class BarObserver implements Observer {
-    private static final String TAG = "BarObserver";
     private ArrayList<Note> mNoteArrayList;
     private ScoreObservable mScoreObservable;
     private Music.NoteLength mBeatUnit;
@@ -43,7 +43,7 @@ public class BarObserver implements Observer {
 
     private ArrayList<Note> fitNotesWithinStaff(ArrayList<Note> noteArrayList, Music.Clef clef) {
         final int octaveMidiDistance = 12;
-        MidiNoteDict midiNoteDict = new MidiNoteDict();
+        MidiNoteDict midiNoteDict = MidiNoteDict.getInstance();
         int midiNumOfBottomNote = clef.getMidiStartingIndex();
         int midiNumOfTopNote = midiNumOfBottomNote + TOTAL_SPACES + TOTAL_LINES - 1;
 
@@ -55,8 +55,6 @@ public class BarObserver implements Observer {
                     noteMidiNum =
                             midiNoteDict.getMidiNum(new Tone(currentNote.getPitchClass(), currentNote.getOctave()));
                 } catch (NullPointerException e) {
-                    Log.e(TAG, "fitNotesWithinStaff: NullPointerException: could not retrieve " +
-                            "midi number of Tone");
                 }
 
                 // Raise the octave of the currentNote if it is too low
@@ -245,21 +243,17 @@ public class BarObserver implements Observer {
         }
 
         // Otherwise, we check if the sum of the beat values of all the notes fit the bar
-        Double beatSum = 0d;
+        double beatSum = 0d;
         ArrayList<Note> resizedNoteArrayList = new ArrayList<>();
         Note currentNote = null;
         for (int i = 0; i < noteArrayList.size(); i++) {
             try {
                 currentNote = noteArrayList.get(i);
             } catch (NullPointerException e) {
-                Log.e(TAG, "resizeToBeatsPerBar: could not retrieve note at index " + i +
-                        "from noteArrayList");
             }
             try {
-                beatSum += mNoteLengthToBeatsMap.get(currentNote.getNoteLength());
+                beatSum += mNoteLengthToBeatsMap.get(Objects.requireNonNull(currentNote).getNoteLength());
             } catch (NullPointerException e) {
-                Log.e(TAG, "resizeToBeatsPerBar: NullPointerException, could not retrieve " +
-                        "NoteLength form NoteLengthToBeatsMap");
             }
 
             if (beatSum > mBeatsPerBar) {    // If we have hit the beat sum limit

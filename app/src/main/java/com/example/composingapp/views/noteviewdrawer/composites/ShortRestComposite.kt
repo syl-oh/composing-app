@@ -1,4 +1,4 @@
-package com.example.composingapp.views.viewtools.noteviewdrawer.composites
+package com.example.composingapp.views.noteviewdrawer.composites
 
 import android.graphics.Canvas
 import android.graphics.Paint
@@ -76,7 +76,7 @@ class ShortRestComposite(
         }
 
         companion object {
-            const val TAG = "ShortRestLeaf"
+//            const val TAG = "ShortRestLeaf"
         }
     }
 }
