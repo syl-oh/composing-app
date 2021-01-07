@@ -4,7 +4,6 @@ import com.example.composingapp.utils.interfaces.ui.Command
 import com.example.composingapp.utils.music.BarObserver
 import com.example.composingapp.utils.music.Note
 import com.example.composingapp.viewmodels.ScoreViewModel
-import com.example.composingapp.viewmodels.ViewModelHelper.mutation
 
 class ChangeNoteCommand(
         private val scoreViewModel: ScoreViewModel,
@@ -13,10 +12,12 @@ class ChangeNoteCommand(
         private val newNote: Note,
 ) : Command {
     override fun execute() {
-        scoreViewModel.scoreObservableMutableLiveData.mutation {
-            it.value?.barObserverList?.find { barObserver -> barObserver == targetBarObserver }
-                    .apply { this?.replaceNoteAt(targetIndex, newNote) }
-        }
+        // Mutate data without forcing a reset for any observers. This prevents any clicked item from
+        // resetting
+        scoreViewModel.scoreObservableMutableLiveData.value?.barObserverList
+                ?.find { barObserver -> barObserver == targetBarObserver }
+                .apply { this?.replaceNoteAt(targetIndex, newNote) }
+
     }
 
     override fun undo() {

@@ -29,11 +29,14 @@ class ScoreViewModel : ViewModel() {
         val barObserver2 = BarObserver(scoreObservable)
         val barObserver3 = BarObserver(scoreObservable)
         val barObserver4 = BarObserver(scoreObservable)
+
         val note = Note(Music.PitchClass.C_SHARP, 5, Music.NoteLength.QUARTER_NOTE)
         val note2 = Note(Music.PitchClass.A_NATURAL, 4, Music.NoteLength.SIXTEENTH_NOTE)
         val note3 = Note(Music.PitchClass.A_FLAT, 4, Music.NoteLength.HALF_NOTE)
         val note4 = Note(Music.PitchClass.D_NATURAL, 4, Music.NoteLength.EIGHTH_NOTE)
         val note5 = Note(Music.NoteLength.SIXTEENTH_NOTE)
+        val note6 = Note(Music.PitchClass.A_FLAT, 4, Music.NoteLength.WHOLE_NOTE)
+
         for (barObserver in scoreObservable.barObserverList) {
             barObserver.addNote(note3)
             barObserver.addNote(note2)

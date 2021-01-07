@@ -7,7 +7,8 @@ public class MidiNoteDict {
     private static final String TAG = "MidiNoteDict";
     private final int startingMidiNum = 21;   // the first key on an 88-key piano
     private final int endingMidiNum = 108;    // the last key on an 88-key piano
-    private HashMap<Integer, Tone> midiNoteDict;
+    private HashMap<Integer, Tone> midiNumToToneMap;
+    private HashMap<Tone, Integer> toneToMidiNumMap;
 
     /**
      * Constructs MidiNoteDict. Immediately initializes the dictionary
@@ -28,12 +29,13 @@ public class MidiNoteDict {
                 Music.PitchClass.C_SHARP, Music.PitchClass.D_NATURAL, Music.PitchClass.D_SHARP, Music.PitchClass.E_NATURAL,
                 Music.PitchClass.F_NATURAL, Music.PitchClass.F_SHARP, Music.PitchClass.G_NATURAL, Music.PitchClass.G_SHARP};
 
-        midiNoteDict = new HashMap<Integer, Tone>();  // initialize the dictionary
+        midiNumToToneMap = new HashMap<Integer, Tone>();  // initialize the dictionary
+        toneToMidiNumMap = new HashMap<>();
 
         // Prepare for the loop:
         int currentPitchClassIdx = 0; // Index variable points to the current pitch class in pitchClasses
         Music.PitchClass currentPitchClass;   // variable to store the current pitch class
-        int currentOctave = -1; // Variable to hold the current octave in which we are in
+        int currentOctave = 0; // Variable to hold the current octave in which we are in
 
         for (int midiNum = startingMidiNum; midiNum <= endingMidiNum; midiNum++) {
             currentPitchClass = pitchClasses[currentPitchClassIdx]; // get the current pitch class
@@ -43,7 +45,9 @@ public class MidiNoteDict {
             }
 
             // Use the midi number as the key, and a tone object containing both the pitch class and octave
-            midiNoteDict.put(midiNum, new Tone(currentPitchClass, currentOctave));
+            Tone toneToAdd = new Tone(currentPitchClass, currentOctave);
+            midiNumToToneMap.put(midiNum, toneToAdd);
+            toneToMidiNumMap.put(toneToAdd, midiNum);
 
             // Move to the next pitch class in the pitchClasses array
             currentPitchClassIdx++;
@@ -55,13 +59,34 @@ public class MidiNoteDict {
     }
 
     /**
+     * Produces the midi number of specified Tone
+     *
+     * @param tone Tone request
+     * @return int representing the midi number of the given tone
+     */
+    public int getMidiNum(Tone tone) {
+        Music.PitchClass tonePitchClass = tone.getPitchClass();
+
+        // Hashmap only contains values for Sharps and Naturals, so we need to convert any Flats
+        if (tonePitchClass.getAccidental() == Music.PitchClass.Accidental.FLAT) {
+            for (Music.PitchClass pitchClass : Music.PitchClass.values()) {
+                if (pitchClass.getLetter() == tonePitchClass.getLetter() &&
+                        pitchClass.getAccidental() == Music.PitchClass.Accidental.NATURAL) {
+                    tone = new Tone(pitchClass, tone.getOctave());
+                }
+            }
+        }
+        return toneToMidiNumMap.get(tone);
+    }
+
+    /**
      * Produces the tone at a specified midi number
      *
      * @param midiNum The midi number requested
      * @return Tone object in the dictionary with the key midiNum
      */
     public Tone getTone(int midiNum) {
-        return Objects.requireNonNull(midiNoteDict.get(midiNum));
+        return Objects.requireNonNull(midiNumToToneMap.get(midiNum));
     }
 
     /**

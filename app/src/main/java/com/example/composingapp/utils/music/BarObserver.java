@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.example.composingapp.views.viewtools.ViewConstants.TOTAL_LINES;
+import static com.example.composingapp.views.viewtools.ViewConstants.TOTAL_SPACES;
+
 public class BarObserver implements Observer {
     private static final String TAG = "BarObserver";
     private ArrayList<Note> mNoteArrayList;
@@ -36,6 +39,41 @@ public class BarObserver implements Observer {
         mBeatsPerBar = scoreObservable.getBeatsPerBar();
         mClef = scoreObservable.getClef();
         initNoteLengthToBeatsMap();
+    }
+
+    private ArrayList<Note> fitNotesWithinStaff(ArrayList<Note> noteArrayList, Music.Clef clef) {
+        final int octaveMidiDistance = 12;
+        MidiNoteDict midiNoteDict = new MidiNoteDict();
+        int midiNumOfBottomNote = clef.getMidiStartingIndex();
+        int midiNumOfTopNote = midiNumOfBottomNote + TOTAL_SPACES + TOTAL_LINES - 1;
+
+        for (int i = 0; i < noteArrayList.size(); i++) {
+            Note currentNote = noteArrayList.get(i);
+            if (currentNote.getPitchClass() != Music.PitchClass.REST) {
+                int noteMidiNum = 0;
+                try {
+                    noteMidiNum =
+                            midiNoteDict.getMidiNum(new Tone(currentNote.getPitchClass(), currentNote.getOctave()));
+                } catch (NullPointerException e) {
+                    Log.e(TAG, "fitNotesWithinStaff: NullPointerException: could not retrieve " +
+                            "midi number of Tone");
+                }
+
+                // Raise the octave of the currentNote if it is too low
+                while (noteMidiNum < midiNumOfBottomNote) {
+                    noteMidiNum += octaveMidiDistance; // Move up an octave distance
+                }
+                // Lower the octave of the currentNote if it is too high
+                while (noteMidiNum > midiNumOfTopNote) {
+                    noteMidiNum -= octaveMidiDistance;
+                }
+                Tone replacementTone = midiNoteDict.getTone(noteMidiNum);
+                noteArrayList.remove(i);
+                noteArrayList.add(i, new Note(replacementTone.getPitchClass(),
+                        replacementTone.getOctave(), currentNote.getNoteLength()));
+            }
+        }
+        return noteArrayList;
     }
 
     /**
@@ -82,7 +120,8 @@ public class BarObserver implements Observer {
         mBeatUnit = mScoreObservable.getBeatUnit();
         mBeatsPerBar = mScoreObservable.getBeatsPerBar();
         mClef = mScoreObservable.getClef();
-        mNoteArrayList = resizeNoteArrayListToFitBar(mNoteArrayList);
+        // Clones the list and resize it
+        mNoteArrayList = fitNotesWithinStaff(resizeNoteArrayListToFitBar(mNoteArrayList), mClef);
     }
 
 

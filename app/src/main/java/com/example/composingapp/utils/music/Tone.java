@@ -12,7 +12,7 @@ public class Tone {
      * Constructs tone object
      *
      * @param pitchClass From the Enum in Music.class
-     * @param octave     int between 1 and 7, or -1, representing the tone's octave or a rest,
+     * @param octave     int between 0 and 7, or -1, representing the tone's octave or a rest,
      *                   respectively
      */
     public Tone(Music.PitchClass pitchClass, int octave) {

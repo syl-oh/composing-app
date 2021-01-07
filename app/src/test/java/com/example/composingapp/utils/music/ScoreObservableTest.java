@@ -6,7 +6,9 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @DisplayName("When a ScoreObservable is created")
 class ScoreObservableTest {
@@ -43,6 +45,22 @@ class ScoreObservableTest {
                     () -> assertEquals(barObserver.getBeatsPerBar(), initScoreBeatsPerBar),
                     () -> assertEquals(barObserver.getBeatUnit(), initScoreBeatUnit
                     ));
+        }
+
+        @Test
+        @DisplayName("updates the clefs of its BarObservers when its clef is changed")
+        void testUpdateClefAndNotesOnObservers() {
+            barObserver.addNote(new Note(Music.PitchClass.F_NATURAL, 4, Music.NoteLength.QUARTER_NOTE));
+            Note convertedNote = new Note(Music.PitchClass.F_NATURAL, 3, Music.NoteLength.QUARTER_NOTE);
+            Music.Clef newClef = Music.Clef.BASS_CLEF;
+            scoreObservable.setClef(newClef);
+
+            assertAll(
+                    () -> assertEquals(barObserver.getClef(), newClef),
+                    () -> assertEquals(barObserver.getBeatsPerBar(), initScoreBeatsPerBar),
+                    () -> assertEquals(barObserver.getBeatUnit(), initScoreBeatUnit),
+                    () -> assertTrue(barObserver.getNoteArrayList().contains(convertedNote))
+            );
         }
     }
 }
