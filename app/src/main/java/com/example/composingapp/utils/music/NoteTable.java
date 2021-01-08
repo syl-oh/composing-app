@@ -9,7 +9,7 @@ public class NoteTable {
 
     private static ImmutableTable<Tone, Music.NoteLength, Note> buildNoteTable() {
         ImmutableTable.Builder<Tone, Music.NoteLength, Note> builder = new ImmutableTable.Builder<>();
-        for (Tone tone : ToneTable.toneTable.values()) {
+        for (Tone tone : ToneTable.values()) {
             for (Music.NoteLength noteLength : Music.NoteLength.values()) {
                 builder.put(tone, noteLength, new Note(tone.getPitchClass(), tone.getOctave(), noteLength));
             }
@@ -17,11 +17,15 @@ public class NoteTable {
         return builder.build();
     }
 
-    static Note get(Music.PitchClass pitchClass, int octave, Music.NoteLength noteLength) {
+    public static Note get(Music.PitchClass pitchClass, int octave, Music.NoteLength noteLength) {
         return noteTable.get(ToneTable.get(pitchClass, octave), noteLength);
     }
 
-    static Note get(Tone tone, Music.NoteLength noteLength) {
+    public static Note get(Tone tone, Music.NoteLength noteLength) {
         return noteTable.get(tone, noteLength);
+    }
+
+    public static Note get(Music.NoteLength noteLength) {
+        return noteTable.get(ToneTable.get(Music.PitchClass.REST, -1), noteLength);
     }
 }

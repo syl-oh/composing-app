@@ -35,9 +35,9 @@ class BarObserverTest {
 
         @BeforeEach
         void initUpdateNoteAt() {
-            barObserver.addNote(new Note(Music.PitchClass.C_NATURAL, 4, Music.NoteLength.QUARTER_NOTE));
-            barObserver.addNote(new Note(Music.PitchClass.C_NATURAL, 4, Music.NoteLength.QUARTER_NOTE));
-            barObserver.addNote(new Note(Music.PitchClass.C_NATURAL, 4, Music.NoteLength.HALF_NOTE));
+            barObserver.addNote(NoteTable.get(Music.PitchClass.C_NATURAL, 4, Music.NoteLength.QUARTER_NOTE));
+            barObserver.addNote(NoteTable.get(Music.PitchClass.C_NATURAL, 4, Music.NoteLength.QUARTER_NOTE));
+            barObserver.addNote(NoteTable.get(Music.PitchClass.C_NATURAL, 4, Music.NoteLength.HALF_NOTE));
             targetIndex = 1;
         }
 
@@ -45,12 +45,12 @@ class BarObserverTest {
         @DisplayName("replaces the note and produces extra rests to fill in extra bar space" +
                 " when the replacement is shorter than the target note")
         void testShorterReplacement() {
-            Note replacement = new Note(Music.NoteLength.SIXTEENTH_NOTE);
+            Note replacement = NoteTable.get(Music.NoteLength.SIXTEENTH_NOTE);
             barObserver.replaceNoteAt(targetIndex, replacement);
             assertAll(
-                    () -> assertEquals(new Note(Music.NoteLength.EIGHTH_NOTE),
+                    () -> assertEquals(NoteTable.get(Music.NoteLength.EIGHTH_NOTE),
                             barObserver.getNoteArrayList().get(targetIndex + 1)),
-                    () -> assertEquals(new Note(Music.NoteLength.SIXTEENTH_NOTE),
+                    () -> assertEquals(NoteTable.get(Music.NoteLength.SIXTEENTH_NOTE),
                             barObserver.getNoteArrayList().get(targetIndex + 2))
             );
         }
@@ -59,7 +59,7 @@ class BarObserverTest {
         @DisplayName("replaces the note directly if the replacement is equal in length to the target" +
                 " note")
         void testEqualReplacement() {
-            Note replacement = new Note(barObserver.getNoteArrayList().get(targetIndex).getNoteLength());
+            Note replacement = NoteTable.get(barObserver.getNoteArrayList().get(targetIndex).getNoteLength());
             int originalSize = barObserver.getNoteArrayList().size();
             barObserver.replaceNoteAt(targetIndex, replacement);
             assertAll(
@@ -73,7 +73,7 @@ class BarObserverTest {
         @DisplayName("does not replace the note if the replacement is longer in length than the target " +
                 "note and there are not enough proceeding notes to replace too")
         void testLongerReplacementButNotEnoughProceeding() {
-            Note replacement = new Note(Music.NoteLength.WHOLE_NOTE);
+            Note replacement = NoteTable.get(Music.NoteLength.WHOLE_NOTE);
             ArrayList<Note> originalNotes = (ArrayList<Note>) barObserver.getNoteArrayList().clone();
             barObserver.replaceNoteAt(targetIndex, replacement);
             for (Note note : barObserver.getNoteArrayList()) {
@@ -85,7 +85,7 @@ class BarObserverTest {
         @DisplayName("replaces the note if the replacement is longer in length than the target " +
                 "and there are enough proceeding notes to replace too")
         void testLongerReplacementWithEnoughProceedingAndProducesNoRests() {
-            Note replacement = new Note(Music.NoteLength.HALF_NOTE);
+            Note replacement = NoteTable.get(Music.NoteLength.HALF_NOTE);
             barObserver.replaceNoteAt(targetIndex, replacement);
             assertEquals(replacement, barObserver.getNoteArrayList().get(targetIndex));
         }
@@ -95,11 +95,11 @@ class BarObserverTest {
                 "and there are enough proceeding notes to replace too, and produces extra rests to " +
                 "fill in any gaps")
         void testLongerReplacementWithEnoughProceedingAndProducesRests() {
-            Note replacement = new Note(Music.NoteLength.HALF_NOTE);
+            Note replacement = NoteTable.get(Music.NoteLength.HALF_NOTE);
             barObserver.replaceNoteAt(targetIndex, replacement);
             assertAll(
                     () -> assertEquals(replacement, barObserver.getNoteArrayList().get(targetIndex)),
-                    () -> assertEquals(new Note(Music.NoteLength.QUARTER_NOTE),
+                    () -> assertEquals(NoteTable.get(Music.NoteLength.QUARTER_NOTE),
                             barObserver.getNoteArrayList().get(targetIndex++))
             );
         }

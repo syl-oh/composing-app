@@ -14,7 +14,6 @@ import static com.example.composingapp.utils.music.Music.PitchClass.A_NATURAL;
 import static com.example.composingapp.utils.music.Music.PitchClass.B_NATURAL;
 import static com.example.composingapp.utils.music.Music.PitchClass.C_NATURAL;
 import static com.example.composingapp.utils.music.Music.PitchClass.F_NATURAL;
-import static com.example.composingapp.utils.music.Music.PitchClass.G_NATURAL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -37,18 +36,18 @@ class MidiNoteDictTest {
 
     @BeforeEach
     void init() {
-        dict = new MidiNoteDict();
+        dict = MidiNoteDict.getInstance();
     }
 
     @DisplayName("produces the correct midi number for given tones")
     @Test
     void testGetMidiNum() {
         assertAll(
-                () -> assertEquals(21, dict.getMidiNum(new Tone(A_NATURAL, 0))),  // midi number 21
-                () -> assertEquals(23, dict.getMidiNum(new Tone(B_NATURAL, 0))),  // midi number 23
-                () -> assertEquals(57, dict.getMidiNum(new Tone(A_FLAT, 3))),  // midi number 57
-                () -> assertEquals(65, dict.getMidiNum(new Tone(F_NATURAL, 4))),  // midi number 43
-                () -> assertEquals(108, dict.getMidiNum(new Tone(C_NATURAL, 8)))  // midi number 108
+                () -> assertEquals(21, dict.getMidiNum(ToneTable.get(A_NATURAL, 0))),  // midi number 21
+                () -> assertEquals(23, dict.getMidiNum(ToneTable.get(B_NATURAL, 0))),  // midi number 23
+                () -> assertEquals(57, dict.getMidiNum(ToneTable.get(A_FLAT, 3))),  // midi number 57
+                () -> assertEquals(65, dict.getMidiNum(ToneTable.get(F_NATURAL, 4))),  // midi number 43
+                () -> assertEquals(108, dict.getMidiNum(ToneTable.get(C_NATURAL, 8)))  // midi number 108
         );
 
     }
