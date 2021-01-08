@@ -9,7 +9,7 @@ import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import kotlin.math.abs
 
 object BeamHelper {
-//    private const val TAG = "BeamHelper"
+    private const val TAG = "BeamHelper"
     /**
      *   Produces a 2D list where each element is a group of notes that satisfy the given condition
      *
@@ -22,7 +22,7 @@ object BeamHelper {
         return when {
             this.isEmpty() -> emptyList()
             else ->(this.groupByNoteLengthCondition(condition)
-                    .filter { condition(it.first().getmNotePositionDict().note.noteLength) })
+                    .filter { condition(it.first().notePositionDict.note.noteLength) })
         }
     }
 
@@ -41,8 +41,8 @@ object BeamHelper {
     ): List<List<NoteView>> {
         // Collect all proceeding notes that have the same condition as the first
         val firstGroup: List<NoteView> = this.takeWhile {
-            condition(it.getmNotePositionDict().note.noteLength) ==
-                    condition(this.first().getmNotePositionDict().note.noteLength)
+            condition(it.notePositionDict.note.noteLength) ==
+                    condition(this.first().notePositionDict.note.noteLength)
         }
         // Once we hit an element that has a different condition, store the rest of the list
         val restOfGroup: List<NoteView> = this.takeLast(this.size - firstGroup.size)
@@ -62,10 +62,10 @@ object BeamHelper {
      */
     fun findStemDirection(notePositionDicts: List<NotePositionDict>): StemLeaf.StemDirection {
         // If half of the notes point down, the entire group will point down
-        if (notePositionDicts.map { it.noteY }.filter { it > notePositionDicts[0].positionDict.thirdLineY }.size
+        return if (notePositionDicts.map { it.noteY }.filter { it > notePositionDicts[0].positionDict.thirdLineY }.size
                 < notePositionDicts.size / 2) {
-            return StemLeaf.StemDirection.POINTS_DOWN
-        } else return StemLeaf.StemDirection.POINTS_UP
+            StemLeaf.StemDirection.POINTS_DOWN
+        } else StemLeaf.StemDirection.POINTS_UP
     }
 
 
@@ -85,10 +85,10 @@ object BeamHelper {
     ): Float {
         return with(noteView) {
             if (stemDirection == StemLeaf.StemDirection.POINTS_UP) {
-                (this.x + this.getmNotePositionDict().noteX + this.getmNotePositionDict().noteHorizontalRadius
+                (this.x + this.notePositionDict.noteX + this.notePositionDict.noteHorizontalRadius
                         - paint.strokeWidth)
             } else {
-                (this.x + this.getmNotePositionDict().noteX - this.getmNotePositionDict().noteHorizontalRadius
+                (this.x + this.notePositionDict.noteX - this.notePositionDict.noteHorizontalRadius
                         + paint.strokeWidth)
             }
         }
@@ -111,8 +111,7 @@ object BeamHelper {
             stemDirection: StemLeaf.StemDirection
     ): Float {
         with(noteView) {
-            return abs(beamLine.yAt(getStemX(this, paint, stemDirection))
-                    - this.getmNotePositionDict().noteY)
+            return abs(beamLine.yAt(getStemX(this, paint, stemDirection)) - this.notePositionDict.noteY)
         }
     }
 

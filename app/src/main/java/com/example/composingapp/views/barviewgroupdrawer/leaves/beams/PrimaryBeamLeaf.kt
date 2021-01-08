@@ -1,6 +1,7 @@
 package com.example.composingapp.views.barviewgroupdrawer.leaves.beams
 
 import android.graphics.Paint
+import android.util.Log
 import com.example.composingapp.utils.Line
 import com.example.composingapp.views.NoteView
 import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
@@ -19,6 +20,8 @@ class PrimaryBeamLeaf(
     override var beamLine: Line = requestedBeamLine ?: createBeamLine()
 
     init {
+        Log.d(TAG, "stemDirection: $stemDirection ")
+
         beamLine = beamLine.moveVertically(
                 if (stemDirection == StemLeaf.StemDirection.POINTS_UP) yTranslation
                 else -yTranslation)
@@ -47,11 +50,11 @@ class PrimaryBeamLeaf(
      * @return Line representing the beam line
      */
     private fun createBeamLine(): Line {
-        fun yPos(nV: NoteView) = nV.getmNotePositionDict().noteY + nV.y
-        fun xPos(nV: NoteView) = nV.getmNotePositionDict().noteX + nV.x
+        fun yPos(nV: NoteView) = nV.notePositionDict.noteY + nV.y
+        fun xPos(nV: NoteView) = nV.notePositionDict.noteX + nV.x
 
-        val octaveHeight: Float = noteViews.first().getmNotePositionDict().positionDict.octaveHeight
-        val semiSpace: Float = noteViews.first().getmNotePositionDict().positionDict.singleSpaceHeight / 2
+        val octaveHeight: Float = noteViews.first().notePositionDict.positionDict.octaveHeight
+        val semiSpace: Float = noteViews.first().notePositionDict.positionDict.singleSpaceHeight / 2
         val firstY = yPos(noteViews.first())
         val lastY = yPos(noteViews.last())
         val dy = lastY - firstY
@@ -59,21 +62,23 @@ class PrimaryBeamLeaf(
 
         // Find the "anchor" (x,y) coordinates for the beam's line
         val maxY: Float =
-                (noteViews.map { it.getmNotePositionDict().noteY }.maxOrNull()) ?: firstY
+                (noteViews.map { it.notePositionDict.noteY }.maxOrNull()) ?: firstY
         val minY: Float =
-                (noteViews.map { it.getmNotePositionDict().noteY }.minOrNull()) ?: firstY
+                (noteViews.map { it.notePositionDict.noteY }.minOrNull()) ?: firstY
         val dMaxToMinY = maxY - minY
+        Log.d(TAG, "createBeamLine: maxY: $maxY")
+        Log.d(TAG, "createBeamLine: minY: $minY")
 
         // Find the slope of the beam's line
         val slope: Float = if (dy > 0) {
             min(dy, semiSpace) / dx
         } else max(dy, -semiSpace) / dx
 
-        // Init the beamLine based on the stem direction
-        val xOfMaxY: Float =
-                noteViews.first { it.getmNotePositionDict().noteY == maxY }.getmNotePositionDict().noteX
-
         if (stemDirection == StemLeaf.StemDirection.POINTS_DOWN) {
+            // Init the beamLine based on the stem direction
+            val xOfMaxY: Float = with(noteViews.first { it.notePositionDict.noteY == maxY }) {
+                this.notePositionDict.noteX + this.x
+            }
             // At least one of the notes should be an octave in length
             return if (dMaxToMinY < octaveHeight / 2) {
                 Line(xOfMaxY, maxY + octaveHeight - dMaxToMinY, slope)
@@ -83,9 +88,9 @@ class PrimaryBeamLeaf(
 
         } else {
             // At least one of the notes should be an octave in length
-            val xOfMinY: Float =
-                    noteViews.first { it.getmNotePositionDict().noteY == minY }.getmNotePositionDict().noteX
-
+            val xOfMinY: Float = with(noteViews.first { it.notePositionDict.noteY == minY }) {
+                this.notePositionDict.noteX + this.x
+            }
             return if (dMaxToMinY < octaveHeight / 2) {
                 Line(xOfMinY, minY - octaveHeight + dMaxToMinY, slope)
             } else {
@@ -95,6 +100,6 @@ class PrimaryBeamLeaf(
     }
 
     companion object {
-//        private const val TAG = "PrimaryBeamLeaf"
+        private const val TAG = "PrimaryBeamLeaf"
     }
 }

@@ -11,9 +11,9 @@ import androidx.annotation.NonNull;
 import com.example.composingapp.utils.interfaces.ui.Clickable;
 import com.example.composingapp.utils.interfaces.ui.TouchHandler;
 import com.example.composingapp.utils.music.Note;
+import com.example.composingapp.views.noteviewdrawer.NoteViewDrawer;
 import com.example.composingapp.views.touchhandlers.NoteViewMoveHandler;
 import com.example.composingapp.views.touchhandlers.ToggleClickedHandler;
-import com.example.composingapp.views.noteviewdrawer.NoteViewDrawer;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 import com.example.composingapp.views.viewtools.positiondict.PositionDict;
 
@@ -22,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class NoteView extends View implements Clickable {
-//    private static final String TAG = "NoteView";
+    //    private static final String TAG = "NoteView";
     private NotePositionDict mNotePositionDict;
     private Note mNote;
     private NoteViewDrawer mNoteViewDrawer;
@@ -64,7 +64,7 @@ public class NoteView extends View implements Clickable {
         return mNoteViewDrawer;
     }
 
-    public NotePositionDict getmNotePositionDict() {
+    public NotePositionDict getNotePositionDict() {
         return mNotePositionDict;
     }
 

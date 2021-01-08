@@ -92,7 +92,7 @@ public class BarViewGroup extends LinearLayout {
         // Find the index of the NoteView
         int noteViewIndex = mNoteViewList.indexOf(noteView);
         new ChangeNoteCommand(
-                mScoreViewModel, mBarObserver, noteViewIndex, noteView.getmNotePositionDict().getNote()
+                mScoreViewModel, mBarObserver, noteViewIndex, noteView.getNotePositionDict().getNote()
         ).execute();
     }
 
@@ -119,7 +119,7 @@ public class BarViewGroup extends LinearLayout {
     @Override
     public void invalidate() {
         super.invalidate();
-        mBarViewGroupDrawer.resetDrawers();
+        mBarViewGroupDrawer.setNoteViews(mNoteViewList);
         for (NoteView noteView : mNoteViewList) {
             noteView.invalidate();
         }

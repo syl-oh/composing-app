@@ -2,63 +2,70 @@ package com.example.composingapp.views.barviewgroupdrawer.composites
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.util.Log
 import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.NoteView
 import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
+import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper
 import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.findStemDirection
 import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.groupByNoteLengthCondition
-import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.heightToBeam
-import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.onlyGroupsWithNoteLengthCondition
 import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.PrimaryBeamLeaf
 import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.SecondaryBeamLeaf
-import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
+import com.example.composingapp.views.viewtools.positiondict.BarPositionDict
 
 class BeamComposite(
-        val beamGroup: List<NoteView>,
+        beamGroup: List<NoteView>,
+        barPositionDict: BarPositionDict,
         val paint: Paint,
 ) : CompositeDrawer {
     private val drawers = mutableListOf<ComponentDrawer>()
-    private val stemDirection = findStemDirection(beamGroup.map { it.getmNotePositionDict() })
+    private val beamGroupDicts = beamGroup.map { it.notePositionDict }
+    private val stemDirection = findStemDirection(beamGroupDicts)
     private val primaryBeam: PrimaryBeamLeaf
-    private val notePositionDict: NotePositionDict = beamGroup.first().getmNotePositionDict()
-    private val beamYShift = notePositionDict.positionDict.singleSpaceHeight / 4
+    private val beamYShift = barPositionDict.positionDict.singleSpaceHeight / 4
 
     init {
         primaryBeam = PrimaryBeamLeaf(beamGroup, stemDirection, paint)
         add(primaryBeam)
+
+        Log.d(TAG, "beamLineY: ${primaryBeam.beamLine.yAt(BeamHelper.getStemX(beamGroup.first(), paint, stemDirection))}")
+        Log.d(TAG, "noteY : ${beamGroup.first().notePositionDict.noteY}")
+
         beamGroup.map {
-            it.noteViewDrawer.add(StemLeaf(it.getmNotePositionDict(), it.noteViewDrawer.paint, stemDirection,
-                    heightToBeam(it, primaryBeam.beamLine, paint, stemDirection)))
+            it.noteViewDrawer.add(StemLeaf(it.notePositionDict, it.noteViewDrawer.paint, stemDirection,
+                    BeamHelper.heightToBeam(it, primaryBeam.beamLine, paint, stemDirection)))
         }
 
         // Add another primary beam or secondary beams for sixteenth note groups
         val groupBySixteenth =
                 beamGroup.groupByNoteLengthCondition({ it == Music.NoteLength.SIXTEENTH_NOTE })
-        val onlyBySixteenth =
-                beamGroup.onlyGroupsWithNoteLengthCondition { it == Music.NoteLength.SIXTEENTH_NOTE }
 
-        onlyBySixteenth.map {
-            // Function to simplify adding of secondary beams
-            fun List<NoteView>.addSecondary(extendsBefore: Boolean, extendsAfter: Boolean) =
-                    add(SecondaryBeamLeaf(this.first(), stemDirection, paint, beamYShift, extendsBefore,
-                            extendsAfter, primaryBeam.beamLine))
+        for (beamGroup in groupBySixteenth) {
+            // Verify that this group contains only sixteenth notes (only need to check the first
+                // element due to the implementation of .groupByNoteLengthCondition()
+            if (beamGroup.first().notePositionDict.note.noteLength == Music.NoteLength.SIXTEENTH_NOTE) {
+                // Function to simplify adding of secondary beams
+                fun List<NoteView>.addSecondary(extendsBefore: Boolean, extendsAfter: Boolean) =
+                        add(SecondaryBeamLeaf(this.first(), stemDirection, paint, beamYShift, extendsBefore,
+                                extendsAfter, primaryBeam.beamLine))
 
-            // Add secondary beam if the size of the sixteenth note group is 1, otherwise add
-            //     another primary beam
-            if (it.size == 1) {
-                // Find the position of this specific group in the groupBySixteenth
-                with(groupBySixteenth) {
-                    when {
-                        // If this is the first element in the group, extend after but not before
-                        this.indexOf(it) == 0 -> it.addSecondary(extendsBefore = false, extendsAfter = true)
-                        this.indexOf(it) == this.lastIndex -> it.addSecondary(extendsBefore = true, extendsAfter = false)
-                        else -> it.addSecondary(extendsBefore = true, extendsAfter = true)
+                // Add secondary beam if the size of the sixteenth note group is 1, otherwise add
+                //     another primary beam
+                if (beamGroup.size == 1) {
+                    // Find the position of this specific group in the groupBySixteenth
+                    with(groupBySixteenth) {
+                        when {
+                            // If this is the first element in the group, extend after but not before
+                            this.indexOf(beamGroup) == 0 -> beamGroup.addSecondary(extendsBefore = false, extendsAfter = true)
+                            this.indexOf(beamGroup) == this.lastIndex -> beamGroup.addSecondary(extendsBefore = true, extendsAfter = false)
+                            else -> beamGroup.addSecondary(extendsBefore = true, extendsAfter = true)
+                        }
                     }
+                } else {
+                    add(PrimaryBeamLeaf(beamGroup, stemDirection, paint, beamYShift, primaryBeam.beamLine))
                 }
-            } else {
-                add(PrimaryBeamLeaf(it, stemDirection, paint, beamYShift, primaryBeam.beamLine))
             }
         }
     }
@@ -76,6 +83,6 @@ class BeamComposite(
     }
 
     companion object {
-//        private const val TAG = "BeamComposite"
+        private const val TAG = "BeamComposite"
     }
 }

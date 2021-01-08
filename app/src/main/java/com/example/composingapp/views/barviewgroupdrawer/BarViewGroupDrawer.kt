@@ -7,20 +7,19 @@ import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.NoteView
-import com.example.composingapp.views.viewtools.ViewConstants
 import com.example.composingapp.views.barviewgroupdrawer.composites.BeamComposite
 import com.example.composingapp.views.barviewgroupdrawer.composites.FlagComposite
 import com.example.composingapp.views.barviewgroupdrawer.leaves.BarlineLeaf
 import com.example.composingapp.views.barviewgroupdrawer.leaves.SidelineLeaf
 import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.onlyGroupsWithNoteLengthCondition
+import com.example.composingapp.views.viewtools.ViewConstants
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict
 
 class BarViewGroupDrawer(
         private val barPositionDict: BarPositionDict,
 ) : CompositeDrawer {
-    private var noteViewList = listOf<NoteView>()
-    private var flaggableGroups = listOf<List<NoteView>>()
-
+    private val noteViewList = mutableListOf<NoteView>()
+    private val flaggableGroups = mutableListOf<List<NoteView>>()
     private val drawers = mutableListOf<ComponentDrawer>()
     private val paint = Paint().apply {
         style = Paint.Style.STROKE
@@ -37,27 +36,29 @@ class BarViewGroupDrawer(
     }
 
     fun setNoteViews(noteViewList: List<NoteView>) {
-        this.noteViewList = noteViewList as MutableList<NoteView>
-        flaggableGroups =
-                noteViewList.filterNot { it.getmNotePositionDict().note.pitchClass == Music.PitchClass.REST }
-                        .onlyGroupsWithNoteLengthCondition { it.needsFlag() }
-
+        this.noteViewList.clear()
+        flaggableGroups.clear()
+        noteViewList.map { this.noteViewList.add(it) }
+        noteViewList.filterNot { it.getNotePositionDict().note.pitchClass == Music.PitchClass.REST }
+                .onlyGroupsWithNoteLengthCondition { it.needsFlag() }.map { flaggableGroups.add(it) }
         resetDrawers()
     }
 
     /**
      * Recreates all the drawers
      */
-    fun resetDrawers() {
+    private fun resetDrawers() {
         drawers.clear()
         add(BarlineLeaf(barPositionDict, paint))
         add(SidelineLeaf(barPositionDict, paint))
-        flaggableGroups.filter { it.size == 1 }.map { listOfNoteViews ->
-            listOfNoteViews.map {
-                it.noteViewDrawer.add(FlagComposite(it.getmNotePositionDict(), paint))
+
+        for (flaggableGroup in flaggableGroups) {
+            if (flaggableGroup.size == 1) {
+                flaggableGroup.map { it.noteViewDrawer.add(FlagComposite(it.notePositionDict, paint)) }
+            } else {
+                add(BeamComposite(flaggableGroup, barPositionDict, paint))
             }
         }
-        flaggableGroups.filter { it.size >= 2 }.map { add(BeamComposite(it, paint)) }
     }
 
     override fun draw(canvas: Canvas?) {

@@ -2,6 +2,7 @@ package com.example.composingapp.views.touchhandlers
 
 import android.view.MotionEvent
 import android.view.MotionEvent.ACTION_MOVE
+import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import com.example.composingapp.utils.interfaces.ui.TouchHandler
 import com.example.composingapp.utils.music.Music
@@ -16,7 +17,7 @@ object NoteViewMoveHandler : TouchHandler {
     override fun handleTouch(v: View, event: MotionEvent) {
         when (event.action) {
             ACTION_MOVE -> moveNoteView(v, event)
-//            ACTION_UP -> updateDataInViewModel(v)
+            ACTION_UP -> updateDataInViewModel(v)
         }
     }
 
@@ -28,7 +29,7 @@ object NoteViewMoveHandler : TouchHandler {
 
     private fun moveNoteView(v: View, event: MotionEvent) {
         if (v is NoteView && isMovableNoteView(v)) {
-            val notePositionDict: NotePositionDict = v.getmNotePositionDict()
+            val notePositionDict: NotePositionDict = v.getNotePositionDict()
             var note = notePositionDict.note
             val semiSpace: Float = notePositionDict.positionDict.singleSpaceHeight / 2
             val noteY: Float = notePositionDict.noteY
@@ -49,12 +50,16 @@ object NoteViewMoveHandler : TouchHandler {
                 }
                 notePositionDict.note = note
                 v.noteViewDrawer.resetWith(notePositionDict)
-                v.barViewGroup.invalidate()
+                if (note.noteLength.needsFlag()) {
+                    v.barViewGroup.invalidate()
+                } else {
+                    v.invalidate()
+                }
             }
         }
     }
 
     private fun isMovableNoteView(v: View): Boolean {
-        return v is NoteView && v.isClicked && v.getmNotePositionDict().note.pitchClass != Music.PitchClass.REST
+        return v is NoteView && v.isClicked && v.getNotePositionDict().note.pitchClass != Music.PitchClass.REST
     }
 }
