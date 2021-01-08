@@ -21,7 +21,7 @@ public class ToneFloatHashMap extends HashMap<Tone, Float> {
 
     private Music.PitchClass findNaturalPitchClass(Music.PitchClass pitchClass) {
         Music.PitchClass naturalPitchClass = pitchClass;
-        for (Music.PitchClass currentPitchClass : Music.PitchClass.values()) {
+        for (Music.PitchClass currentPitchClass : Music.PitchClass.getValues()) {
             if (currentPitchClass.getLetter() == pitchClass.getLetter() &&
                     currentPitchClass.getAccidental() == Music.PitchClass.Accidental.NATURAL) {
                 naturalPitchClass = currentPitchClass;

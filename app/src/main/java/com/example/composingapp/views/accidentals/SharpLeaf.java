@@ -3,6 +3,7 @@ package com.example.composingapp.views.accidentals;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.example.composingapp.utils.interfaces.PositionDict;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 import com.example.composingapp.views.viewtools.ViewConstants;
 
@@ -19,7 +20,7 @@ public class SharpLeaf extends AccidentalLeaf {
 
     private void initFields() {
         mBoundingRectWidth = (float) (W_TO_H_RATIO * mBoundingRectHeight);
-        mBoundingRectHeight = (float) (mNotePositionDict.getPositionDict().getSingleSpaceHeight() * 1.5);
+        mBoundingRectHeight = (float) (mNotePositionDict.getScorePositionDict().getSingleSpaceHeight() * 1.5);
         this.centerX = mNotePositionDict.getNoteX() -
                 2 * (ViewConstants.NOTE_W_TO_H_RATIO * mNotePositionDict.getNoteVerticalRadius());
 
@@ -35,7 +36,7 @@ public class SharpLeaf extends AccidentalLeaf {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(Canvas canvas, PositionDict positionDict) {
         // Draw the first vertical line
         drawVertLine(canvas);
         // Move the canvas and draw the second vertical line

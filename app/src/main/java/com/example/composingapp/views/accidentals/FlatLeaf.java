@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.example.composingapp.utils.interfaces.PositionDict;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 import com.example.composingapp.views.viewtools.ViewConstants;
 
@@ -19,7 +20,7 @@ public class FlatLeaf extends AccidentalLeaf {
 
     public FlatLeaf(NotePositionDict notePositionDict, Paint paint) {
         super(notePositionDict, paint);
-        halfSpace = notePositionDict.getPositionDict().getSingleSpaceHeight() / 2;
+        halfSpace = notePositionDict.getScorePositionDict().getSingleSpaceHeight() / 2;
         initFields();
     }
 
@@ -48,7 +49,7 @@ public class FlatLeaf extends AccidentalLeaf {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(Canvas canvas, PositionDict positionDict) {
         // Reset the color, if needed
         tempPaint.setColor(mPaint.getColor());
         // Draw the vertical line

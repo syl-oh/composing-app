@@ -11,7 +11,7 @@ public final class ToneTable {
 
     private static ImmutableTable<Music.PitchClass, Integer, Tone> buildToneTable() {
         ImmutableTable.Builder<Music.PitchClass, Integer, Tone> builder = new ImmutableTable.Builder<>();
-        for (Music.PitchClass pitchClass : Music.PitchClass.values()) {
+        for (Music.PitchClass pitchClass : Music.PitchClass.getValues()) {
             if (pitchClass != Music.PitchClass.REST) {
                 for (int octave = 0; octave < 9; octave++) {
                     builder.put(pitchClass, octave, new Tone(pitchClass, octave));

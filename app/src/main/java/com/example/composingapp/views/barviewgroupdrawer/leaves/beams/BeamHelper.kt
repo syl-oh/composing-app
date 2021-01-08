@@ -62,7 +62,7 @@ object BeamHelper {
      */
     fun findStemDirection(notePositionDicts: List<NotePositionDict>): StemLeaf.StemDirection {
         // If half of the notes point down, the entire group will point down
-        return if (notePositionDicts.map { it.noteY }.filter { it > notePositionDicts[0].positionDict.thirdLineY }.size
+        return if (notePositionDicts.map { it.noteY }.filter { it > notePositionDicts[0].scorePositionDict.thirdLineY }.size
                 < notePositionDicts.size / 2) {
             StemLeaf.StemDirection.POINTS_DOWN
         } else StemLeaf.StemDirection.POINTS_UP

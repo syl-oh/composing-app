@@ -2,8 +2,7 @@ package com.example.composingapp.views.viewtools.positiondict;
 
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
+import com.example.composingapp.utils.interfaces.PositionDict;
 import com.example.composingapp.utils.music.MidiNoteDict;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
@@ -16,9 +15,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
 
-public class PositionDict {
-    private static final int NUM_BARLINES = 5;
-    private static final String TAG = "NotePositionDict";
+public final class ScorePositionDict implements PositionDict {
+    private static final String TAG = "ScorePositionDict";
     private final int totalPositions = ViewConstants.TOTAL_SPACES + ViewConstants.TOTAL_LINES;
     private FloatToneHashMap yToToneMap;
     private ToneFloatHashMap toneToYMap;
@@ -33,7 +31,7 @@ public class PositionDict {
     private Float mFifthLineY;
     private Music.Clef mClef;
 
-    public PositionDict(float barHeight, Music.Clef clef) {
+    public ScorePositionDict(float barHeight, Music.Clef clef) {
         mBarHeight = barHeight;
         mClef = clef;
         midiNoteDict = MidiNoteDict.getInstance();

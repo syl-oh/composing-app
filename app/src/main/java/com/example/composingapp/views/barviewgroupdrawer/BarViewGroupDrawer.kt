@@ -4,7 +4,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
-import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.NoteView
 import com.example.composingapp.views.barviewgroupdrawer.composites.BeamComposite
@@ -17,8 +16,9 @@ import com.example.composingapp.views.viewtools.positiondict.BarPositionDict
 
 class BarViewGroupDrawer(
         private val barPositionDict: BarPositionDict,
-) : CompositeDrawer {
-    private val noteViewList = mutableListOf<NoteView>()
+//        private val noteViewList: MutableList<NoteView> = mutableListOf(),
+) {
+    private val noteViewList: MutableList<NoteView> = mutableListOf()
     private val flaggableGroups = mutableListOf<List<NoteView>>()
     private val drawers = mutableListOf<ComponentDrawer>()
     private val paint = Paint().apply {
@@ -49,6 +49,7 @@ class BarViewGroupDrawer(
      */
     private fun resetDrawers() {
         drawers.clear()
+        noteViewList.map { it.noteViewDrawer.resetDrawersWith(it.notePositionDict) }
         add(BarlineLeaf(barPositionDict, paint))
         add(SidelineLeaf(barPositionDict, paint))
 
@@ -61,16 +62,12 @@ class BarViewGroupDrawer(
         }
     }
 
-    override fun draw(canvas: Canvas?) {
-        drawers.map { it.draw(canvas) }
+    fun draw(canvas: Canvas?) {
+        drawers.map { it.draw(canvas, barPositionDict) }
     }
 
-    override fun add(drawerComponent: ComponentDrawer) {
+    fun add(drawerComponent: ComponentDrawer) {
         drawers.add(drawerComponent)
-    }
-
-    override fun remove(drawerComponent: ComponentDrawer) {
-        drawers.remove(drawerComponent)
     }
 
     companion object {

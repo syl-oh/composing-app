@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.ScoreObservable;
 import com.example.composingapp.viewmodels.ScoreViewModel;
-import com.example.composingapp.views.viewtools.positiondict.PositionDict;
+import com.example.composingapp.views.viewtools.positiondict.ScorePositionDict;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ import static com.example.composingapp.views.viewtools.ViewConstants.BARS_PER_LI
 public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarViewGroupHolder> {
     //    private static final String TAG = "ScoreLineAdapter";
     private final ScoreViewModel mScoreViewModel;
-    private PositionDict positionDict;
+    private ScorePositionDict positionDict;
     private ClefView clefView;
     private ScoreObservable mScoreObservable; // Copy of scoreObservable
     private ArrayList<BarObserver> mBarObservers;
@@ -43,7 +43,7 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
     @Override
     public BarViewGroupHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (positionDict == null) {
-            positionDict = new PositionDict(parent.getHeight() - parent.getPaddingTop()
+            positionDict = new ScorePositionDict(parent.getHeight() - parent.getPaddingTop()
                     - parent.getPaddingBottom(), mScoreObservable.getClef());
         }
 

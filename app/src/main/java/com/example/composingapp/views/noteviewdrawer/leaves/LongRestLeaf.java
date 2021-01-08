@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.example.composingapp.utils.interfaces.PositionDict;
 import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
@@ -15,13 +16,14 @@ public class LongRestLeaf implements LeafDrawer {
     private final float bottomLeftX;
     private final float bottomRightX;
     private final float bottomY;
+    private final float dx;
     private final Paint bottomPaint, mPaint;
 
     public LongRestLeaf(NotePositionDict notePositionDict, Paint paint) {
         mPaint = paint;
 
         // X position
-        float dx = 3 * notePositionDict.getPositionDict().getSingleSpaceHeight() / 4;
+        dx = 3 * notePositionDict.getScorePositionDict().getSingleSpaceHeight() / 4;
         float rectLeftX = notePositionDict.getNoteX() - dx;
         float rectRightX = notePositionDict.getNoteX() + dx;
         bottomLeftX = rectLeftX - dx;
@@ -32,13 +34,13 @@ public class LongRestLeaf implements LeafDrawer {
         bottomPaint.setStrokeWidth(bottomPaint.getStrokeWidth() * 2);
 
         if (notePositionDict.getNote().getNoteLength() == Music.NoteLength.WHOLE_NOTE) {
-            bottomY = notePositionDict.getPositionDict().getThirdLineY() + (STEM_WIDTH);
+            bottomY = notePositionDict.getScorePositionDict().getThirdLineY() + (STEM_WIDTH);
         } else {
-            bottomY = notePositionDict.getPositionDict().getThirdLineY() - (STEM_WIDTH);
+            bottomY = notePositionDict.getScorePositionDict().getThirdLineY() - (STEM_WIDTH);
         }
 
         // Rect
-        Float hatHeight = notePositionDict.getPositionDict().getSingleSpaceHeight() / 2;
+        Float hatHeight = notePositionDict.getScorePositionDict().getSingleSpaceHeight() / 2;
 
         if (notePositionDict.getNote().getNoteLength() == Music.NoteLength.WHOLE_NOTE) {
             rect = new RectF(rectLeftX, bottomY + hatHeight, rectRightX, bottomY);
@@ -48,7 +50,7 @@ public class LongRestLeaf implements LeafDrawer {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(Canvas canvas, PositionDict positionDict) {
         bottomPaint.setColor(mPaint.getColor());
         canvas.drawLine(bottomLeftX, bottomY, bottomRightX, bottomY, bottomPaint);
         canvas.drawRect(rect, mPaint);

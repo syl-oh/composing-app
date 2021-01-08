@@ -15,7 +15,7 @@ import com.example.composingapp.views.noteviewdrawer.NoteViewDrawer;
 import com.example.composingapp.views.touchhandlers.NoteViewMoveHandler;
 import com.example.composingapp.views.touchhandlers.ToggleClickedHandler;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
-import com.example.composingapp.views.viewtools.positiondict.PositionDict;
+import com.example.composingapp.views.viewtools.positiondict.ScorePositionDict;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -26,8 +26,7 @@ public class NoteView extends View implements Clickable {
     private NoteViewDrawer mNoteViewDrawer;
     private BarViewGroup mBarViewGroup;
     private boolean mIsClicked = false;
-    private PositionDict mPositionDict;
-
+    private ScorePositionDict mPositionDict;
     /**
      * Constructor for programmatically creating a NoteView
      *
@@ -35,7 +34,7 @@ public class NoteView extends View implements Clickable {
      * @param note    Note object
      */
     @SuppressLint("ClickableViewAccessibility")
-    public NoteView(Context context, BarViewGroup barViewGroup, PositionDict positionDict, @NonNull Note note) {
+    public NoteView(Context context, BarViewGroup barViewGroup, ScorePositionDict positionDict, @NonNull Note note) {
         super(context);
         mNote = note;
         mPositionDict = positionDict;
@@ -48,6 +47,10 @@ public class NoteView extends View implements Clickable {
             return true;
         });
         this.setBackgroundColor(Color.TRANSPARENT);
+    }
+
+    public void setNoteViewDrawer(NoteViewDrawer mNoteViewDrawer) {
+        this.mNoteViewDrawer = mNoteViewDrawer;
     }
 
     public BarViewGroup getBarViewGroup() {

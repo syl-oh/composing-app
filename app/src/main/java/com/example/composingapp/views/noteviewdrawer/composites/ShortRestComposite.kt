@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 import androidx.core.graphics.withTranslation
+import com.example.composingapp.utils.interfaces.PositionDict
 import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
@@ -19,9 +20,9 @@ class ShortRestComposite(
 
     init {
         val x = notePositionDict.noteX
-        val y = notePositionDict.positionDict.fourthLineY
-        val dy = notePositionDict.positionDict.singleSpaceHeight
-        val dx = notePositionDict.positionDict.singleSpaceHeight / 4 + paint.strokeWidth / 2
+        val y = notePositionDict.scorePositionDict.fourthLineY
+        val dy = notePositionDict.scorePositionDict.singleSpaceHeight
+        val dx = notePositionDict.scorePositionDict.singleSpaceHeight / 4 + paint.strokeWidth / 2
 
         // Add the required leaves
         add(ShortRestLeaf(notePositionDict, paint, x, y))
@@ -30,8 +31,8 @@ class ShortRestComposite(
         }
     }
 
-    override fun draw(canvas: Canvas?) {
-        drawers.map { it.draw(canvas) }
+    override fun draw(canvas: Canvas?, positionDict: PositionDict) {
+        drawers.map { it.draw(canvas, positionDict) }
     }
 
     override fun add(drawerComponent: ComponentDrawer) {
@@ -49,7 +50,7 @@ class ShortRestComposite(
             val x: Float,
             val y: Float,
     ) : LeafDrawer {
-        private val halfSpace = notePositionDict.positionDict.singleSpaceHeight / 2
+        private val halfSpace = notePositionDict.scorePositionDict.singleSpaceHeight / 2
         private val arcPaint: Paint = Paint(paint).apply {
             style = Paint.Style.STROKE
             strokeJoin = Paint.Join.ROUND
@@ -63,7 +64,7 @@ class ShortRestComposite(
         private val lineRun: Float = (arcRect.width() - arcStrokeWidth - arcRect.width() / 2)
         private val lineRise: Float = -3 * halfSpace
 
-        override fun draw(canvas: Canvas?) {
+        override fun draw(canvas: Canvas?, positionDict: PositionDict) {
             canvas?.apply {
                 withTranslation(x - halfSpace/2, y + halfSpace / 2) {
                     drawOval(0F, 0F, halfSpace, halfSpace, paint)

@@ -2,6 +2,7 @@ package com.example.composingapp.views.barviewgroupdrawer.composites
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import com.example.composingapp.utils.interfaces.PositionDict
 import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music
@@ -23,7 +24,7 @@ class BeamComposite(
     private val beamGroupDicts = beamGroup.map { it.notePositionDict }
     private val stemDirection = findStemDirection(beamGroupDicts)
     private val primaryBeam: PrimaryBeamLeaf
-    private val beamYShift = barPositionDict.positionDict.singleSpaceHeight / 4
+    private val beamYShift = barPositionDict.scorePositionDict.singleSpaceHeight / 4
 
     init {
         primaryBeam = PrimaryBeamLeaf(beamGroup, stemDirection, paint)
@@ -66,8 +67,8 @@ class BeamComposite(
         }
     }
 
-    override fun draw(canvas: Canvas?) {
-        drawers.map { it.draw(canvas) }
+    override fun draw(canvas: Canvas?, positionDict: PositionDict) {
+        drawers.map { it.draw(canvas, positionDict) }
     }
 
     override fun add(drawerComponent: ComponentDrawer) {

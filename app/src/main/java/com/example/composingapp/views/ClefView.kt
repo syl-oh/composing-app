@@ -5,14 +5,12 @@ import android.graphics.Color
 import android.graphics.RectF
 import com.example.composingapp.R
 import com.example.composingapp.utils.interfaces.ui.Clickable
-import com.example.composingapp.utils.interfaces.ui.TouchHandler
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.touchhandlers.ToggleClickedHandler
 
 class ClefView(
         context: Context,
 ) : androidx.appcompat.widget.AppCompatImageButton(context), Clickable {
-    private val handlers = listOf<TouchHandler>(ToggleClickedHandler)
     override lateinit var touchAreaRectF: RectF
 
 
@@ -23,7 +21,7 @@ class ClefView(
         scaleType = ScaleType.FIT_CENTER
         setOnTouchListener { v, event ->
             performClick()
-            handlers.map { it.handleTouch(v, event) }
+            ToggleClickedHandler.handleTouch(v, event)
             true   // Return true at the end
         }
     }

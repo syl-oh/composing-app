@@ -3,6 +3,7 @@ package com.example.composingapp.views.accidentals;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
+import com.example.composingapp.utils.interfaces.PositionDict;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 import com.example.composingapp.views.viewtools.ViewConstants;
 
@@ -40,7 +41,7 @@ public class NaturalLeaf extends AccidentalLeaf {
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(Canvas canvas, PositionDict positionDict) {
         canvas.save();
         canvas.translate(normalX, normalY);
 

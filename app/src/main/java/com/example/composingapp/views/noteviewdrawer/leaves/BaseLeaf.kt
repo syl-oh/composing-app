@@ -4,32 +4,19 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.core.graphics.withRotation
 import androidx.core.graphics.withTranslation
-import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
+import com.example.composingapp.utils.interfaces.PositionDict
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 
-abstract class BaseLeaf(
-        val notePositionDict: NotePositionDict,
-        ) : LeafDrawer {
-    abstract val notePaint: Paint
-    abstract val vertRadius: Float
-    abstract val angle: Float
-    protected val filledNoteAngle = 330f
-    protected val halfNoteAngleInside = filledNoteAngle
-    protected val wholeNoteBaseAngle = 0f
-    protected val wholeNoteInnerAngle = 75f
-    private val horzRadius = notePositionDict.noteHorizontalRadius
-    private val noteX = notePositionDict.noteX
-    private val noteY = notePositionDict.noteY
-    override fun draw(canvas: Canvas?) {
-        canvas?.withTranslation(noteX, noteY) {
-            canvas.withRotation(angle) {
-                canvas.drawOval(
-                        -horzRadius, vertRadius, horzRadius, -vertRadius, notePaint)
+object BaseLeaf {
+    fun draw(canvas: Canvas?, positionDict: PositionDict, paint: Paint, vertRadius: Float, angle:Float) {
+        if (positionDict is NotePositionDict) {
+            val horzRadius = positionDict.noteHorizontalRadius
+            canvas?.withTranslation(positionDict.noteX, positionDict.noteY) {
+                canvas.withRotation(angle) {
+                    canvas.drawOval(
+                            -horzRadius, vertRadius, horzRadius, -vertRadius, paint)
+                }
             }
         }
-    }
-
-    companion object {
-//        private const val TAG = "BaseLeaf"
     }
 }

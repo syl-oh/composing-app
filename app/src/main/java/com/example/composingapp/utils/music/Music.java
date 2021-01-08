@@ -106,6 +106,7 @@ public final class Music extends Application {
 
         private Letter letter;
         private Accidental accidental;
+        private static final PitchClass[] cachedPitchClasses = PitchClass.values();
 
         PitchClass(Letter letter, Accidental accidental) {
             this.letter = letter;
@@ -122,12 +123,16 @@ public final class Music extends Application {
 
         public PitchClass[] getAccentedPitchClasses() {
             ArrayList<PitchClass> accentedPitchClasses = new ArrayList<>();
-            for (PitchClass pitchClass : PitchClass.values()) {
+            for (PitchClass pitchClass : PitchClass.getValues()) {
                 if (pitchClass.accidental != Accidental.NATURAL) {
                     accentedPitchClasses.add(pitchClass);
                 }
             }
             return (PitchClass[]) accentedPitchClasses.toArray();
+        }
+
+        public static PitchClass[] getValues() {
+            return cachedPitchClasses;
         }
 
         public enum Accidental {

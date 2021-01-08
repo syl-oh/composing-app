@@ -4,17 +4,18 @@ import android.graphics.RectF;
 
 import androidx.annotation.NonNull;
 
+import com.example.composingapp.utils.interfaces.PositionDict;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 
 import static com.example.composingapp.views.viewtools.ViewConstants.NOTE_W_TO_H_RATIO;
 
-public class NotePositionDict {
+public class NotePositionDict implements PositionDict {
     private static final String TAG = "NotePositionDict";
     private final float mNoteX, mHeight, mWidth;
     private final float mNoteVerticalRadius;
     private final float mNoteHorizontalRadius;
-    private PositionDict mPositionDict;
+    private ScorePositionDict mScorePositionDict;
     private RectF mTouchAreaRectF;
     private Note mNote;
     private float mNoteY;
@@ -26,8 +27,8 @@ public class NotePositionDict {
      * @param width        The width of the NoteView
      * @param height       The height of the Noteview
      */
-    public NotePositionDict(PositionDict positionDict, Note note, float width, float height) {
-        mPositionDict = positionDict;
+    public NotePositionDict(ScorePositionDict positionDict, Note note, float width, float height) {
+        mScorePositionDict = positionDict;
         mNote = note;
         mHeight = height;
         mWidth = width;
@@ -42,8 +43,8 @@ public class NotePositionDict {
         updateTouchAreaRectF();
     }
 
-    public PositionDict getPositionDict() {
-        return mPositionDict;
+    public ScorePositionDict getScorePositionDict() {
+        return mScorePositionDict;
     }
 
     public RectF getTouchAreaRectF() {
@@ -69,7 +70,7 @@ public class NotePositionDict {
      */
     public void setNote(@NonNull Note note) {
         this.mNote = note;
-        mNoteY = mPositionDict.getNoteYOf(mNote);
+        mNoteY = mScorePositionDict.getNoteYOf(mNote);
         updateTouchAreaRectF();
     }
 
@@ -90,7 +91,7 @@ public class NotePositionDict {
     }
 
     private void updateTouchAreaRectF() {
-        mTouchAreaRectF = new RectF(-mWidth / 2 + mNoteX, -2 * mPositionDict.getSingleSpaceHeight() + mNoteY,
-                mWidth / 2 + mNoteX, 2 * mPositionDict.getSingleSpaceHeight() + mNoteY);
+        mTouchAreaRectF = new RectF(-mWidth / 2 + mNoteX, -2 * mScorePositionDict.getSingleSpaceHeight() + mNoteY,
+                mWidth / 2 + mNoteX, 2 * mScorePositionDict.getSingleSpaceHeight() + mNoteY);
     }
 }

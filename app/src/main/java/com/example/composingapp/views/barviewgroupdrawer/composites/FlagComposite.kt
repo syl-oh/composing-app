@@ -4,6 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.RectF
 import androidx.core.graphics.withTranslation
+import com.example.composingapp.utils.interfaces.PositionDict
 import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
@@ -28,13 +29,13 @@ class FlagComposite(
                 add(FlagLeaf(this, paint))
             } else if (this.note.noteLength == Music.NoteLength.SIXTEENTH_NOTE) {
                 add(FlagLeaf(this, paint))
-                add(FlagLeaf(this, paint, dy = this.positionDict.singleSpaceHeight / 2))
+                add(FlagLeaf(this, paint, dy = this.scorePositionDict.singleSpaceHeight / 2))
             }
         }
     }
 
-    override fun draw(canvas: Canvas?) {
-        drawers.map { it.draw(canvas) }
+    override fun draw(canvas: Canvas?, positionDict: PositionDict) {
+        drawers.map { it.draw(canvas, positionDict) }
     }
 
     override fun add(drawerComponent: ComponentDrawer) {
@@ -57,15 +58,15 @@ class FlagComposite(
             val dy: Float = 0f
     ) : LeafDrawer {
         private val flagPaint: Paint = Paint(originalPaint).apply { style = Paint.Style.STROKE }
-        private val flagPointsDown = notePositionDict.noteY > notePositionDict.positionDict.thirdLineY
+        private val flagPointsDown = notePositionDict.noteY > notePositionDict.scorePositionDict.thirdLineY
         private val noteHorzRadius = notePositionDict.noteHorizontalRadius
-        private val fourthDistance = notePositionDict.positionDict.octaveHeight / 2
+        private val fourthDistance = notePositionDict.scorePositionDict.octaveHeight / 2
         private val dx: Float = (noteHorzRadius * 2).toFloat()
         private val arcRect: RectF = RectF(-dx, -fourthDistance, dx, fourthDistance)
         private val originalStrokeWidth = originalPaint.strokeWidth
-        private val flagWidth: Int = (notePositionDict.positionDict.singleSpaceHeight / 5).roundToInt()
+        private val flagWidth: Int = (notePositionDict.scorePositionDict.singleSpaceHeight / 5).roundToInt()
 
-        override fun draw(canvas: Canvas?) {
+        override fun draw(canvas: Canvas?, positionDict: PositionDict) {
             canvas?.apply {
                 if (flagPointsDown) {
                     withTranslation(x + noteHorzRadius - originalStrokeWidth,

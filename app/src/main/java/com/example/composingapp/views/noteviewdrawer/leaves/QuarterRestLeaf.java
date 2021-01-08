@@ -4,6 +4,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 
+import com.example.composingapp.utils.interfaces.PositionDict;
 import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 
@@ -14,27 +15,21 @@ import static com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH;
  */
 public class QuarterRestLeaf implements LeafDrawer {
     private final RectF curvedRect;
-    float firstX, firstY, secondX, secondY, thirdY, fourthY;
+    float firstX, firstY, secondX, secondY, thirdY, fourthY, halfSpace;
     Paint restPaint;
 
     public QuarterRestLeaf(NotePositionDict notePositionDict, Paint paint) {
-
         restPaint = new Paint(paint);
         restPaint.setStrokeWidth(2 * STEM_WIDTH);
         restPaint.setStyle(Paint.Style.STROKE);
         // x positions: deviance from the initial mNoteX
-        float dx = notePositionDict.getPositionDict().getSingleSpaceHeight() / 2;
-        firstX = notePositionDict.getNoteX() - dx;
-        secondX = notePositionDict.getNoteX() + dx;
+        float halfSpace = notePositionDict.getScorePositionDict().getSingleSpaceHeight() / 2;
+        firstX = notePositionDict.getNoteX() - halfSpace;
+        secondX = notePositionDict.getNoteX() + halfSpace;
 
         // y positions
-        float halfSpace = notePositionDict.getPositionDict().getSingleSpaceHeight() / 2;
         // Start in the middle of the top space
-        try {
-            firstY = notePositionDict.getPositionDict().getToneToBarlineYMap().get(notePositionDict
-                    .getPositionDict().getClef().getBarlineTones()[4]) + halfSpace;
-        } catch (NullPointerException e) {
-        }
+        firstY = notePositionDict.getScorePositionDict().getFirstLineY() + halfSpace;
         // Move down a space
         secondY = firstY + 2 * halfSpace;
         // Move down half a space
@@ -42,13 +37,11 @@ public class QuarterRestLeaf implements LeafDrawer {
         // Move down half a space
         fourthY = thirdY + halfSpace;
         // For the curved stroke, create the rect for the oval
-        curvedRect = new RectF(firstX, fourthY,
-                secondX + 2 * dx,
-                fourthY + 2 * halfSpace);
+        curvedRect = new RectF();
     }
 
     @Override
-    public void draw(Canvas canvas) {
+    public void draw(Canvas canvas, PositionDict positionDict) {
         // First Stroke
         canvas.drawLine(firstX, firstY, secondX, secondY, restPaint);
         // Second Stroke
@@ -56,6 +49,7 @@ public class QuarterRestLeaf implements LeafDrawer {
         // Third Stroke
         canvas.drawLine(firstX, thirdY, secondX, fourthY, restPaint);
         // Fourth Stroke (Curved Stroke)
-        canvas.drawArc(curvedRect, 90, 180, false, restPaint);
+        canvas.drawArc(firstX, fourthY, secondX + 2 * halfSpace, fourthY + 2 * halfSpace,
+                90, 180, false, restPaint);
     }
 }

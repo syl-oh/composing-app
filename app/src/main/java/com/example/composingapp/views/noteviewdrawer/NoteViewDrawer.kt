@@ -3,20 +3,21 @@ package com.example.composingapp.views.noteviewdrawer
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.util.Log
 import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
-import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.accidentals.FlatLeaf
 import com.example.composingapp.views.accidentals.SharpLeaf
 import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
-import com.example.composingapp.views.noteviewdrawer.composites.LedgerLineComposite
-import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
+import com.example.composingapp.views.noteviewdrawer.composites.LedgerLineLeaf
 import com.example.composingapp.views.noteviewdrawer.composites.ShortRestComposite
-import com.example.composingapp.views.noteviewdrawer.leaves.*
+import com.example.composingapp.views.noteviewdrawer.leaves.FilledBaseLeaf
+import com.example.composingapp.views.noteviewdrawer.leaves.HollowBaseLeaf
+import com.example.composingapp.views.noteviewdrawer.leaves.LongRestLeaf
+import com.example.composingapp.views.noteviewdrawer.leaves.QuarterRestLeaf
+import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 
-class NoteViewDrawer(private val notePositionDict: NotePositionDict) : CompositeDrawer {
+class NoteViewDrawer(val notePositionDict: NotePositionDict) {
     var drawers = mutableListOf<ComponentDrawer>()
     val paint = Paint().apply {
         color = Color.BLACK
@@ -28,7 +29,7 @@ class NoteViewDrawer(private val notePositionDict: NotePositionDict) : Composite
     }
 
     init {
-        resetWith(notePositionDict)
+        resetDrawersWith(notePositionDict)
 //        Log.d(TAG, "Drawer for ${notePositionDict.note.pitchClass}, ${notePositionDict.note.octave}, " +
 //                "${notePositionDict.note.noteLength} ")
     }
@@ -38,9 +39,8 @@ class NoteViewDrawer(private val notePositionDict: NotePositionDict) : Composite
      *
      *  @param notePositionDict NotePositionDict containing coordinate information for the note
      */
-    fun resetWith(notePositionDict: NotePositionDict) {
+    fun resetDrawersWith(notePositionDict: NotePositionDict) {
         drawers.clear()
-
         if (notePositionDict.note.pitchClass == Music.PitchClass.REST) {
             when (notePositionDict.note.noteLength) {
                 Music.NoteLength.QUARTER_NOTE -> add(QuarterRestLeaf(notePositionDict, paint))
@@ -65,24 +65,16 @@ class NoteViewDrawer(private val notePositionDict: NotePositionDict) : Composite
                 if (this == Music.PitchClass.Accidental.SHARP) add(SharpLeaf(notePositionDict, paint))
                 else if (this == Music.PitchClass.Accidental.FLAT) add(FlatLeaf(notePositionDict, paint))
             }
-
-            add(LedgerLineComposite(notePositionDict, paint))
+            add(LedgerLineLeaf(notePositionDict, paint))
         }
     }
 
-    override fun draw(canvas: Canvas?) {
-        drawers.map {it.draw(canvas)}
+    fun draw(canvas: Canvas?) {
+        drawers.map { it.draw(canvas, notePositionDict) }
     }
 
-    override fun add(drawerComponent: ComponentDrawer) {
-        if (drawerComponent is StemLeaf) {
-            drawers.removeAll { it is StemLeaf }
-        }
+    fun add(drawerComponent: ComponentDrawer) {
         drawers.add(drawerComponent)
-    }
-
-    override fun remove(drawerComponent: ComponentDrawer) {
-        drawers.remove(drawerComponent)
     }
 
     companion object {

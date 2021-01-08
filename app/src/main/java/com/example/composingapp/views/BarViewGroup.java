@@ -11,23 +11,22 @@ import androidx.core.view.ViewCompat;
 import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.viewmodels.ScoreViewModel;
+import com.example.composingapp.views.barviewgroupdrawer.BarViewGroupDrawer;
 import com.example.composingapp.views.commands.ChangeNoteCommand;
 import com.example.composingapp.views.viewtools.LayoutWeightMap;
-import com.example.composingapp.views.barviewgroupdrawer.BarViewGroupDrawer;
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict;
-import com.example.composingapp.views.viewtools.positiondict.PositionDict;
+import com.example.composingapp.views.viewtools.positiondict.ScorePositionDict;
 
 import java.util.ArrayList;
 
 public class BarViewGroup extends LinearLayout {
     private final ArrayList<NoteView> mNoteViewList = new ArrayList<>();
+    private final ScorePositionDict mPositionDict;
+    private final ScoreViewModel mScoreViewModel;
     private BarPositionDict mBarPositionDict;
     private BarViewGroupDrawer mBarViewGroupDrawer;
-    private final PositionDict mPositionDict;
     private BarObserver mBarObserver;
-    private final ScoreViewModel mScoreViewModel;
-
-    public BarViewGroup(Context context, ScoreViewModel scoreViewModel, PositionDict positionDict) {
+    public BarViewGroup(Context context, ScoreViewModel scoreViewModel, ScorePositionDict positionDict) {
         super(context);
         mScoreViewModel = scoreViewModel;
         mPositionDict = positionDict;
@@ -38,6 +37,14 @@ public class BarViewGroup extends LinearLayout {
         setBackgroundColor(Color.TRANSPARENT);
     }
 
+    public BarViewGroupDrawer getBarViewGroupDrawer() {
+        return mBarViewGroupDrawer;
+    }
+
+    public void setBarViewGroupDrawer(BarViewGroupDrawer mBarViewGroupDrawer) {
+        this.mBarViewGroupDrawer = mBarViewGroupDrawer;
+    }
+
     public ArrayList<NoteView> getNoteViewList() {
         return mNoteViewList;
     }
@@ -46,17 +53,6 @@ public class BarViewGroup extends LinearLayout {
     public BarPositionDict getBarPositionDict() {
         return mBarPositionDict;
     }
-
-    /**
-     * Assigns the barObserver for this BarViewGroup, then updates/ creates its NoteView children
-     *
-     * @param barObserver The BarObserver for this BarViewGroup
-     */
-    public void setBarObserver(BarObserver barObserver) {
-        this.mBarObserver = barObserver;
-        updateChildrenFromBarObserver();
-    }
-
 
     /**
      * Updates NoteView children based on Notes in BarObserver
@@ -127,5 +123,15 @@ public class BarViewGroup extends LinearLayout {
 
     public BarObserver getBarObserver() {
         return mBarObserver;
+    }
+
+    /**
+     * Assigns the barObserver for this BarViewGroup, then updates/ creates its NoteView children
+     *
+     * @param barObserver The BarObserver for this BarViewGroup
+     */
+    public void setBarObserver(BarObserver barObserver) {
+        this.mBarObserver = barObserver;
+        updateChildrenFromBarObserver();
     }
 }

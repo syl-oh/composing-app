@@ -76,7 +76,7 @@ public class MidiNoteDict {
 
         // Hashmap only contains values for Sharps and Naturals, so we need to convert any Flats
         if (tonePitchClass.getAccidental() == Music.PitchClass.Accidental.FLAT) {
-            for (Music.PitchClass pitchClass : Music.PitchClass.values()) {
+            for (Music.PitchClass pitchClass : Music.PitchClass.getValues()) {
                 if (pitchClass.getLetter() == tonePitchClass.getLetter() &&
                         pitchClass.getAccidental() == Music.PitchClass.Accidental.NATURAL) {
                     tone = ToneTable.get(pitchClass, tone.getOctave());

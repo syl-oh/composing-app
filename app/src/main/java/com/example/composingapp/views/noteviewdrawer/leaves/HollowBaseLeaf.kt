@@ -12,7 +12,7 @@ class HollowBaseLeaf(
     override val notePaint: Paint = Paint(paint).apply { color = Color.WHITE }
     override val vertRadius: Float = notePositionDict.noteVerticalRadius / 2
     override val angle: Float = when (notePositionDict.note.noteLength) {
-        Music.NoteLength.HALF_NOTE -> halfNoteAngleInside
-        else -> wholeNoteInnerAngle
+        Music.NoteLength.HALF_NOTE -> 330f
+        else -> 75f
     }
 }

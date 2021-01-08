@@ -50,8 +50,8 @@ class PrimaryBeamLeaf(
         fun yPos(nV: NoteView) = nV.notePositionDict.noteY + nV.y
         fun xPos(nV: NoteView) = nV.notePositionDict.noteX + nV.x
 
-        val octaveHeight: Float = noteViews.first().notePositionDict.positionDict.octaveHeight
-        val semiSpace: Float = noteViews.first().notePositionDict.positionDict.singleSpaceHeight / 2
+        val octaveHeight: Float = noteViews.first().notePositionDict.scorePositionDict.octaveHeight
+        val semiSpace: Float = noteViews.first().notePositionDict.scorePositionDict.singleSpaceHeight / 2
         val firstY = yPos(noteViews.first())
         val lastY = yPos(noteViews.last())
         val dy = lastY - firstY

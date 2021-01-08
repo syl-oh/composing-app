@@ -29,9 +29,9 @@ object NoteViewMoveHandler : TouchHandler {
 
     private fun moveNoteView(v: View, event: MotionEvent) {
         if (v is NoteView && isMovableNoteView(v)) {
-            val notePositionDict: NotePositionDict = v.getNotePositionDict()
-            var note = notePositionDict.note
-            val semiSpace: Float = notePositionDict.positionDict.singleSpaceHeight / 2
+            val notePositionDict: NotePositionDict = v.notePositionDict
+            val note = notePositionDict.note
+            val semiSpace: Float = notePositionDict.scorePositionDict.singleSpaceHeight / 2
             val noteY: Float = notePositionDict.noteY
             val dy: Float = noteY - event.y
 
@@ -39,17 +39,17 @@ object NoteViewMoveHandler : TouchHandler {
             if (abs(dy) >= semiSpace) {
                 // Find the new tone
                 val newToneY = if (dy > 0) noteY - semiSpace else noteY + semiSpace
-                val nextTone: Tone? = notePositionDict.positionDict.yToToneMap[newToneY]
+                val nextTone: Tone? = notePositionDict.scorePositionDict.yToToneMap[newToneY]
 
                 // Update the note and the NoteView, then redraw
-                note = nextTone?.let {
+                notePositionDict.note = nextTone?.let {
                     NoteTable.get(
                             nextTone.pitchClass,
                             nextTone.octave,
                             note.noteLength)
                 }
-                notePositionDict.note = note
-                v.noteViewDrawer.resetWith(notePositionDict)
+
+//                v.noteViewDrawer.resetDrawersWith(notePositionDict)
                 if (note.noteLength.needsFlag()) {
                     v.barViewGroup.invalidate()
                 } else {
@@ -60,6 +60,6 @@ object NoteViewMoveHandler : TouchHandler {
     }
 
     private fun isMovableNoteView(v: View): Boolean {
-        return v is NoteView && v.isClicked && v.getNotePositionDict().note.pitchClass != Music.PitchClass.REST
+        return v is NoteView && v.isClicked && v.notePositionDict.note.pitchClass != Music.PitchClass.REST
     }
 }

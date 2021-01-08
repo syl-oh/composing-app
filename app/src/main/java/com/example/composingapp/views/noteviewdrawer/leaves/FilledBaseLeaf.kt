@@ -9,6 +9,7 @@ class FilledBaseLeaf(
         override val notePaint: Paint
 ) : BaseLeaf(notePositionDict) {
     override val vertRadius: Float = notePositionDict.noteVerticalRadius
+    private val wholeNoteBaseAngle = 0f
     override val angle: Float = when (notePositionDict.note.noteLength) {
         Music.NoteLength.WHOLE_NOTE -> wholeNoteBaseAngle
         else -> filledNoteAngle
