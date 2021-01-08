@@ -50,8 +50,8 @@ class ScoreObservableTest {
         @Test
         @DisplayName("updates the clefs of its BarObservers when its clef is changed")
         void testUpdateClefAndNotesOnObservers() {
-            barObserver.addNote(new Note(Music.PitchClass.F_NATURAL, 4, Music.NoteLength.QUARTER_NOTE));
-            Note convertedNote = new Note(Music.PitchClass.F_NATURAL, 3, Music.NoteLength.QUARTER_NOTE);
+            barObserver.addNote(NoteTable.get(Music.PitchClass.F_NATURAL, 4, Music.NoteLength.QUARTER_NOTE));
+            Note convertedNote = NoteTable.get(Music.PitchClass.F_NATURAL, 3, Music.NoteLength.QUARTER_NOTE);
             Music.Clef newClef = Music.Clef.BASS_CLEF;
             scoreObservable.setClef(newClef);
 

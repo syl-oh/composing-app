@@ -7,8 +7,7 @@ public final class ToneTable {
     private static final ImmutableTable<Music.PitchClass, Integer, Tone> toneTable = buildToneTable();
 
 
-    private ToneTable() {
-    }
+    private ToneTable() { }
 
     private static ImmutableTable<Music.PitchClass, Integer, Tone> buildToneTable() {
         ImmutableTable.Builder<Music.PitchClass, Integer, Tone> builder = new ImmutableTable.Builder<>();
@@ -24,11 +23,11 @@ public final class ToneTable {
         return builder.build();
     }
 
-    static Tone get(Music.PitchClass pitchClass, int octave) {
+    public static Tone get(Music.PitchClass pitchClass, int octave) {
         return toneTable.get(pitchClass, octave);
     }
 
-    static ImmutableCollection<Tone> values() {
+    public static ImmutableCollection<Tone> values() {
         return toneTable.values();
     }
 }

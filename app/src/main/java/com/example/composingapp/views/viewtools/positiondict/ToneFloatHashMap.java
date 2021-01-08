@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Tone;
+import com.example.composingapp.utils.music.ToneTable;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -15,7 +16,7 @@ public class ToneFloatHashMap extends HashMap<Tone, Float> {
     @Override
     public Float get(@Nullable Object key) {
         return super.get(
-                new Tone(findNaturalPitchClass(((Tone) Objects.requireNonNull(key)).getPitchClass()), ((Tone) key).getOctave()));
+                ToneTable.get(findNaturalPitchClass(((Tone) Objects.requireNonNull(key)).getPitchClass()), ((Tone) key).getOctave()));
     }
 
     private Music.PitchClass findNaturalPitchClass(Music.PitchClass pitchClass) {

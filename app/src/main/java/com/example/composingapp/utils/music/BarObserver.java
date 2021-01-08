@@ -53,7 +53,7 @@ public class BarObserver implements Observer {
                 int noteMidiNum = 0;
                 try {
                     noteMidiNum =
-                            midiNoteDict.getMidiNum(new Tone(currentNote.getPitchClass(), currentNote.getOctave()));
+                            midiNoteDict.getMidiNum(ToneTable.get(currentNote.getPitchClass(), currentNote.getOctave()));
                 } catch (NullPointerException e) {
                 }
 
@@ -67,7 +67,7 @@ public class BarObserver implements Observer {
                 }
                 Tone replacementTone = midiNoteDict.getTone(noteMidiNum);
                 noteArrayList.remove(i);
-                noteArrayList.add(i, new Note(replacementTone.getPitchClass(),
+                noteArrayList.add(i, NoteTable.get(replacementTone.getPitchClass(),
                         replacementTone.getOctave(), currentNote.getNoteLength()));
             }
         }
@@ -197,7 +197,7 @@ public class BarObserver implements Observer {
         while (weightSum > 0) {
             Music.NoteLength maxNoteLength = getMaxNoteLengthThatFits(weightSum);
             // Add the Rest and move the index pointer
-            mNoteArrayList.add(index, new Note(maxNoteLength));
+            mNoteArrayList.add(index, NoteTable.get(maxNoteLength));
             index++;
             weightSum -= mNoteLengthToBeatsMap.get(maxNoteLength);
         }
@@ -238,7 +238,7 @@ public class BarObserver implements Observer {
         // Check if a whole note occupies the entire noteArrayList
         if (noteArrayList.size() == 1
                 && noteArrayList.get(0).equals(
-                new Note(Music.PitchClass.REST, -1, Music.NoteLength.WHOLE_NOTE))) {
+                NoteTable.get(Music.PitchClass.REST, -1, Music.NoteLength.WHOLE_NOTE))) {
             return noteArrayList; // If so, this is a valid bar that doesn't need resizing
         }
 

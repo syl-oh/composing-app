@@ -1,8 +1,5 @@
 package com.example.composingapp.utils.music;
 
-import androidx.annotation.Nullable;
-
-import java.util.Objects;
 
 public class Tone {
     private final Music.PitchClass pitchClass;
@@ -15,7 +12,7 @@ public class Tone {
      * @param octave     int between 0 and 7, or -1, representing the tone's octave or a rest,
      *                   respectively
      */
-    public Tone(Music.PitchClass pitchClass, int octave) {
+    Tone(Music.PitchClass pitchClass, int octave) {
         this.pitchClass = pitchClass;
         this.octave = octave;
     }
@@ -36,30 +33,5 @@ public class Tone {
      */
     public int getOctave() {
         return octave;
-    }
-
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(pitchClass, octave);
-    }
-
-    /**
-     * Checks for equality between this tone and any obj, which is true when both are tones whose
-     * pitchclasses and octaves are equal
-     *
-     * @param obj Any object
-     * @return Boolean: true if obj is a tone and has the same pitchclass and octave as this instance,
-     * and false otherwise
-     */
-    @Override
-    public boolean equals(@Nullable Object obj) {
-        if (obj == this) return true;
-        if (!(obj instanceof Tone)) {
-            return false;
-        }
-        Tone tone = (Tone) obj;
-        return ((pitchClass == tone.getPitchClass())
-                && (octave == tone.getOctave()));
     }
 }

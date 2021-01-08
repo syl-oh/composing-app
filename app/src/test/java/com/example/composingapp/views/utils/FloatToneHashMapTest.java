@@ -30,9 +30,9 @@ class FloatToneHashMapTest {
         @Test
         @DisplayName("should retrieve the tone whose key is closest to the given float key")
         void testGet() {
-            Tone c4Tone = new Tone(Music.PitchClass.C_NATURAL, 4);
-            Tone d4Tone = new Tone(Music.PitchClass.D_NATURAL, 4);
-            Tone e4Tone = new Tone(Music.PitchClass.E_NATURAL, 4);
+            Tone c4Tone = ToneTable.get(Music.PitchClass.C_NATURAL, 4);
+            Tone d4Tone = ToneTable.get(Music.PitchClass.D_NATURAL, 4);
+            Tone e4Tone = ToneTable.get(Music.PitchClass.E_NATURAL, 4);
             Float c4ToneKey = 0f;
             Float d4ToneKey = 50f;
             Float e4ToneKey = 100f;

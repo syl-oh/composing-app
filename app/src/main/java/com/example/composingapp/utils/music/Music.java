@@ -19,17 +19,17 @@ public final class Music extends Application {
      */
     public enum Clef {
         TREBLE_CLEF(43, new Tone[]
-                {new Tone(Music.PitchClass.E_NATURAL, 4),
-                        new Tone(Music.PitchClass.G_NATURAL, 4),
-                        new Tone(Music.PitchClass.B_NATURAL, 4),
-                        new Tone(Music.PitchClass.D_NATURAL, 5),
-                        new Tone(Music.PitchClass.F_NATURAL, 5)}),
+                {ToneTable.get(Music.PitchClass.E_NATURAL, 4),
+                        ToneTable.get(Music.PitchClass.G_NATURAL, 4),
+                        ToneTable.get(Music.PitchClass.B_NATURAL, 4),
+                        ToneTable.get(Music.PitchClass.D_NATURAL, 5),
+                        ToneTable.get(Music.PitchClass.F_NATURAL, 5)}),
         BASS_CLEF(23, new Tone[]
-                {new Tone(Music.PitchClass.G_NATURAL, 2),
-                        new Tone(Music.PitchClass.B_NATURAL, 2),
-                        new Tone(Music.PitchClass.D_NATURAL, 3),
-                        new Tone(Music.PitchClass.F_NATURAL, 3),
-                        new Tone(Music.PitchClass.A_NATURAL, 3)});
+                {ToneTable.get(Music.PitchClass.G_NATURAL, 2),
+                        ToneTable.get(Music.PitchClass.B_NATURAL, 2),
+                        ToneTable.get(Music.PitchClass.D_NATURAL, 3),
+                        ToneTable.get(Music.PitchClass.F_NATURAL, 3),
+                        ToneTable.get(Music.PitchClass.A_NATURAL, 3)});
 
         private final Tone[] barlineTones;
         private final int midiStartingIndex;

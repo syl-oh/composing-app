@@ -6,7 +6,7 @@ import android.view.MotionEvent.ACTION_UP
 import android.view.View
 import com.example.composingapp.utils.interfaces.ui.TouchHandler
 import com.example.composingapp.utils.music.Music
-import com.example.composingapp.utils.music.Note
+import com.example.composingapp.utils.music.NoteTable
 import com.example.composingapp.utils.music.Tone
 import com.example.composingapp.views.BarViewGroup
 import com.example.composingapp.views.NoteView
@@ -43,7 +43,7 @@ object NoteViewMoveHandler : TouchHandler {
 
                 // Update the note and the NoteView, then redraw
                 note = nextTone?.let {
-                    Note(
+                    NoteTable.get(
                             nextTone.pitchClass,
                             nextTone.octave,
                             note.noteLength)

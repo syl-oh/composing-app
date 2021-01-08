@@ -13,6 +13,7 @@ import com.example.composingapp.utils.interfaces.ui.Clickable;
 import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
+import com.example.composingapp.utils.music.NoteTable;
 import com.example.composingapp.viewmodels.ScoreViewModel;
 import com.example.composingapp.views.NoteView;
 import com.example.composingapp.views.ScoreLineAdapter;
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 Note oldNote = ((NoteView) clickedChild).getNotePositionDict().getNote();
                 BarObserver barObserver = ((NoteView) clickedChild).getBarViewGroup().getBarObserver();
                 int index = ((NoteView) clickedChild).getBarViewGroup().getNoteViewList().indexOf(clickedChild);
-                Note replacement = new Note(oldNote.getPitchClass(), oldNote.getOctave(), Music.NoteLength.QUARTER_NOTE);
+                Note replacement = NoteTable.get(oldNote.getPitchClass(), oldNote.getOctave(), Music.NoteLength.QUARTER_NOTE);
                 ChangeNoteCommand command =
                         new ChangeNoteCommand(mScoreViewModel, barObserver, index, replacement);
                 command.execute();

@@ -52,7 +52,7 @@ public class MidiNoteDict {
             }
 
             // Use the midi number as the key, and a tone object containing both the pitch class and octave
-            Tone toneToAdd = new Tone(currentPitchClass, currentOctave);
+            Tone toneToAdd = ToneTable.get(currentPitchClass, currentOctave);
             midiNumToToneMap.put(midiNum, toneToAdd);
             toneToMidiNumMap.put(toneToAdd, midiNum);
 
@@ -79,7 +79,7 @@ public class MidiNoteDict {
             for (Music.PitchClass pitchClass : Music.PitchClass.values()) {
                 if (pitchClass.getLetter() == tonePitchClass.getLetter() &&
                         pitchClass.getAccidental() == Music.PitchClass.Accidental.NATURAL) {
-                    tone = new Tone(pitchClass, tone.getOctave());
+                    tone = ToneTable.get(pitchClass, tone.getOctave());
                 }
             }
         }
