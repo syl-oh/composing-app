@@ -1,5 +1,6 @@
 package com.example.composingapp.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -9,7 +10,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.example.composingapp.utils.interfaces.ui.Clickable;
-import com.example.composingapp.utils.interfaces.ui.TouchHandler;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.views.noteviewdrawer.NoteViewDrawer;
 import com.example.composingapp.views.touchhandlers.NoteViewMoveHandler;
@@ -19,8 +19,6 @@ import com.example.composingapp.views.viewtools.positiondict.PositionDict;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-
 public class NoteView extends View implements Clickable {
     //    private static final String TAG = "NoteView";
     private NotePositionDict mNotePositionDict;
@@ -28,7 +26,6 @@ public class NoteView extends View implements Clickable {
     private NoteViewDrawer mNoteViewDrawer;
     private BarViewGroup mBarViewGroup;
     private boolean mIsClicked = false;
-    private ArrayList<TouchHandler> touchHandlers = new ArrayList<>();
     private PositionDict mPositionDict;
 
     /**
@@ -37,20 +34,17 @@ public class NoteView extends View implements Clickable {
      * @param context Context of the view
      * @param note    Note object
      */
+    @SuppressLint("ClickableViewAccessibility")
     public NoteView(Context context, BarViewGroup barViewGroup, PositionDict positionDict, @NonNull Note note) {
         super(context);
         mNote = note;
         mPositionDict = positionDict;
         mBarViewGroup = barViewGroup;
 
-        // Add the drag handler
-        touchHandlers.add(ToggleClickedHandler.INSTANCE);
-        touchHandlers.add(NoteViewMoveHandler.INSTANCE);
-
         // Set the touch listener for events
         setOnTouchListener((v, event) -> {
-            touchHandlers.forEach(handler -> handler.handleTouch(v, event));
-            performClick();
+            ToggleClickedHandler.INSTANCE.handleTouch(v, event);
+            NoteViewMoveHandler.INSTANCE.handleTouch(v, event);
             return true;
         });
         this.setBackgroundColor(Color.TRANSPARENT);

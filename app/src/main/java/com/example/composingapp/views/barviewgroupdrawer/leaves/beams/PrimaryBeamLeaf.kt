@@ -1,7 +1,6 @@
 package com.example.composingapp.views.barviewgroupdrawer.leaves.beams
 
 import android.graphics.Paint
-import android.util.Log
 import com.example.composingapp.utils.Line
 import com.example.composingapp.views.NoteView
 import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
@@ -20,8 +19,6 @@ class PrimaryBeamLeaf(
     override var beamLine: Line = requestedBeamLine ?: createBeamLine()
 
     init {
-        Log.d(TAG, "stemDirection: $stemDirection ")
-
         beamLine = beamLine.moveVertically(
                 if (stemDirection == StemLeaf.StemDirection.POINTS_UP) yTranslation
                 else -yTranslation)
@@ -66,8 +63,6 @@ class PrimaryBeamLeaf(
         val minY: Float =
                 (noteViews.map { it.notePositionDict.noteY }.minOrNull()) ?: firstY
         val dMaxToMinY = maxY - minY
-        Log.d(TAG, "createBeamLine: maxY: $maxY")
-        Log.d(TAG, "createBeamLine: minY: $minY")
 
         // Find the slope of the beam's line
         val slope: Float = if (dy > 0) {
@@ -100,6 +95,6 @@ class PrimaryBeamLeaf(
     }
 
     companion object {
-        private const val TAG = "PrimaryBeamLeaf"
+//        private const val TAG = "PrimaryBeamLeaf"
     }
 }

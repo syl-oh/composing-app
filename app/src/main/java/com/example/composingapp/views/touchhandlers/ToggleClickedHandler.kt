@@ -37,6 +37,7 @@ object ToggleClickedHandler : TouchHandler {
     }
 
     private fun shouldBeClicked(v: View, event: MotionEvent): Boolean {
-        return (v is Clickable) && (v.touchAreaRectF.contains(event.x, event.y))
+        return (v is Clickable)
+//                && (v.touchAreaRectF.contains(event.x, event.y))
     }
 }

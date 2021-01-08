@@ -2,7 +2,6 @@ package com.example.composingapp.views.barviewgroupdrawer.composites
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.util.Log
 import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music
@@ -29,9 +28,6 @@ class BeamComposite(
     init {
         primaryBeam = PrimaryBeamLeaf(beamGroup, stemDirection, paint)
         add(primaryBeam)
-
-        Log.d(TAG, "beamLineY: ${primaryBeam.beamLine.yAt(BeamHelper.getStemX(beamGroup.first(), paint, stemDirection))}")
-        Log.d(TAG, "noteY : ${beamGroup.first().notePositionDict.noteY}")
 
         beamGroup.map {
             it.noteViewDrawer.add(StemLeaf(it.notePositionDict, it.noteViewDrawer.paint, stemDirection,
@@ -81,6 +77,8 @@ class BeamComposite(
     override fun remove(drawerComponent: ComponentDrawer) {
         drawers.remove(drawerComponent)
     }
+
+
 
     companion object {
         private const val TAG = "BeamComposite"
