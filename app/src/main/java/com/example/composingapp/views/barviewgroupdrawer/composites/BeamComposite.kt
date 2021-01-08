@@ -6,13 +6,13 @@ import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.NoteView
+import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
 import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.findStemDirection
 import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.groupByNoteLengthCondition
 import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.heightToBeam
 import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.onlyGroupsWithNoteLengthCondition
 import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.PrimaryBeamLeaf
 import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.SecondaryBeamLeaf
-import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 
 class BeamComposite(
@@ -20,16 +20,16 @@ class BeamComposite(
         val paint: Paint,
 ) : CompositeDrawer {
     private val drawers = mutableListOf<ComponentDrawer>()
-    private val stemDirection = findStemDirection(beamGroup.map { it.notePositionDict })
+    private val stemDirection = findStemDirection(beamGroup.map { it.getmNotePositionDict() })
     private val primaryBeam: PrimaryBeamLeaf
-    private val notePositionDict: NotePositionDict = beamGroup.first().notePositionDict
-    private val beamYShift = notePositionDict.singleSpaceHeight / 4
+    private val notePositionDict: NotePositionDict = beamGroup.first().getmNotePositionDict()
+    private val beamYShift = notePositionDict.positionDict.singleSpaceHeight / 4
 
     init {
         primaryBeam = PrimaryBeamLeaf(beamGroup, stemDirection, paint)
         add(primaryBeam)
         beamGroup.map {
-            it.noteViewDrawer.add(StemLeaf(it.notePositionDict, it.noteViewDrawer.paint, stemDirection,
+            it.noteViewDrawer.add(StemLeaf(it.getmNotePositionDict(), it.noteViewDrawer.paint, stemDirection,
                     heightToBeam(it, primaryBeam.beamLine, paint, stemDirection)))
         }
 

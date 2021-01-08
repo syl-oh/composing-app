@@ -19,7 +19,7 @@ public class SharpLeaf extends AccidentalLeaf {
 
     private void initFields() {
         mBoundingRectWidth = (float) (W_TO_H_RATIO * mBoundingRectHeight);
-        mBoundingRectHeight = (float) (mNotePositionDict.getSingleSpaceHeight() * 1.5);
+        mBoundingRectHeight = (float) (mNotePositionDict.getPositionDict().getSingleSpaceHeight() * 1.5);
         this.centerX = mNotePositionDict.getNoteX() -
                 2 * (ViewConstants.NOTE_W_TO_H_RATIO * mNotePositionDict.getNoteVerticalRadius());
 

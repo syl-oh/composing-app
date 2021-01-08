@@ -1,6 +1,5 @@
 package com.example.composingapp.views;
 
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -19,7 +18,7 @@ import static com.example.composingapp.views.viewtools.ViewConstants.BARS_PER_LI
 
 
 public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarViewGroupHolder> {
-//    private static final String TAG = "ScoreLineAdapter";
+    //    private static final String TAG = "ScoreLineAdapter";
     private final ScoreViewModel mScoreViewModel;
     private PositionDict positionDict;
     private ClefView clefView;
@@ -48,11 +47,11 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
                     - parent.getPaddingBottom(), mScoreObservable.getClef());
         }
 
-        BarViewGroup barViewGroup = new BarViewGroup(parent.getContext(), mScoreViewModel);
+        BarViewGroup barViewGroup = new BarViewGroup(parent.getContext(), mScoreViewModel, positionDict);
         barViewGroup.setId(View.generateViewId());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 (parent.getWidth() / BARS_PER_LINE) - parent.getPaddingLeft() - parent.getPaddingRight(),
-                ViewGroup.LayoutParams.MATCH_PARENT);
+                parent.getHeight() - parent.getPaddingTop() - parent.getPaddingBottom());
         barViewGroup.setLayoutParams(layoutParams);
 
         return new BarViewGroupHolder(barViewGroup);
@@ -81,7 +80,7 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
                 new LinearLayout.LayoutParams(singleSpace * 3, singleSpace * 8);
         clefView.setLayoutParams(clefViewParams);
         clefView.setTranslationY(positionDict.getFifthLineY() -
-                2*positionDict.getSingleSpaceHeight() );
+                2 * positionDict.getSingleSpaceHeight());
         clefView.setClef(mScoreObservable.getClef());
         return clefView;
     }

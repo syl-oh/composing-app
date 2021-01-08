@@ -15,6 +15,7 @@ import com.example.composingapp.views.commands.ChangeNoteCommand;
 import com.example.composingapp.views.viewtools.LayoutWeightMap;
 import com.example.composingapp.views.barviewgroupdrawer.BarViewGroupDrawer;
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict;
+import com.example.composingapp.views.viewtools.positiondict.PositionDict;
 
 import java.util.ArrayList;
 
@@ -22,26 +23,25 @@ public class BarViewGroup extends LinearLayout {
     private final ArrayList<NoteView> mNoteViewList = new ArrayList<>();
     private BarPositionDict mBarPositionDict;
     private BarViewGroupDrawer mBarViewGroupDrawer;
+    private final PositionDict mPositionDict;
     private BarObserver mBarObserver;
-    private NoteView lastClickedNoteView;
-    private ScoreViewModel mScoreViewModel;
+    private final ScoreViewModel mScoreViewModel;
 
-    public BarViewGroup(Context context, ScoreViewModel scoreViewModel) {
+    public BarViewGroup(Context context, ScoreViewModel scoreViewModel, PositionDict positionDict) {
         super(context);
-        init(scoreViewModel);
+        mScoreViewModel = scoreViewModel;
+        mPositionDict = positionDict;
+
+        // Initialize layout parameters
+        setWillNotDraw(false); // Enable drawing of the ViewGroup
+        setOrientation(LinearLayout.HORIZONTAL);
+        setBackgroundColor(Color.TRANSPARENT);
     }
 
     public ArrayList<NoteView> getNoteViewList() {
         return mNoteViewList;
     }
 
-    public NoteView getLastClickedNoteView() {
-        return lastClickedNoteView;
-    }
-
-    public void setLastClickedNoteView(NoteView lastClickedNoteView) {
-        this.lastClickedNoteView = lastClickedNoteView;
-    }
 
     public BarPositionDict getBarPositionDict() {
         return mBarPositionDict;
@@ -57,18 +57,6 @@ public class BarViewGroup extends LinearLayout {
         updateChildrenFromBarObserver();
     }
 
-    /**
-     * Initializes the parameters, paints, and bar properties
-     *
-     * @param scoreViewModel
-     */
-    private void init(ScoreViewModel scoreViewModel) {
-        mScoreViewModel = scoreViewModel;
-        // Initialize layout parameters
-        setWillNotDraw(false); // Enable drawing of the ViewGroup
-        setOrientation(LinearLayout.HORIZONTAL);
-        setBackgroundColor(Color.TRANSPARENT);
-    }
 
     /**
      * Updates NoteView children based on Notes in BarObserver
@@ -85,7 +73,7 @@ public class BarViewGroup extends LinearLayout {
                     0,
                     ViewGroup.LayoutParams.MATCH_PARENT);
             layoutParams.weight = LayoutWeightMap.weightOf(note);
-            NoteView noteView = new NoteView(getContext(), this, note, mBarObserver.getClef());
+            NoteView noteView = new NoteView(getContext(), this, mPositionDict, note);
             noteView.setId(ViewCompat.generateViewId());
             noteView.setLayoutParams(layoutParams);
             this.addView(noteView);
@@ -104,7 +92,7 @@ public class BarViewGroup extends LinearLayout {
         // Find the index of the NoteView
         int noteViewIndex = mNoteViewList.indexOf(noteView);
         new ChangeNoteCommand(
-                mScoreViewModel, mBarObserver, noteViewIndex, noteView.getNotePositionDict().getNote()
+                mScoreViewModel, mBarObserver, noteViewIndex, noteView.getmNotePositionDict().getNote()
         ).execute();
     }
 
@@ -112,7 +100,7 @@ public class BarViewGroup extends LinearLayout {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         // Update the y position dictionaries
         if (mBarObserver != null) {
-            mBarPositionDict = new BarPositionDict(w, h, mBarObserver.getClef());
+            mBarPositionDict = new BarPositionDict(w, h, mPositionDict);
             mBarViewGroupDrawer = new BarViewGroupDrawer(mBarPositionDict);
         }
     }

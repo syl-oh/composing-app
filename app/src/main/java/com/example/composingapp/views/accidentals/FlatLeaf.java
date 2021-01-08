@@ -19,7 +19,7 @@ public class FlatLeaf extends AccidentalLeaf {
 
     public FlatLeaf(NotePositionDict notePositionDict, Paint paint) {
         super(notePositionDict, paint);
-        halfSpace = notePositionDict.getSingleSpaceHeight() / 2;
+        halfSpace = notePositionDict.getPositionDict().getSingleSpaceHeight() / 2;
         initFields();
     }
 

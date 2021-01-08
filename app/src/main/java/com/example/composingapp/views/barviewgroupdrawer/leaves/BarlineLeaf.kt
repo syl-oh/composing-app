@@ -9,7 +9,7 @@ class BarlineLeaf(
         barPositionDict: BarPositionDict,
         val paint: Paint
 ) : LeafDrawer {
-    val barlineYPositions = barPositionDict.toneToBarlineYMap.values
+    val barlineYPositions = barPositionDict.positionDict.toneToBarlineYMap.values
     val startX = 0f
     val endX = barPositionDict.barWidth - 1
 

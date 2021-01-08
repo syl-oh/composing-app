@@ -9,7 +9,7 @@ class SidelineLeaf(
         private val barPositionDict: BarPositionDict,
         val paint: Paint
 ) : LeafDrawer {
-    private val barlineYPositions = barPositionDict.toneToBarlineYMap.values
+    private val barlineYPositions = barPositionDict.positionDict.toneToBarlineYMap.values
     private val startX = 0f
     private val endX = barPositionDict.barWidth - 1
     private val topBarlineY: Float = barlineYPositions.minOrNull() ?: barlineYPositions.first()

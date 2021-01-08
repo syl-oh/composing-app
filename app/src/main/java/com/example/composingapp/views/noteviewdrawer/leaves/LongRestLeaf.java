@@ -21,7 +21,7 @@ public class LongRestLeaf implements LeafDrawer {
         mPaint = paint;
 
         // X position
-        float dx = 3 * notePositionDict.getSingleSpaceHeight() / 4;
+        float dx = 3 * notePositionDict.getPositionDict().getSingleSpaceHeight() / 4;
         float rectLeftX = notePositionDict.getNoteX() - dx;
         float rectRightX = notePositionDict.getNoteX() + dx;
         bottomLeftX = rectLeftX - dx;
@@ -32,13 +32,13 @@ public class LongRestLeaf implements LeafDrawer {
         bottomPaint.setStrokeWidth(bottomPaint.getStrokeWidth() * 2);
 
         if (notePositionDict.getNote().getNoteLength() == Music.NoteLength.WHOLE_NOTE) {
-            bottomY = notePositionDict.getThirdLineY() + (STEM_WIDTH);
+            bottomY = notePositionDict.getPositionDict().getThirdLineY() + (STEM_WIDTH);
         } else {
-            bottomY = notePositionDict.getThirdLineY() - (STEM_WIDTH);
+            bottomY = notePositionDict.getPositionDict().getThirdLineY() - (STEM_WIDTH);
         }
 
         // Rect
-        Float hatHeight = notePositionDict.getSingleSpaceHeight() / 2;
+        Float hatHeight = notePositionDict.getPositionDict().getSingleSpaceHeight() / 2;
 
         if (notePositionDict.getNote().getNoteLength() == Music.NoteLength.WHOLE_NOTE) {
             rect = new RectF(rectLeftX, bottomY + hatHeight, rectRightX, bottomY);
@@ -49,6 +49,7 @@ public class LongRestLeaf implements LeafDrawer {
 
     @Override
     public void draw(Canvas canvas) {
+        bottomPaint.setColor(mPaint.getColor());
         canvas.drawLine(bottomLeftX, bottomY, bottomRightX, bottomY, bottomPaint);
         canvas.drawRect(rect, mPaint);
     }

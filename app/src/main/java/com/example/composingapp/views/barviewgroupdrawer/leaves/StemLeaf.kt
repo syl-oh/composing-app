@@ -11,9 +11,9 @@ class StemLeaf(
         val notePositionDict: NotePositionDict,
         val paint: Paint,
         val stemDirection: StemDirection =
-                if (notePositionDict.noteY > notePositionDict.thirdLineY) StemDirection.POINTS_UP
+                if (notePositionDict.noteY > notePositionDict.positionDict.thirdLineY) StemDirection.POINTS_UP
                 else StemDirection.POINTS_DOWN,
-        val stemHeight: Float = notePositionDict.octaveHeight
+        val stemHeight: Float = notePositionDict.positionDict.octaveHeight
 ) : LeafDrawer {
     private val noteX: Float = notePositionDict.noteX
     private val noteY: Float = notePositionDict.noteY

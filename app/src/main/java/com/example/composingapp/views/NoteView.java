@@ -10,12 +10,12 @@ import androidx.annotation.NonNull;
 
 import com.example.composingapp.utils.interfaces.ui.Clickable;
 import com.example.composingapp.utils.interfaces.ui.TouchHandler;
-import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.views.touchhandlers.NoteViewMoveHandler;
 import com.example.composingapp.views.touchhandlers.ToggleClickedHandler;
 import com.example.composingapp.views.noteviewdrawer.NoteViewDrawer;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
+import com.example.composingapp.views.viewtools.positiondict.PositionDict;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -23,13 +23,13 @@ import java.util.ArrayList;
 
 public class NoteView extends View implements Clickable {
 //    private static final String TAG = "NoteView";
-    private NotePositionDict notePositionDict;
-    private Music.Clef mClef;
+    private NotePositionDict mNotePositionDict;
     private Note mNote;
     private NoteViewDrawer mNoteViewDrawer;
     private BarViewGroup mBarViewGroup;
     private boolean mIsClicked = false;
     private ArrayList<TouchHandler> touchHandlers = new ArrayList<>();
+    private PositionDict mPositionDict;
 
     /**
      * Constructor for programmatically creating a NoteView
@@ -37,33 +37,10 @@ public class NoteView extends View implements Clickable {
      * @param context Context of the view
      * @param note    Note object
      */
-    public NoteView(Context context, BarViewGroup barViewGroup, @NonNull Note note, @NonNull Music.Clef clef) {
+    public NoteView(Context context, BarViewGroup barViewGroup, PositionDict positionDict, @NonNull Note note) {
         super(context);
-        init(note, clef, barViewGroup);
-    }
-
-    public BarViewGroup getBarViewGroup() {
-        return mBarViewGroup;
-    }
-
-    public NoteViewDrawer getNoteViewDrawer() {
-        return mNoteViewDrawer;
-    }
-
-    public NotePositionDict getNotePositionDict() {
-        return notePositionDict;
-    }
-
-    /**
-     * Initializes all objects used for drawing
-     */
-    private void init(Note note, Music.Clef clef, BarViewGroup barViewGroup) {
-        if (note != null) {
-            mNote = note;
-        }
-        if (clef != null) {
-            mClef = clef;
-        }
+        mNote = note;
+        mPositionDict = positionDict;
         mBarViewGroup = barViewGroup;
 
         // Add the drag handler
@@ -79,11 +56,23 @@ public class NoteView extends View implements Clickable {
         this.setBackgroundColor(Color.TRANSPARENT);
     }
 
+    public BarViewGroup getBarViewGroup() {
+        return mBarViewGroup;
+    }
+
+    public NoteViewDrawer getNoteViewDrawer() {
+        return mNoteViewDrawer;
+    }
+
+    public NotePositionDict getmNotePositionDict() {
+        return mNotePositionDict;
+    }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        notePositionDict = new NotePositionDict(mNote, mClef, (float) w, (float) h);
-        mNoteViewDrawer = new NoteViewDrawer(notePositionDict);
+        mNotePositionDict = new NotePositionDict(mPositionDict, mNote, (float) w, (float) h);
+        mNoteViewDrawer = new NoteViewDrawer(mNotePositionDict);
 //        Log.d(TAG, "onSizeChanged: x:" + getX() +" y:" + getY() + " w:" + w + " h:" + h);
     }
 
@@ -113,14 +102,11 @@ public class NoteView extends View implements Clickable {
     @Override
     public void setClicked(boolean isClicked) {
         mIsClicked = isClicked;
-        if (mIsClicked) {
-            mBarViewGroup.setLastClickedNoteView(this);
-        }
     }
 
     @NotNull
     @Override
     public RectF getTouchAreaRectF() {
-        return notePositionDict.getTouchAreaRectF();
+        return mNotePositionDict.getTouchAreaRectF();
     }
 }

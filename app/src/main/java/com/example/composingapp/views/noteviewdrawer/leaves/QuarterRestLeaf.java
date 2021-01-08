@@ -23,16 +23,16 @@ public class QuarterRestLeaf implements LeafDrawer {
         restPaint.setStrokeWidth(2 * STEM_WIDTH);
         restPaint.setStyle(Paint.Style.STROKE);
         // x positions: deviance from the initial mNoteX
-        float dx = notePositionDict.getSingleSpaceHeight() / 2;
+        float dx = notePositionDict.getPositionDict().getSingleSpaceHeight() / 2;
         firstX = notePositionDict.getNoteX() - dx;
         secondX = notePositionDict.getNoteX() + dx;
 
         // y positions
-        float halfSpace = notePositionDict.getSingleSpaceHeight() / 2;
+        float halfSpace = notePositionDict.getPositionDict().getSingleSpaceHeight() / 2;
         // Start in the middle of the top space
         try {
-            firstY = notePositionDict.getToneToBarlineYMap().get(notePositionDict.getClef().getBarlineTones()[4])
-                    + halfSpace;
+            firstY = notePositionDict.getPositionDict().getToneToBarlineYMap().get(notePositionDict
+                    .getPositionDict().getClef().getBarlineTones()[4]) + halfSpace;
         } catch (NullPointerException e) {
         }
         // Move down a space

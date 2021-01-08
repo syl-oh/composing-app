@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         quarterNoteButton.setOnClickListener(view -> {
             Clickable clickedChild = scoreLineView.findClickedChild();
             if (clickedChild instanceof NoteView) {
-                Note oldNote = ((NoteView) clickedChild).getNotePositionDict().getNote();
+                Note oldNote = ((NoteView) clickedChild).getmNotePositionDict().getNote();
                 BarObserver barObserver = ((NoteView) clickedChild).getBarViewGroup().getBarObserver();
                 int index = ((NoteView) clickedChild).getBarViewGroup().getNoteViewList().indexOf(clickedChild);
                 Note replacement = new Note(oldNote.getPitchClass(), oldNote.getOctave(), Music.NoteLength.QUARTER_NOTE);

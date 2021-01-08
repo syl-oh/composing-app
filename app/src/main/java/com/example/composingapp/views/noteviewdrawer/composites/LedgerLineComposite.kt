@@ -40,10 +40,10 @@ class LedgerLineComposite(
      */
     private fun addNeededLedgerLineLeaves(notePositionDict: NotePositionDict, paint: Paint) {
         val barlineYAt: (Int) -> Float? =
-                { i -> notePositionDict.toneToBarlineYMap[notePositionDict.clef.barlineTones[i]]}
+                { i -> notePositionDict.positionDict.toneToBarlineYMap[notePositionDict.positionDict.clef.barlineTones[i]]}
         val topBarlineY: Float? =  barlineYAt(4)
         val bottomBarlineY: Float? = barlineYAt(0)
-        val singleSpaceHeight: Float = notePositionDict.singleSpaceHeight
+        val singleSpaceHeight: Float = notePositionDict.positionDict.singleSpaceHeight
 
         topBarlineY?.let {
             if (notePositionDict.noteY < it) {

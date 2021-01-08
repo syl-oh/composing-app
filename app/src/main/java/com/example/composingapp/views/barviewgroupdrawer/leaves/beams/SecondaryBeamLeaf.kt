@@ -21,7 +21,7 @@ class SecondaryBeamLeaf(
                 else -yTranslation)
     }
 
-    val beamLength = noteView.notePositionDict.noteHorizontalRadius * 2
+    val beamLength = noteView.getmNotePositionDict().noteHorizontalRadius * 2
     val stemX = getStemX(noteView, paint, stemDirection)
     override val startX: Float
     override val endX: Float

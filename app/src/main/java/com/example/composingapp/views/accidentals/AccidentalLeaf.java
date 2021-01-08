@@ -19,7 +19,7 @@ public abstract class AccidentalLeaf implements LeafDrawer {
      */
     protected AccidentalLeaf(NotePositionDict notePositionDict, Paint paint) {
         mNotePositionDict = notePositionDict;
-        mBoundingRectHeight = (float) (mNotePositionDict.getSingleSpaceHeight() * 2);
+        mBoundingRectHeight = (float) (mNotePositionDict.getPositionDict().getSingleSpaceHeight() * 2);
         mPaint = paint;
         this.centerY = mNotePositionDict.getNoteY();
     }

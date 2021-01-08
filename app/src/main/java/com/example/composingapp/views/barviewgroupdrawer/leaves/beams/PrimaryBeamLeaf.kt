@@ -47,11 +47,11 @@ class PrimaryBeamLeaf(
      * @return Line representing the beam line
      */
     private fun createBeamLine(): Line {
-        fun yPos(nV: NoteView) = nV.notePositionDict.noteY + nV.y
-        fun xPos(nV: NoteView) = nV.notePositionDict.noteX + nV.x
+        fun yPos(nV: NoteView) = nV.getmNotePositionDict().noteY + nV.y
+        fun xPos(nV: NoteView) = nV.getmNotePositionDict().noteX + nV.x
 
-        val octaveHeight: Float = noteViews.first().notePositionDict.octaveHeight
-        val semiSpace: Float = noteViews.first().notePositionDict.singleSpaceHeight / 2
+        val octaveHeight: Float = noteViews.first().getmNotePositionDict().positionDict.octaveHeight
+        val semiSpace: Float = noteViews.first().getmNotePositionDict().positionDict.singleSpaceHeight / 2
         val firstY = yPos(noteViews.first())
         val lastY = yPos(noteViews.last())
         val dy = lastY - firstY
@@ -59,9 +59,9 @@ class PrimaryBeamLeaf(
 
         // Find the "anchor" (x,y) coordinates for the beam's line
         val maxY: Float =
-                (noteViews.map { it.notePositionDict.noteY }.maxOrNull()) ?: firstY
+                (noteViews.map { it.getmNotePositionDict().noteY }.maxOrNull()) ?: firstY
         val minY: Float =
-                (noteViews.map { it.notePositionDict.noteY }.minOrNull()) ?: firstY
+                (noteViews.map { it.getmNotePositionDict().noteY }.minOrNull()) ?: firstY
         val dMaxToMinY = maxY - minY
 
         // Find the slope of the beam's line
@@ -71,7 +71,7 @@ class PrimaryBeamLeaf(
 
         // Init the beamLine based on the stem direction
         val xOfMaxY: Float =
-                noteViews.first { it.notePositionDict.noteY == maxY }.notePositionDict.noteX
+                noteViews.first { it.getmNotePositionDict().noteY == maxY }.getmNotePositionDict().noteX
 
         if (stemDirection == StemLeaf.StemDirection.POINTS_DOWN) {
             // At least one of the notes should be an octave in length
@@ -84,7 +84,7 @@ class PrimaryBeamLeaf(
         } else {
             // At least one of the notes should be an octave in length
             val xOfMinY: Float =
-                    noteViews.first { it.notePositionDict.noteY == minY }.notePositionDict.noteX
+                    noteViews.first { it.getmNotePositionDict().noteY == minY }.getmNotePositionDict().noteX
 
             return if (dMaxToMinY < octaveHeight / 2) {
                 Line(xOfMinY, minY - octaveHeight + dMaxToMinY, slope)

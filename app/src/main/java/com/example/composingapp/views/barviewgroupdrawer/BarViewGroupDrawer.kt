@@ -39,7 +39,7 @@ class BarViewGroupDrawer(
     fun setNoteViews(noteViewList: List<NoteView>) {
         this.noteViewList = noteViewList as MutableList<NoteView>
         flaggableGroups =
-                noteViewList.filterNot { it.notePositionDict.note.pitchClass == Music.PitchClass.REST }
+                noteViewList.filterNot { it.getmNotePositionDict().note.pitchClass == Music.PitchClass.REST }
                         .onlyGroupsWithNoteLengthCondition { it.needsFlag() }
 
         resetDrawers()
@@ -54,7 +54,7 @@ class BarViewGroupDrawer(
         add(SidelineLeaf(barPositionDict, paint))
         flaggableGroups.filter { it.size == 1 }.map { listOfNoteViews ->
             listOfNoteViews.map {
-                it.noteViewDrawer.add(FlagComposite(it.notePositionDict, paint))
+                it.noteViewDrawer.add(FlagComposite(it.getmNotePositionDict(), paint))
             }
         }
         flaggableGroups.filter { it.size >= 2 }.map { add(BeamComposite(it, paint)) }

@@ -8,8 +8,8 @@ import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
 import com.example.composingapp.utils.music.Music
-import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
 import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
+import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import kotlin.math.roundToInt
 
@@ -28,7 +28,7 @@ class FlagComposite(
                 add(FlagLeaf(this, paint))
             } else if (this.note.noteLength == Music.NoteLength.SIXTEENTH_NOTE) {
                 add(FlagLeaf(this, paint))
-                add(FlagLeaf(this, paint, dy = this.singleSpaceHeight / 2))
+                add(FlagLeaf(this, paint, dy = this.positionDict.singleSpaceHeight / 2))
             }
         }
     }
@@ -57,13 +57,13 @@ class FlagComposite(
             val dy: Float = 0f
     ) : LeafDrawer {
         private val flagPaint: Paint = Paint(originalPaint).apply { style = Paint.Style.STROKE }
-        private val flagPointsDown = notePositionDict.noteY > notePositionDict.thirdLineY
+        private val flagPointsDown = notePositionDict.noteY > notePositionDict.positionDict.thirdLineY
         private val noteHorzRadius = notePositionDict.noteHorizontalRadius
-        private val fourthDistance = notePositionDict.octaveHeight / 2
+        private val fourthDistance = notePositionDict.positionDict.octaveHeight / 2
         private val dx: Float = (noteHorzRadius * 2).toFloat()
         private val arcRect: RectF = RectF(-dx, -fourthDistance, dx, fourthDistance)
         private val originalStrokeWidth = originalPaint.strokeWidth
-        private val flagWidth: Int = (notePositionDict.singleSpaceHeight / 5).roundToInt()
+        private val flagWidth: Int = (notePositionDict.positionDict.singleSpaceHeight / 5).roundToInt()
 
         override fun draw(canvas: Canvas?) {
             canvas?.apply {

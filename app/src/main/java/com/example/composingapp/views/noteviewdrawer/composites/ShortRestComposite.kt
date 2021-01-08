@@ -19,9 +19,9 @@ class ShortRestComposite(
 
     init {
         val x = notePositionDict.noteX
-        val y = notePositionDict.fourthLineY
-        val dy = notePositionDict.singleSpaceHeight
-        val dx = notePositionDict.singleSpaceHeight / 4 + paint.strokeWidth / 2
+        val y = notePositionDict.positionDict.fourthLineY
+        val dy = notePositionDict.positionDict.singleSpaceHeight
+        val dx = notePositionDict.positionDict.singleSpaceHeight / 4 + paint.strokeWidth / 2
 
         // Add the required leaves
         add(ShortRestLeaf(notePositionDict, paint, x, y))
@@ -49,7 +49,7 @@ class ShortRestComposite(
             val x: Float,
             val y: Float,
     ) : LeafDrawer {
-        private val halfSpace = notePositionDict.singleSpaceHeight / 2
+        private val halfSpace = notePositionDict.positionDict.singleSpaceHeight / 2
         private val arcPaint: Paint = Paint(paint).apply {
             style = Paint.Style.STROKE
             strokeJoin = Paint.Join.ROUND

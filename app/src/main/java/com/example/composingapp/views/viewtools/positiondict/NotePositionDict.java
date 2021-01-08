@@ -9,37 +9,41 @@ import com.example.composingapp.utils.music.Note;
 
 import static com.example.composingapp.views.viewtools.ViewConstants.NOTE_W_TO_H_RATIO;
 
-public class NotePositionDict extends PositionDict {
+public class NotePositionDict {
     private static final String TAG = "NotePositionDict";
     private final float mNoteX, mHeight, mWidth;
     private final float mNoteVerticalRadius;
     private final float mNoteHorizontalRadius;
+    private PositionDict mPositionDict;
     private RectF mTouchAreaRectF;
     private Note mNote;
     private float mNoteY;
-
     /**
      * Constructor
      *
-     * @param note   The Note of the NoteView
-     * @param clef   The Clef passed into the NoteView upon construction
-     * @param width  The width of the NoteView
-     * @param height The height of the Noteview
+     * @param positionDict PositionDict containing coordinate information
+     * @param note         The Note of the NoteView
+     * @param width        The width of the NoteView
+     * @param height       The height of the Noteview
      */
-    public NotePositionDict(Note note, Music.Clef clef, float width, float height) {
-        super(height, clef);
+    public NotePositionDict(PositionDict positionDict, Note note, float width, float height) {
+        mPositionDict = positionDict;
         mNote = note;
         mHeight = height;
         mWidth = width;
         mNoteX = (mWidth / 2);
         if (note.getPitchClass() != Music.PitchClass.REST) {
-            mNoteY = getNoteYOf(mNote);
+            mNoteY = positionDict.getNoteYOf(mNote);
         } else {
             mNoteY = height / 2;
         }
-        mNoteVerticalRadius = getSingleSpaceHeight() / 2;
+        mNoteVerticalRadius = positionDict.getSingleSpaceHeight() / 2;
         mNoteHorizontalRadius = mNoteVerticalRadius * NOTE_W_TO_H_RATIO;
         updateTouchAreaRectF();
+    }
+
+    public PositionDict getPositionDict() {
+        return mPositionDict;
     }
 
     public RectF getTouchAreaRectF() {
@@ -65,7 +69,7 @@ public class NotePositionDict extends PositionDict {
      */
     public void setNote(@NonNull Note note) {
         this.mNote = note;
-        mNoteY = getNoteYOf(mNote);
+        mNoteY = mPositionDict.getNoteYOf(mNote);
         updateTouchAreaRectF();
     }
 
@@ -86,7 +90,7 @@ public class NotePositionDict extends PositionDict {
     }
 
     private void updateTouchAreaRectF() {
-        mTouchAreaRectF = new RectF(-mWidth / 2 + mNoteX, -2 * getSingleSpaceHeight() + mNoteY,
-                mWidth / 2 + mNoteX, 2 * getSingleSpaceHeight() + mNoteY);
+        mTouchAreaRectF = new RectF(-mWidth / 2 + mNoteX, -2 * mPositionDict.getSingleSpaceHeight() + mNoteY,
+                mWidth / 2 + mNoteX, 2 * mPositionDict.getSingleSpaceHeight() + mNoteY);
     }
 }

@@ -22,7 +22,7 @@ object BeamHelper {
         return when {
             this.isEmpty() -> emptyList()
             else ->(this.groupByNoteLengthCondition(condition)
-                    .filter { condition(it.first().notePositionDict.note.noteLength) })
+                    .filter { condition(it.first().getmNotePositionDict().note.noteLength) })
         }
     }
 
@@ -41,8 +41,8 @@ object BeamHelper {
     ): List<List<NoteView>> {
         // Collect all proceeding notes that have the same condition as the first
         val firstGroup: List<NoteView> = this.takeWhile {
-            condition(it.notePositionDict.note.noteLength) ==
-                    condition(this.first().notePositionDict.note.noteLength)
+            condition(it.getmNotePositionDict().note.noteLength) ==
+                    condition(this.first().getmNotePositionDict().note.noteLength)
         }
         // Once we hit an element that has a different condition, store the rest of the list
         val restOfGroup: List<NoteView> = this.takeLast(this.size - firstGroup.size)
@@ -62,7 +62,7 @@ object BeamHelper {
      */
     fun findStemDirection(notePositionDicts: List<NotePositionDict>): StemLeaf.StemDirection {
         // If half of the notes point down, the entire group will point down
-        if (notePositionDicts.map { it.noteY }.filter { it > notePositionDicts[0].thirdLineY }.size
+        if (notePositionDicts.map { it.noteY }.filter { it > notePositionDicts[0].positionDict.thirdLineY }.size
                 < notePositionDicts.size / 2) {
             return StemLeaf.StemDirection.POINTS_DOWN
         } else return StemLeaf.StemDirection.POINTS_UP
@@ -85,10 +85,10 @@ object BeamHelper {
     ): Float {
         return with(noteView) {
             if (stemDirection == StemLeaf.StemDirection.POINTS_UP) {
-                (this.x + this.notePositionDict.noteX + this.notePositionDict.noteHorizontalRadius
+                (this.x + this.getmNotePositionDict().noteX + this.getmNotePositionDict().noteHorizontalRadius
                         - paint.strokeWidth)
             } else {
-                (this.x + this.notePositionDict.noteX - this.notePositionDict.noteHorizontalRadius
+                (this.x + this.getmNotePositionDict().noteX - this.getmNotePositionDict().noteHorizontalRadius
                         + paint.strokeWidth)
             }
         }
@@ -112,7 +112,7 @@ object BeamHelper {
     ): Float {
         with(noteView) {
             return abs(beamLine.yAt(getStemX(this, paint, stemDirection))
-                    - this.notePositionDict.noteY)
+                    - this.getmNotePositionDict().noteY)
         }
     }
 
