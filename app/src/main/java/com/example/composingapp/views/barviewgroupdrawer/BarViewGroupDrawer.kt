@@ -50,8 +50,8 @@ class BarViewGroupDrawer(
     private fun resetDrawers() {
         drawers.clear()
         noteViewList.map { it.noteViewDrawer.resetDrawersWith(it.notePositionDict) }
-        add(BarlineLeaf(barPositionDict, paint))
-        add(SidelineLeaf(barPositionDict, paint))
+        add(BarlineLeaf)
+        add(SidelineLeaf)
 
         for (flaggableGroup in flaggableGroups) {
             if (flaggableGroup.size == 1) {
@@ -63,7 +63,8 @@ class BarViewGroupDrawer(
     }
 
     fun draw(canvas: Canvas?) {
-        drawers.map { it.draw(canvas, barPositionDict) }
+        drawers.map { it.draw(canvas, barPositionDict, paint) }
+        drawers.clear()
     }
 
     fun add(drawerComponent: ComponentDrawer) {

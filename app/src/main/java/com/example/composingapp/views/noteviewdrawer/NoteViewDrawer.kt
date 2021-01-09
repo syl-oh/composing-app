@@ -23,7 +23,7 @@ class NoteViewDrawer(val notePositionDict: NotePositionDict) {
         color = Color.BLACK
         isAntiAlias = true
         isDither = true
-        strokeWidth = STEM_WIDTH.toFloat()
+        strokeWidth = STEM_WIDTH
         strokeJoin = Paint.Join.ROUND
         strokeCap = Paint.Cap.ROUND
     }
@@ -49,14 +49,13 @@ class NoteViewDrawer(val notePositionDict: NotePositionDict) {
                 else -> add(ShortRestComposite(notePositionDict, paint))
             }
         } else {
-            add(FilledBaseLeaf(notePositionDict, paint))
-
+            add(FilledBaseLeaf)
             with(notePositionDict.note.noteLength) {
                 if (this == Music.NoteLength.WHOLE_NOTE || this == Music.NoteLength.HALF_NOTE) {
-                    add(HollowBaseLeaf(notePositionDict, paint))
+                    add(HollowBaseLeaf)
                 }
                 if (this == Music.NoteLength.QUARTER_NOTE || this == Music.NoteLength.HALF_NOTE) {
-                    add(StemLeaf(notePositionDict, paint))
+                    add(StemLeaf)
                 }
             }
 
@@ -65,12 +64,12 @@ class NoteViewDrawer(val notePositionDict: NotePositionDict) {
                 if (this == Music.PitchClass.Accidental.SHARP) add(SharpLeaf(notePositionDict, paint))
                 else if (this == Music.PitchClass.Accidental.FLAT) add(FlatLeaf(notePositionDict, paint))
             }
-            add(LedgerLineLeaf(notePositionDict, paint))
+            add(LedgerLineLeaf)
         }
     }
 
     fun draw(canvas: Canvas?) {
-        drawers.map { it.draw(canvas, notePositionDict) }
+        drawers.map { it.draw(canvas, notePositionDict, paint) }
     }
 
     fun add(drawerComponent: ComponentDrawer) {

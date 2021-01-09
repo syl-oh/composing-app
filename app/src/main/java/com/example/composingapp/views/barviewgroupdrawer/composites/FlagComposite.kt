@@ -23,7 +23,7 @@ class FlagComposite(
     init {
         paint.strokeWidth = STEM_WIDTH
         with(notePositionDict) {
-            add(StemLeaf(this, paint))
+            add(StemLeaf)
             // Eighth notes require 1 flag, sixteenth notes need 2
             if (this.note.noteLength == Music.NoteLength.EIGHTH_NOTE) {
                 add(FlagLeaf(this, paint))
@@ -34,8 +34,8 @@ class FlagComposite(
         }
     }
 
-    override fun draw(canvas: Canvas?, positionDict: PositionDict) {
-        drawers.map { it.draw(canvas, positionDict) }
+    override fun draw(canvas: Canvas?, positionDict: PositionDict, paint: Paint) {
+        drawers.map { it.draw(canvas, positionDict, paint) }
     }
 
     override fun add(drawerComponent: ComponentDrawer) {
@@ -66,7 +66,7 @@ class FlagComposite(
         private val originalStrokeWidth = originalPaint.strokeWidth
         private val flagWidth: Int = (notePositionDict.scorePositionDict.singleSpaceHeight / 5).roundToInt()
 
-        override fun draw(canvas: Canvas?, positionDict: PositionDict) {
+        override fun draw(canvas: Canvas?, positionDict: PositionDict, paint: Paint) {
             canvas?.apply {
                 if (flagPointsDown) {
                     withTranslation(x + noteHorzRadius - originalStrokeWidth,

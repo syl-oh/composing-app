@@ -9,21 +9,15 @@ import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import kotlin.math.ceil
 import kotlin.math.floor
 
-class LedgerLineLeaf(
-        notePositionDict: NotePositionDict,
-        val paint: Paint
-) : LeafDrawer {
-    private val fifthLine: Float = notePositionDict.scorePositionDict.fifthLineY
-    private val firstLine: Float = notePositionDict.scorePositionDict.firstLineY
-    private val singleSpaceHeight: Float = notePositionDict.scorePositionDict.singleSpaceHeight
-    private val ledgerLineHalfWidth: Float = 3 * notePositionDict.noteHorizontalRadius / 2
-
-
-    override fun draw(canvas: Canvas?, positionDict: PositionDict) {
+object LedgerLineLeaf : LeafDrawer {
+    override fun draw(canvas: Canvas?, positionDict: PositionDict, paint: Paint) {
         if (positionDict is NotePositionDict) {
             val noteY = positionDict.noteY
             val noteX = positionDict.noteX
-            fifthLine.let {
+            val singleSpaceHeight: Float = positionDict.scorePositionDict.singleSpaceHeight
+            val ledgerLineHalfWidth: Float = 3 * positionDict.noteHorizontalRadius / 2
+
+            positionDict.scorePositionDict.fifthLineY.let {
                 if (noteY < it) {
                     var currentY = it - singleSpaceHeight
                     while (floor(noteY) <= currentY) {
@@ -35,7 +29,7 @@ class LedgerLineLeaf(
                 }
             }
 
-            firstLine.let {
+            positionDict.scorePositionDict.firstLineY.let {
                 if (noteY > it) {
                     var currentY = it + singleSpaceHeight
                     while (ceil(noteY) >= currentY) {

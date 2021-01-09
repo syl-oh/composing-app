@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import com.example.composingapp.utils.interfaces.PositionDict;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
+import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf;
 
 import static com.example.composingapp.views.viewtools.ViewConstants.NOTE_W_TO_H_RATIO;
 
@@ -16,9 +17,11 @@ public class NotePositionDict implements PositionDict {
     private final float mNoteVerticalRadius;
     private final float mNoteHorizontalRadius;
     private ScorePositionDict mScorePositionDict;
-    private RectF mTouchAreaRectF;
+    private StemLeaf.StemDirection stemDirection;
+    private float stemHeight;
     private Note mNote;
     private float mNoteY;
+
     /**
      * Constructor
      *
@@ -38,9 +41,30 @@ public class NotePositionDict implements PositionDict {
         } else {
             mNoteY = height / 2;
         }
+        if (mNoteY <= mScorePositionDict.getThirdLineY()) {
+            stemDirection = StemLeaf.StemDirection.POINTS_DOWN;
+        } else {
+            stemDirection = StemLeaf.StemDirection.POINTS_UP;
+        }
         mNoteVerticalRadius = positionDict.getSingleSpaceHeight() / 2;
         mNoteHorizontalRadius = mNoteVerticalRadius * NOTE_W_TO_H_RATIO;
-        updateTouchAreaRectF();
+        stemHeight = mScorePositionDict.getOctaveHeight();
+    }
+
+    public StemLeaf.StemDirection getStemDirection() {
+        return stemDirection;
+    }
+
+    public void setStemDirection(StemLeaf.StemDirection stemDirection) {
+        this.stemDirection = stemDirection;
+    }
+
+    public float getStemHeight() {
+        return stemHeight;
+    }
+
+    public void setStemHeight(float stemHeight) {
+        this.stemHeight = stemHeight;
     }
 
     public ScorePositionDict getScorePositionDict() {
@@ -48,7 +72,8 @@ public class NotePositionDict implements PositionDict {
     }
 
     public RectF getTouchAreaRectF() {
-        return mTouchAreaRectF;
+        return new RectF(-mWidth / 2 + mNoteX, -2 * mScorePositionDict.getSingleSpaceHeight() + mNoteY,
+                mWidth / 2 + mNoteX, 2 * mScorePositionDict.getSingleSpaceHeight() + mNoteY);
     }
 
     public float getNoteHorizontalRadius() {
@@ -71,7 +96,11 @@ public class NotePositionDict implements PositionDict {
     public void setNote(@NonNull Note note) {
         this.mNote = note;
         mNoteY = mScorePositionDict.getNoteYOf(mNote);
-        updateTouchAreaRectF();
+        if (mNoteY <= mScorePositionDict.getThirdLineY()) {
+            stemDirection = StemLeaf.StemDirection.POINTS_DOWN;
+        } else {
+            stemDirection = StemLeaf.StemDirection.POINTS_UP;
+        }
     }
 
     public float getNoteX() {
@@ -90,8 +119,4 @@ public class NotePositionDict implements PositionDict {
         return mWidth;
     }
 
-    private void updateTouchAreaRectF() {
-        mTouchAreaRectF = new RectF(-mWidth / 2 + mNoteX, -2 * mScorePositionDict.getSingleSpaceHeight() + mNoteY,
-                mWidth / 2 + mNoteX, 2 * mScorePositionDict.getSingleSpaceHeight() + mNoteY);
-    }
 }

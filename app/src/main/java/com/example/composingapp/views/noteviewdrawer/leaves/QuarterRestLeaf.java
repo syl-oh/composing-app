@@ -41,7 +41,7 @@ public class QuarterRestLeaf implements LeafDrawer {
     }
 
     @Override
-    public void draw(Canvas canvas, PositionDict positionDict) {
+    public void draw(Canvas canvas, PositionDict positionDict, Paint paint) {
         // First Stroke
         canvas.drawLine(firstX, firstY, secondX, secondY, restPaint);
         // Second Stroke

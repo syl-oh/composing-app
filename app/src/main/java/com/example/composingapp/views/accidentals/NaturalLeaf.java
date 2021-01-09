@@ -41,7 +41,7 @@ public class NaturalLeaf extends AccidentalLeaf {
     }
 
     @Override
-    public void draw(Canvas canvas, PositionDict positionDict) {
+    public void draw(Canvas canvas, PositionDict positionDict, Paint paint) {
         canvas.save();
         canvas.translate(normalX, normalY);
 

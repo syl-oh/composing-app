@@ -6,21 +6,15 @@ import com.example.composingapp.utils.interfaces.PositionDict
 import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
 import com.example.composingapp.views.viewtools.positiondict.BarPositionDict
 
-class SidelineLeaf(
-        private val barPositionDict: BarPositionDict,
-        val paint: Paint
-) : LeafDrawer {
-    private val barlineYPositions = barPositionDict.scorePositionDict.toneToBarlineYMap.values
-    private val startX = 0f
-    private val endX = barPositionDict.barWidth - 1
-    private val topBarlineY: Float = barlineYPositions.minOrNull() ?: barlineYPositions.first()
-    private val bottomBarlineY: Float = barlineYPositions.maxOrNull() ?: barlineYPositions.last()
-
-    override fun draw(canvas: Canvas?, positionDict: PositionDict) {
-        canvas?.apply {
-            // Draw at both ends of the bar
-            listOf(startX, endX).map {
-                drawLine(it, topBarlineY, it, bottomBarlineY, paint)
+object SidelineLeaf: LeafDrawer {
+    override fun draw(canvas: Canvas?, positionDict: PositionDict, paint: Paint) {
+        if (positionDict is BarPositionDict) {
+            canvas?.apply {
+                // Draw at both ends of the bar
+                listOf(0f, positionDict.barWidth - 1).map {
+                    drawLine(it, positionDict.scorePositionDict.fifthLineY, it,
+                            positionDict.scorePositionDict.firstLineY, paint)
+                }
             }
         }
     }

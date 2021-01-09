@@ -31,8 +31,8 @@ class ShortRestComposite(
         }
     }
 
-    override fun draw(canvas: Canvas?, positionDict: PositionDict) {
-        drawers.map { it.draw(canvas, positionDict) }
+    override fun draw(canvas: Canvas?, positionDict: PositionDict, paint: Paint) {
+        drawers.map { it.draw(canvas, positionDict, paint) }
     }
 
     override fun add(drawerComponent: ComponentDrawer) {
@@ -64,7 +64,7 @@ class ShortRestComposite(
         private val lineRun: Float = (arcRect.width() - arcStrokeWidth - arcRect.width() / 2)
         private val lineRise: Float = -3 * halfSpace
 
-        override fun draw(canvas: Canvas?, positionDict: PositionDict) {
+        override fun draw(canvas: Canvas?, positionDict: PositionDict, paint: Paint) {
             canvas?.apply {
                 withTranslation(x - halfSpace/2, y + halfSpace / 2) {
                     drawOval(0F, 0F, halfSpace, halfSpace, paint)

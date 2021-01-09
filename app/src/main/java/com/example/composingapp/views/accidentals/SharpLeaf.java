@@ -36,7 +36,7 @@ public class SharpLeaf extends AccidentalLeaf {
     }
 
     @Override
-    public void draw(Canvas canvas, PositionDict positionDict) {
+    public void draw(Canvas canvas, PositionDict positionDict, Paint paint) {
         // Draw the first vertical line
         drawVertLine(canvas);
         // Move the canvas and draw the second vertical line

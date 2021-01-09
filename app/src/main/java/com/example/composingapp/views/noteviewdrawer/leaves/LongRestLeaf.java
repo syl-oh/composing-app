@@ -50,7 +50,7 @@ public class LongRestLeaf implements LeafDrawer {
     }
 
     @Override
-    public void draw(Canvas canvas, PositionDict positionDict) {
+    public void draw(Canvas canvas, PositionDict positionDict, Paint paint) {
         bottomPaint.setColor(mPaint.getColor());
         canvas.drawLine(bottomLeftX, bottomY, bottomRightX, bottomY, bottomPaint);
         canvas.drawRect(rect, mPaint);

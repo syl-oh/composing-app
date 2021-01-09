@@ -49,7 +49,7 @@ public class FlatLeaf extends AccidentalLeaf {
     }
 
     @Override
-    public void draw(Canvas canvas, PositionDict positionDict) {
+    public void draw(Canvas canvas, PositionDict positionDict, Paint paint) {
         // Reset the color, if needed
         tempPaint.setColor(mPaint.getColor());
         // Draw the vertical line

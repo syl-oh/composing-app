@@ -9,20 +9,18 @@ import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper
 class SecondaryBeamLeaf(
         val noteView: NoteView,
         stemDirection: StemLeaf.StemDirection,
-        givenPaint: Paint,
+        paint: Paint,
         yTranslation: Float = 0F,
         extendsBefore: Boolean,
         extendsAfter: Boolean,
-        override var beamLine: Line
-) : BeamLeaf(givenPaint) {
-    init {
-        beamLine = beamLine.moveVertically(
-                if (stemDirection == StemLeaf.StemDirection.POINTS_UP) yTranslation
-                else -yTranslation)
-    }
+        line: Line
+) : BeamLeaf() {
+    override val beamLine: Line = line.moveVertically(
+            if (stemDirection == StemLeaf.StemDirection.POINTS_UP) yTranslation
+            else -yTranslation)
 
-    val beamLength = noteView.getNotePositionDict().noteHorizontalRadius * 2
-    val stemX = getStemX(noteView, paint, stemDirection)
+    private val beamLength = noteView.notePositionDict.noteHorizontalRadius * 2
+    private val stemX = getStemX(noteView, paint, stemDirection)
     override val startX: Float
     override val endX: Float
     override val startY: Float
