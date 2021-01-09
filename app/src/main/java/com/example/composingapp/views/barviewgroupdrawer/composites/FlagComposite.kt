@@ -65,6 +65,7 @@ class FlagComposite(
         private val flagWidth: Int = (notePositionDict.scorePositionDict.singleSpaceHeight / 5).roundToInt()
 
         override fun draw(canvas: Canvas?, positionDict: PositionDict, paint: Paint) {
+            flagPaint.color = paint.color
             canvas?.apply {
                 if (flagPointsDown) {
                     withTranslation(x + noteHorzRadius - originalStrokeWidth,

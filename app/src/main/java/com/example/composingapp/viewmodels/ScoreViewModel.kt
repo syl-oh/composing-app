@@ -34,20 +34,13 @@ class ScoreViewModel : ViewModel() {
         val note3 = NoteTable.get(PitchClass.B_NATURAL, 4, NoteLength.HALF_NOTE)
         val note4 = NoteTable.get(PitchClass.D_NATURAL, 4, NoteLength.EIGHTH_NOTE)
         val note5 = NoteTable.get(NoteLength.SIXTEENTH_NOTE)
-        val note6 = NoteTable.get(PitchClass.A_FLAT, 4, NoteLength.WHOLE_NOTE)
+        val note6 = NoteTable.get(PitchClass.A_FLAT, 4, NoteLength.QUARTER_NOTE)
 
         for (barObserver in scoreObservable.barObserverList) {
         }
+        barObserver1.addNote(note)
         barObserver1.addNote(note6)
-        barObserver2.addNote(note2)
-        barObserver2.addNote(note3)
-        barObserver2.addNote(note4)
-        barObserver3.addNote(NoteTable.get(NoteLength.EIGHTH_NOTE))
-        barObserver3.addNote(NoteTable.get(NoteLength.SIXTEENTH_NOTE))
-        barObserver3.addNote(NoteTable.get(NoteLength.QUARTER_NOTE))
-        barObserver4.addNote(NoteTable.get(PitchClass.D_NATURAL, 4, NoteLength.QUARTER_NOTE))
-        barObserver4.addNote(NoteTable.get(NoteLength.HALF_NOTE))
-        barObserver4.addNote(NoteTable.get(NoteLength.WHOLE_NOTE))
+        barObserver1.addNote(note4)
 
         scoreObservableMutableLiveData.value = scoreObservable
     }

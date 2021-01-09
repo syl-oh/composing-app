@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
 
     <com.example.composingapp.views.ScoreLineView
@@ -62,7 +63,7 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toEndOf="@+id/bassClefButton"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_quarter_note" />
+            app:srcCompat="@drawable/ic_sixteenth_rest" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>
 
