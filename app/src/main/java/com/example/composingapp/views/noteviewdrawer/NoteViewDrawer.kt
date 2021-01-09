@@ -43,7 +43,7 @@ class NoteViewDrawer(val notePositionDict: NotePositionDict) {
         drawers.clear()
         if (notePositionDict.note.pitchClass == Music.PitchClass.REST) {
             when (notePositionDict.note.noteLength) {
-                Music.NoteLength.QUARTER_NOTE -> add(QuarterRestLeaf(notePositionDict, paint))
+                Music.NoteLength.QUARTER_NOTE -> add(QuarterRestLeaf())
                 Music.NoteLength.HALF_NOTE, Music.NoteLength.WHOLE_NOTE ->
                     add(LongRestLeaf(notePositionDict, paint))
                 else -> add(ShortRestComposite(notePositionDict, paint))
@@ -62,7 +62,7 @@ class NoteViewDrawer(val notePositionDict: NotePositionDict) {
             // Add any accidentals
             with(notePositionDict.note.pitchClass.accidental) {
                 if (this == Music.PitchClass.Accidental.SHARP) add(SharpLeaf(notePositionDict, paint))
-                else if (this == Music.PitchClass.Accidental.FLAT) add(FlatLeaf(notePositionDict, paint))
+                else if (this == Music.PitchClass.Accidental.FLAT) add(FlatLeaf)
             }
             add(LedgerLineLeaf)
         }

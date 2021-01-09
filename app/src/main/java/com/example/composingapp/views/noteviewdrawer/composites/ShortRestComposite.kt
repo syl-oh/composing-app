@@ -66,6 +66,7 @@ class ShortRestComposite(
 
         override fun draw(canvas: Canvas?, positionDict: PositionDict, paint: Paint) {
             canvas?.apply {
+                arcPaint.color = paint.color
                 withTranslation(x - halfSpace/2, y + halfSpace / 2) {
                     drawOval(0F, 0F, halfSpace, halfSpace, paint)
                     drawArc(arcRect, startAngle, sweepAngle, false, arcPaint)

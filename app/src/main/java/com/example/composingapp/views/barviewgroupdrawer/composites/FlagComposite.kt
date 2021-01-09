@@ -10,7 +10,6 @@ import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
-import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 import kotlin.math.roundToInt
 
@@ -21,7 +20,6 @@ class FlagComposite(
     private val drawers = mutableListOf<ComponentDrawer>()
 
     init {
-        paint.strokeWidth = STEM_WIDTH
         with(notePositionDict) {
             add(StemLeaf)
             // Eighth notes require 1 flag, sixteenth notes need 2

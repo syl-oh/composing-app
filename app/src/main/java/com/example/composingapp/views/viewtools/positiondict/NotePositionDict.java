@@ -1,6 +1,7 @@
 package com.example.composingapp.views.viewtools.positiondict;
 
 import android.graphics.RectF;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -101,6 +102,7 @@ public class NotePositionDict implements PositionDict {
         } else {
             stemDirection = StemLeaf.StemDirection.POINTS_UP;
         }
+        Log.d(TAG, "setNote: " + note.getPitchClass());
     }
 
     public float getNoteX() {

@@ -1,7 +1,5 @@
 package com.example.composingapp.utils.music;
 
-import android.util.Log;
-
 import com.example.composingapp.utils.interfaces.observer.Observer;
 
 import org.jetbrains.annotations.NotNull;
@@ -119,7 +117,7 @@ public class BarObserver implements Observer {
         mBeatsPerBar = mScoreObservable.getBeatsPerBar();
         mClef = mScoreObservable.getClef();
         // Clones the list and resize it
-        mNoteArrayList = fitNotesWithinStaff(resizeNoteArrayListToFitBar(mNoteArrayList), mClef);
+        mNoteArrayList = fitNotesWithinStaff(shrinkListToFitBar(mNoteArrayList), mClef);
     }
 
 
@@ -217,8 +215,7 @@ public class BarObserver implements Observer {
             Music.NoteLength currentNoteLength = (Music.NoteLength) entry.getKey();
             double currentWeight = (double) entry.getValue();
             // If we have found a larger NoteLength that fits in the extra space
-            if (currentWeight > mNoteLengthToBeatsMap.get(maxThatFits) &&
-                    currentWeight < beatWeight) {
+            if (currentWeight > mNoteLengthToBeatsMap.get(maxThatFits) && currentWeight <= beatWeight) {
                 maxThatFits = currentNoteLength;
             }
         }
@@ -234,7 +231,7 @@ public class BarObserver implements Observer {
      * @return A resized ArrayList of Notes, excluding any notes at the end that would make the
      * BarObserver exceed its BeatsPerBar
      */
-    private ArrayList<Note> resizeNoteArrayListToFitBar(ArrayList<Note> noteArrayList) {
+    private ArrayList<Note> shrinkListToFitBar(ArrayList<Note> noteArrayList) {
         // Check if a whole note occupies the entire noteArrayList
         if (noteArrayList.size() == 1
                 && noteArrayList.get(0).equals(
@@ -247,15 +244,8 @@ public class BarObserver implements Observer {
         ArrayList<Note> resizedNoteArrayList = new ArrayList<>();
         Note currentNote = null;
         for (int i = 0; i < noteArrayList.size(); i++) {
-            try {
-                currentNote = noteArrayList.get(i);
-            } catch (NullPointerException e) {
-            }
-            try {
-                beatSum += mNoteLengthToBeatsMap.get(Objects.requireNonNull(currentNote).getNoteLength());
-            } catch (NullPointerException e) {
-            }
-
+            currentNote = noteArrayList.get(i);
+            beatSum += mNoteLengthToBeatsMap.get(Objects.requireNonNull(currentNote).getNoteLength());
             if (beatSum > mBeatsPerBar) {    // If we have hit the beat sum limit
                 return resizedNoteArrayList;  // End the loop and return what we have resized
             } else {

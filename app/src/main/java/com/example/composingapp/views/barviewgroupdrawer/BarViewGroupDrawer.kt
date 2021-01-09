@@ -64,7 +64,6 @@ class BarViewGroupDrawer(
 
     fun draw(canvas: Canvas?) {
         drawers.map { it.draw(canvas, barPositionDict, paint) }
-        drawers.clear()
     }
 
     fun add(drawerComponent: ComponentDrawer) {

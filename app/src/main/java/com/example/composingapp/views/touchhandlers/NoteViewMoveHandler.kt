@@ -49,7 +49,7 @@ object NoteViewMoveHandler : TouchHandler {
                             note.noteLength)
                 }
 
-//                v.noteViewDrawer.resetDrawersWith(notePositionDict)
+                v.noteViewDrawer.resetDrawersWith(notePositionDict)
                 if (note.noteLength.needsFlag()) {
                     v.barViewGroup.invalidate()
                 } else {
