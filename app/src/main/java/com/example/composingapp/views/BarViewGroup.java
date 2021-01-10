@@ -87,9 +87,7 @@ public class BarViewGroup extends LinearLayout {
     public void updateScoreViewModel(NoteView noteView) {
         // Find the index of the NoteView
         int noteViewIndex = mNoteViewList.indexOf(noteView);
-        new ChangeNoteCommand(
-                mScoreViewModel, mBarObserver, noteViewIndex, noteView.getNotePositionDict().getNote()
-        ).execute();
+        new ChangeNoteCommand((ScoreLineView) getParent(), mScoreViewModel, noteView.getNotePositionDict().getNote(), false).execute();
     }
 
     @Override

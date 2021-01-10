@@ -2,7 +2,7 @@ package com.example.composingapp.views.noteviewdrawer.leaves
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import com.example.composingapp.utils.interfaces.PositionDict
+import com.example.composingapp.utils.interfaces.ui.PositionDict
 import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
 import com.example.composingapp.utils.music.Music
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict

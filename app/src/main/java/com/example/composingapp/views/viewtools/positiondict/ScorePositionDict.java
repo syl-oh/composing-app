@@ -2,7 +2,7 @@ package com.example.composingapp.views.viewtools.positiondict;
 
 import android.util.Log;
 
-import com.example.composingapp.utils.interfaces.PositionDict;
+import com.example.composingapp.utils.interfaces.ui.PositionDict;
 import com.example.composingapp.utils.music.MidiNoteDict;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;

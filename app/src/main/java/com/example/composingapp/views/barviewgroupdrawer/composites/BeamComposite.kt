@@ -3,7 +3,7 @@ package com.example.composingapp.views.barviewgroupdrawer.composites
 import android.graphics.Canvas
 import android.graphics.Paint
 import com.example.composingapp.utils.Line
-import com.example.composingapp.utils.interfaces.PositionDict
+import com.example.composingapp.utils.interfaces.ui.PositionDict
 import com.example.composingapp.utils.interfaces.componentdrawer.ComponentDrawer
 import com.example.composingapp.utils.interfaces.componentdrawer.CompositeDrawer
 import com.example.composingapp.utils.music.Music

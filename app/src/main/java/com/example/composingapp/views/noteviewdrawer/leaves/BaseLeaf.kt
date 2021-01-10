@@ -4,7 +4,7 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.core.graphics.withRotation
 import androidx.core.graphics.withTranslation
-import com.example.composingapp.utils.interfaces.PositionDict
+import com.example.composingapp.utils.interfaces.ui.PositionDict
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict
 
 object BaseLeaf {

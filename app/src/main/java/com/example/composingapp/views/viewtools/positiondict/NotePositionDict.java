@@ -5,7 +5,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.composingapp.utils.interfaces.PositionDict;
+import com.example.composingapp.utils.interfaces.ui.PositionDict;
 import com.example.composingapp.utils.music.Music;
 import com.example.composingapp.utils.music.Note;
 import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf;

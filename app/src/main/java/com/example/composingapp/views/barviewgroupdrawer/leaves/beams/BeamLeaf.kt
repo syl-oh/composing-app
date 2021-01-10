@@ -3,7 +3,7 @@ package com.example.composingapp.views.barviewgroupdrawer.leaves.beams
 import android.graphics.Canvas
 import android.graphics.Paint
 import com.example.composingapp.utils.Line
-import com.example.composingapp.utils.interfaces.PositionDict
+import com.example.composingapp.utils.interfaces.ui.PositionDict
 import com.example.composingapp.utils.interfaces.componentdrawer.LeafDrawer
 import com.example.composingapp.views.viewtools.ViewConstants.STEM_WIDTH
 

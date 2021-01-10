@@ -1,6 +1,6 @@
 package com.example.composingapp.views.viewtools.positiondict
 
-import com.example.composingapp.utils.interfaces.PositionDict
+import com.example.composingapp.utils.interfaces.ui.PositionDict
 
 data class BarPositionDict(
         val barWidth: Float,

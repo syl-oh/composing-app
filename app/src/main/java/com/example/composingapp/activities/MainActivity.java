@@ -1,6 +1,7 @@
 package com.example.composingapp.activities;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -8,13 +9,29 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.composingapp.R;
+import com.example.composingapp.utils.interfaces.ui.Command;
+import com.example.composingapp.utils.interfaces.ui.CommandReceiver;
+import com.example.composingapp.utils.music.Music;
+import com.example.composingapp.utils.music.NoteTable;
 import com.example.composingapp.viewmodels.ScoreViewModel;
 import com.example.composingapp.views.ScoreLineAdapter;
 import com.example.composingapp.views.ScoreLineView;
+import com.example.composingapp.views.UserCommandAdapter;
+import com.example.composingapp.views.commands.ChangeClefCommand;
+import com.example.composingapp.views.commands.ChangeNoteCommand;
+import com.example.composingapp.views.models.UserCommandModel;
 
-public class MainActivity extends AppCompatActivity {
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+
+public class MainActivity extends AppCompatActivity implements CommandReceiver {
     private static final String TAG = "MainActivity";
     private ScoreViewModel mScoreViewModel;
+    private ScoreLineView mScoreLineView;
+    private ArrayDeque<Command> undoDeque = new ArrayDeque<>();
+    private ArrayDeque<Command> redoDeque = new ArrayDeque<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,19 +41,26 @@ public class MainActivity extends AppCompatActivity {
         mScoreViewModel = new ViewModelProvider(this).get(ScoreViewModel.class);
 
         // Create the RecyclerView for the BarViewGroups
-        // Init the RecyclerVie
-        ScoreLineView scoreLineView = findViewById(R.id.scorelineview);
+        // Init the RecyclerView
+        mScoreLineView = findViewById(R.id.scorelineview);
         final ScoreLineAdapter scoreLineAdapter = new ScoreLineAdapter(mScoreViewModel);
-        scoreLineView.setAdapter(scoreLineAdapter);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        layoutManager.setOrientation(RecyclerView.HORIZONTAL);
-        layoutManager.canScrollHorizontally();
-        scoreLineView.setLayoutManager(layoutManager);
-
+        mScoreLineView.setAdapter(scoreLineAdapter);
+        LinearLayoutManager scoreLayoutManager = new LinearLayoutManager(this);
+        scoreLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        scoreLayoutManager.canScrollHorizontally();
+        mScoreLineView.setLayoutManager(scoreLayoutManager);
         // Observe the LiveData for the score in the ScoreViewModel
         mScoreViewModel.getScoreObservableMutableLiveData()
                 .observe(this, scoreLineAdapter::setScoreObservable);
 
+        // Create the RecyclerView for UserCommandButtons
+        RecyclerView userCommandRecyclerView = findViewById(R.id.user_command_recycler);
+        final UserCommandAdapter userCommandAdapter = new UserCommandAdapter(this,
+                generateCommands());
+        userCommandRecyclerView.setAdapter(userCommandAdapter);
+        LinearLayoutManager commandLayoutManager = new LinearLayoutManager(this);
+        commandLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
+        userCommandRecyclerView.setLayoutManager(commandLayoutManager);
 
 //        ImageButton quarterNoteButton = findViewById(R.id.quarterNoteButton);
 //        quarterNoteButton.setOnClickListener(view -> {
@@ -53,12 +77,49 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 //
-//        ImageButton bassClefButton = findViewById(R.id.redo_button);
-//        ChangeClefCommand bassClefCommand = new ChangeClefCommand(mScoreViewModel, Music.Clef.BASS_CLEF);
-//        bassClefButton.setOnClickListener(v -> bassClefCommand.execute());
-//
-//        ImageButton trebleClefButton = findViewById(R.id.undo_button);
-//        ChangeClefCommand trebleClefCommand = new ChangeClefCommand(mScoreViewModel, Music.Clef.TREBLE_CLEF);
-//        trebleClefButton.setOnClickListener(v -> trebleClefCommand.execute());
+    }
+
+    private ArrayList<UserCommandModel> generateCommands() {
+        ArrayList<UserCommandModel> userCommandModels = new ArrayList<>();
+
+        userCommandModels.add(new UserCommandModel(R.drawable.ic_treble_clef,
+                new ChangeClefCommand(mScoreViewModel, Music.Clef.TREBLE_CLEF)));
+        userCommandModels.add(new UserCommandModel(R.drawable.ic_bass_clef,
+                new ChangeClefCommand(mScoreViewModel, Music.Clef.BASS_CLEF)));
+        userCommandModels.add(new UserCommandModel(R.drawable.ic_whole_note,
+                makeChangeNoteCommand(Music.NoteLength.WHOLE_NOTE)));
+        userCommandModels.add(new UserCommandModel(R.drawable.ic_quarter_note,
+                makeChangeNoteCommand(Music.NoteLength.QUARTER_NOTE)));
+        userCommandModels.add(new UserCommandModel(R.drawable.ic_eighth_note,
+                makeChangeNoteCommand(Music.NoteLength.EIGHTH_NOTE)));
+        return userCommandModels;
+    }
+
+    private ChangeNoteCommand makeChangeNoteCommand(Music.NoteLength noteLengthOfNote) {
+        return new ChangeNoteCommand(mScoreLineView, mScoreViewModel,
+                NoteTable.get(Music.PitchClass.C_NATURAL, 4, noteLengthOfNote), true);
+    }
+
+
+    @Override
+    public void actOn(@NotNull Command command) {
+        command.execute();
+        // Handle changing note commands seperately from any other command, since the user can change
+        // a note by dragging
+        undoDeque.push(command);
+    }
+
+    public void undo(View view) {
+        if (undoDeque.peek() != null) {
+            undoDeque.peek().undo();
+            redoDeque.push(undoDeque.pop());
+        }
+    }
+
+    public void redo(View view) {
+        if (redoDeque.peek() != null) {
+            redoDeque.peek().execute();
+            undoDeque.push(redoDeque.pop());
+        }
     }
 }

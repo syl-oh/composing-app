@@ -3,7 +3,7 @@ package com.example.composingapp.views.accidentals;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 
-import com.example.composingapp.utils.interfaces.PositionDict;
+import com.example.composingapp.utils.interfaces.ui.PositionDict;
 import com.example.composingapp.views.viewtools.positiondict.NotePositionDict;
 import com.example.composingapp.views.viewtools.ViewConstants;
 
