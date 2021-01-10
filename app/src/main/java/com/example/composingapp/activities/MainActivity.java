@@ -61,37 +61,25 @@ public class MainActivity extends AppCompatActivity implements CommandReceiver {
         LinearLayoutManager commandLayoutManager = new LinearLayoutManager(this);
         commandLayoutManager.setOrientation(RecyclerView.HORIZONTAL);
         userCommandRecyclerView.setLayoutManager(commandLayoutManager);
-
-//        ImageButton quarterNoteButton = findViewById(R.id.quarterNoteButton);
-//        quarterNoteButton.setOnClickListener(view -> {
-//            Clickable clickedChild = scoreLineView.findClickedChild();
-//            if (clickedChild instanceof NoteView) {
-//                Note oldNote = ((NoteView) clickedChild).getNotePositionDict().getNote();
-//                BarObserver barObserver = ((NoteView) clickedChild).getBarViewGroup().getBarObserver();
-//                int index = ((NoteView) clickedChild).getBarViewGroup().getNoteViewList().indexOf(clickedChild);
-//                Note replacement = NoteTable.get(oldNote.getPitchClass(), oldNote.getOctave(), Music.NoteLength.QUARTER_NOTE);
-//                ChangeNoteCommand command =
-//                        new ChangeNoteCommand(mScoreViewModel, barObserver, index, replacement);
-//                command.execute();
-//                command.notifyScoreViewModelObservers();
-//            }
-//        });
-//
     }
 
     private ArrayList<UserCommandModel> generateCommands() {
         ArrayList<UserCommandModel> userCommandModels = new ArrayList<>();
-
         userCommandModels.add(new UserCommandModel(R.drawable.ic_treble_clef,
                 new ChangeClefCommand(mScoreViewModel, Music.Clef.TREBLE_CLEF)));
         userCommandModels.add(new UserCommandModel(R.drawable.ic_bass_clef,
                 new ChangeClefCommand(mScoreViewModel, Music.Clef.BASS_CLEF)));
-        userCommandModels.add(new UserCommandModel(R.drawable.ic_whole_note,
-                makeChangeNoteCommand(Music.NoteLength.WHOLE_NOTE)));
-        userCommandModels.add(new UserCommandModel(R.drawable.ic_quarter_note,
-                makeChangeNoteCommand(Music.NoteLength.QUARTER_NOTE)));
-        userCommandModels.add(new UserCommandModel(R.drawable.ic_eighth_note,
-                makeChangeNoteCommand(Music.NoteLength.EIGHTH_NOTE)));
+
+        // Iterate through the drawables and notelength and add ChangeNoteCommands
+        int[] noteImageIDS = {R.drawable.ic_whole_note,
+                R.drawable.ic_half_note, R.drawable.ic_quarter_note, R.drawable.ic_eighth_note,
+                R.drawable.ic_sixteenth_note};
+        Music.NoteLength[] noteLengths = Music.NoteLength.getValues();
+        for (int i = 0; i < noteImageIDS.length; i++) {
+            userCommandModels.add(new UserCommandModel(
+                    noteImageIDS[i], makeChangeNoteCommand(noteLengths[i])));
+        }
+
         return userCommandModels;
     }
 
@@ -104,8 +92,6 @@ public class MainActivity extends AppCompatActivity implements CommandReceiver {
     @Override
     public void actOn(@NotNull Command command) {
         command.execute();
-        // Handle changing note commands seperately from any other command, since the user can change
-        // a note by dragging
         undoDeque.push(command);
     }
 

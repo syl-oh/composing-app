@@ -28,6 +28,9 @@ class ChangeNoteCommand(
                 // a rest or a regular Note
                 if (newNote.pitchClass == Music.PitchClass.REST) {
                     updateNoteInScore(NoteTable.get(newNote.noteLength), barObserver, index)
+                } else if (oldNote.pitchClass == Music.PitchClass.REST) {
+                    updateNoteInScore(NoteTable.get(newNote.pitchClass, newNote.octave, newNote.noteLength),
+                            barObserver, index)
                 } else {
                     updateNoteInScore(NoteTable.get(oldNote.pitchClass, oldNote.octave, newNote.noteLength),
                             barObserver, index)

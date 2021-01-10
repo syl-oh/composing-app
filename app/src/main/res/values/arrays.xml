@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="clef_drawables">
+        <item>@drawable/ic_treble_clef</item>
+        <item>@drawable/ic_bass_clef</item>
+    </integer-array>
+
+    <integer-array name="regular_note_drawables">
+        <item>@drawable/ic_whole_note</item>
+        <item>@drawable/ic_half_note</item>
+        <item>@drawable/ic_quarter_note</item>
+        <item>@drawable/ic_eighth_note</item>
+        <item>@drawable/ic_sixteenth_note</item>
+    </integer-array>
+
+    <integer-array name="rest_drawables">
+        <item>@drawable/ic_whole_rest</item>
+        <item>@drawable/ic_half_rest</item>
+        <item>@drawable/ic_quarter_rest</item>
+        <item>@drawable/ic_eighth_rest</item>
+        <item>@drawable/ic_sixteenth_rest</item>
+    </integer-array>
+
+    <integer-array name="accidental_drawables">
+        <item>@drawable/ic_sharp</item>
+        <item>@drawable/ic_flat</item>
+        <item>@drawable/ic_natural</item>
+    </integer-array>
+</resources>

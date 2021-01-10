@@ -58,6 +58,7 @@ public final class Music extends Application {
         EIGHTH_NOTE((double) 1 / 8, true),
         SIXTEENTH_NOTE((double) 1 / 16, true);
 
+        private static final NoteLength[] cachedNoteLengths = NoteLength.values();
         // Value relative to whole note. Actual value does not matter - only its value
         //    relative to WHOLE_NOTE's
         private double valueToWholeNote;
@@ -66,6 +67,10 @@ public final class Music extends Application {
         NoteLength(double valueToWholeNote, boolean needsFlag) {
             this.valueToWholeNote = valueToWholeNote;
             this.needsFlag = needsFlag;
+        }
+
+        public static NoteLength[] getValues() {
+            return cachedNoteLengths;
         }
 
         public boolean needsFlag() {
@@ -104,13 +109,17 @@ public final class Music extends Application {
         G_SHARP(G, Accidental.SHARP),
         REST(NONE, Accidental.NONE);
 
+        private static final PitchClass[] cachedPitchClasses = PitchClass.values();
         private Letter letter;
         private Accidental accidental;
-        private static final PitchClass[] cachedPitchClasses = PitchClass.values();
 
         PitchClass(Letter letter, Accidental accidental) {
             this.letter = letter;
             this.accidental = accidental;
+        }
+
+        public static PitchClass[] getValues() {
+            return cachedPitchClasses;
         }
 
         public Letter getLetter() {
@@ -129,10 +138,6 @@ public final class Music extends Application {
                 }
             }
             return (PitchClass[]) accentedPitchClasses.toArray();
-        }
-
-        public static PitchClass[] getValues() {
-            return cachedPitchClasses;
         }
 
         public enum Accidental {
