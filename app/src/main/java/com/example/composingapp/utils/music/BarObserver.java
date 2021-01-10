@@ -37,6 +37,9 @@ public class BarObserver implements Observer {
         mBeatsPerBar = scoreObservable.getBeatsPerBar();
         mClef = scoreObservable.getClef();
         initNoteLengthToBeatsMap();
+
+        // Fill the bar
+        addRestsWithWeightSumAt(0, mBeatsPerBar);
     }
 
     private ArrayList<Note> fitNotesWithinStaff(ArrayList<Note> noteArrayList, Music.Clef clef) {

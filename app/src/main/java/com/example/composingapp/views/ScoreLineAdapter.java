@@ -1,12 +1,17 @@
 package com.example.composingapp.views;
 
+import android.graphics.Color;
+import android.util.Log;
+import android.view.HapticFeedbackConstants;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.composingapp.R;
 import com.example.composingapp.utils.music.BarObserver;
 import com.example.composingapp.utils.music.ScoreObservable;
 import com.example.composingapp.viewmodels.ScoreViewModel;
@@ -17,8 +22,9 @@ import java.util.ArrayList;
 import static com.example.composingapp.views.viewtools.ViewConstants.BARS_PER_LINE;
 
 
-public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarViewGroupHolder> {
-    //    private static final String TAG = "ScoreLineAdapter";
+public class ScoreLineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int ADD_BUTTON_FOOTER = 664;
+    private static final String TAG = "ScoreLineAdapter";
     private final ScoreViewModel mScoreViewModel;
     private ScorePositionDict positionDict;
     private ClefView clefView;
@@ -41,10 +47,30 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
 
     @NonNull
     @Override
-    public BarViewGroupHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (positionDict == null) {
             positionDict = new ScorePositionDict(parent.getHeight() - parent.getPaddingTop()
                     - parent.getPaddingBottom(), mScoreObservable.getClef());
+        }
+
+        if (viewType == ADD_BUTTON_FOOTER) {
+            Log.d(TAG, "onCreateViewHolder: ");
+            int sideLength = (int) (positionDict.getSingleSpaceHeight() * 3);
+            LinearLayout.LayoutParams addButtonParams = new LinearLayout.LayoutParams(sideLength, sideLength);
+            ImageButton imageButton = new ImageButton(parent.getContext());
+            imageButton.setId(View.generateViewId());
+            imageButton.setImageResource(R.drawable.ic_baseline_add_circle_outline_24);
+            imageButton.setBackgroundColor(Color.TRANSPARENT);
+            imageButton.setLayoutParams(addButtonParams);
+            imageButton.setTranslationY(positionDict.getFifthLineY() + positionDict.getSingleSpaceHeight() / 2);
+
+            imageButton.setOnClickListener(v -> {
+                v.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+                new BarObserver(mScoreObservable);
+                notifyDataSetChanged();
+            });
+
+            return new AddButtonViewHolder(imageButton);
         }
 
         BarViewGroup barViewGroup = new BarViewGroup(parent.getContext(), mScoreViewModel, positionDict);
@@ -58,19 +84,30 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull BarViewGroupHolder holder, int position) {
-        BarObserver currentBarObserver = mBarObservers.get(position);
-        holder.barViewGroup.setBarObserver(currentBarObserver);
-
-        if (position == 0) {
-            holder.barViewGroup.addView(createClefView(holder.barViewGroup), 0);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof BarViewGroupHolder) {
+            BarViewGroupHolder vh = (BarViewGroupHolder) holder;
+            BarObserver currentBarObserver = mBarObservers.get(position);
+            vh.barViewGroup.setBarObserver(currentBarObserver);
+            if (position == 0) {
+                vh.barViewGroup.addView(createClefView(vh.barViewGroup), 0);
+            }
         }
     }
 
 
     @Override
     public int getItemCount() {
-        return mBarObservers.size();
+        if (mBarObservers.isEmpty()) {
+            return 0;
+        } else {
+            return mBarObservers.size() + 1; // Add one to include the AddButtonViewHolder
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return (position == mBarObservers.size()) ? ADD_BUTTON_FOOTER : super.getItemViewType(position);
     }
 
     private ClefView createClefView(View parent) {
@@ -95,6 +132,12 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<ScoreLineAdapter.BarV
 
         public BarViewGroup getBarViewGroup() {
             return barViewGroup;
+        }
+    }
+
+    static class AddButtonViewHolder extends RecyclerView.ViewHolder {
+        public AddButtonViewHolder(@NonNull View itemView) {
+            super(itemView);
         }
     }
 }

@@ -74,12 +74,20 @@ public class MainActivity extends AppCompatActivity implements CommandReceiver {
         int[] noteImageIDS = {R.drawable.ic_whole_note,
                 R.drawable.ic_half_note, R.drawable.ic_quarter_note, R.drawable.ic_eighth_note,
                 R.drawable.ic_sixteenth_note};
+        int[] restImageIds = {R.drawable.ic_whole_rest,
+                R.drawable.ic_half_rest, R.drawable.ic_quarter_rest, R.drawable.ic_eighth_rest,
+                R.drawable.ic_sixteenth_rest};
+
         Music.NoteLength[] noteLengths = Music.NoteLength.getValues();
         for (int i = 0; i < noteImageIDS.length; i++) {
             userCommandModels.add(new UserCommandModel(
                     noteImageIDS[i], makeChangeNoteCommand(noteLengths[i])));
         }
-
+        for (int i = 0; i < restImageIds.length; i++) {
+            userCommandModels.add(new UserCommandModel(
+                    restImageIds[i], new ChangeNoteCommand(mScoreLineView, mScoreViewModel,
+                    NoteTable.get(noteLengths[i]), true)));
+        }
         return userCommandModels;
     }
 

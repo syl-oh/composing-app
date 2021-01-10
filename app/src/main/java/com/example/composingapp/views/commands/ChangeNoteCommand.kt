@@ -1,5 +1,6 @@
 package com.example.composingapp.views.commands
 
+import android.widget.Toast
 import com.example.composingapp.utils.interfaces.ui.Command
 import com.example.composingapp.utils.music.BarObserver
 import com.example.composingapp.utils.music.Music
@@ -54,6 +55,6 @@ class ChangeNoteCommand(
 
 
     override fun undo() {
-        TODO("Not yet implemented")
+        Toast.makeText(scoreLineView.context, "Not yet implemented", Toast.LENGTH_SHORT).show()
     }
 }
