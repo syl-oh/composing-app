@@ -17,6 +17,7 @@ import com.example.composingapp.viewmodels.ScoreViewModel;
 import com.example.composingapp.views.ScoreLineAdapter;
 import com.example.composingapp.views.ScoreLineView;
 import com.example.composingapp.views.UserCommandAdapter;
+import com.example.composingapp.views.commands.AddAccidentalCommand;
 import com.example.composingapp.views.commands.ChangeClefCommand;
 import com.example.composingapp.views.commands.ChangeNoteCommand;
 import com.example.composingapp.views.models.UserCommandModel;
@@ -63,6 +64,11 @@ public class MainActivity extends AppCompatActivity implements CommandReceiver {
         userCommandRecyclerView.setLayoutManager(commandLayoutManager);
     }
 
+    /**
+     * Produces an ArrayList of UserCommandModels for the user commands RecyclerView
+     *
+     * @return ArrayList of UserCommandModel objects in the order that they should appear on-screen
+     */
     private ArrayList<UserCommandModel> generateCommands() {
         ArrayList<UserCommandModel> userCommandModels = new ArrayList<>();
         userCommandModels.add(new UserCommandModel(R.drawable.ic_treble_clef,
@@ -88,21 +94,41 @@ public class MainActivity extends AppCompatActivity implements CommandReceiver {
                     restImageIds[i], new ChangeNoteCommand(mScoreLineView, mScoreViewModel,
                     NoteTable.get(noteLengths[i]), true)));
         }
+
         return userCommandModels;
     }
 
+    /**
+     * Produces a generic ChangeNoteCommand for non-rest-changing requests. Used to user's commands
+     *
+     * @param noteLengthOfNote NoteLength of the non-rest new Note to replace the target in the score
+     *                         data with
+     * @return ChangeNoteCommand pre-loaded with a requested change to a Note in the ScoreViewModel's
+     *         ScoreObservable live data
+     */
     private ChangeNoteCommand makeChangeNoteCommand(Music.NoteLength noteLengthOfNote) {
         return new ChangeNoteCommand(mScoreLineView, mScoreViewModel,
                 NoteTable.get(Music.PitchClass.C_NATURAL, 4, noteLengthOfNote), true);
     }
 
 
+    /**
+     * Executes a command, and adjusts undo/redo stack accordingly
+     * @param command Command to execute
+     * Side effects: Pushes command onto undoDeque
+     */
     @Override
     public void actOn(@NotNull Command command) {
         command.execute();
         undoDeque.push(command);
     }
 
+    /**
+     * Undoes the last Command executed
+     * @param view View with this function as an onClickListener
+     * Side effects: Pops last element of undoDeque and pushes onto redoDeque
+     *               Command's side effects
+     */
     public void undo(View view) {
         if (undoDeque.peek() != null) {
             undoDeque.peek().undo();
@@ -110,6 +136,12 @@ public class MainActivity extends AppCompatActivity implements CommandReceiver {
         }
     }
 
+    /**
+     * Re-executes the last Command undone
+     * @param view View with this function as an onClickListener
+     * Side effects: Pops last element of redoDeque and pushes onto undoDeque
+     *               Command's side effects
+     */
     public void redo(View view) {
         if (redoDeque.peek() != null) {
             redoDeque.peek().execute();

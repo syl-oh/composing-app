@@ -19,6 +19,11 @@ class ScoreLineView : RecyclerView {
 //        private const val TAG = "ScoreLineView"
     }
 
+    /**
+     * Intercepts a touch event
+     *
+     * Side effects: ACTION_DOWN event reset clicked status of any clicked children of this ScoreLineView
+     */
     override fun onInterceptTouchEvent(e: MotionEvent?): Boolean {
         when (e?.action) {
             MotionEvent.ACTION_DOWN -> resetClickedChild()
@@ -26,6 +31,9 @@ class ScoreLineView : RecyclerView {
         return super.onInterceptTouchEvent(e)
     }
 
+    /**
+     * Resets the clicked status of any clicked children of this ScoreLineView
+     */
     private fun resetClickedChild() {
         findClickedChild()?.let {
             if (it is View) {
@@ -34,6 +42,11 @@ class ScoreLineView : RecyclerView {
         }
     }
 
+    /**
+     * Determines any clicked child in the View hierarchy under this parent
+     *
+     * @return Clickable child if one exists, and null otherwise
+     */
     fun findClickedChild(): Clickable? {
         for (i in 0..childCount) {
             val child = getChildAt(i)

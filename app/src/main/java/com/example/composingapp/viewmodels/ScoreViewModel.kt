@@ -11,15 +11,13 @@ import com.example.composingapp.utils.music.ScoreObservable
 class ScoreViewModel : ViewModel() {
     val scoreObservableMutableLiveData: MutableLiveData<ScoreObservable?> = MutableLiveData()
 
-    fun setClef(clef: Clef?) {
-        scoreObservableMutableLiveData.value?.clef = clef
-        update()
-    }
-
     fun update() {
         scoreObservableMutableLiveData.value = scoreObservableMutableLiveData.value
     }
 
+    /**
+     * Temporary method to populate the LiveData until a DataBase is integrated to the project
+     */
     private fun populateScore() {
         // Hardcoded score for quick-access testing purposes
         val scoreObservable = ScoreObservable(Clef.TREBLE_CLEF,

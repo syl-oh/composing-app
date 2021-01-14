@@ -20,6 +20,12 @@ class ChangeClefCommand(
         previousClef?.let { changeClefTo(it) }
     }
 
+    /**
+     * Sets the clef of the score in the ScoreViewModel to clef
+     *
+     * @param clef the new Clef of the ScoreObservable in the ScoreViewModel's LiveData
+     * Side effects: Mutates the ScoreViewModel's LiveData; notifies the ViewModel's observers
+     */
     fun changeClefTo(clef: Music.Clef) {
         scoreViewModel.scoreObservableMutableLiveData.mutation {
             it.value?.clef = clef

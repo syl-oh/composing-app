@@ -21,12 +21,24 @@ object NoteViewMoveHandler : TouchHandler {
         }
     }
 
+    /**
+     * Updates the data in the ScoreViewModel through the parent of this NoteView
+     *
+     * Side effects: Notifies observers of the ScoreViewModel's LiveData
+     */
     private fun updateDataInViewModel(v: View) {
         if (v is NoteView && v.parent is BarViewGroup) {
             (v.parent as BarViewGroup).updateScoreViewModel(v)
         }
     }
 
+    /**
+     * Moves a NoteView up or down the screen
+     *
+     * Side effects: If v is moved, it invalidates (redraws) v as a NoteView, and also invalidates
+     *               the parent BarViewGroup if v needs a flag (i.e. has NoteLength EIGHTH_NOTE or
+     *               shorter)
+     */
     private fun moveNoteView(v: View, event: MotionEvent) {
         if (v is NoteView && isMovableNoteView(v)) {
             val notePositionDict: NotePositionDict = v.notePositionDict
@@ -59,6 +71,12 @@ object NoteViewMoveHandler : TouchHandler {
         }
     }
 
+    /**
+     * Determines if v is a movable NoteView
+     *
+     * @param v View to examine
+     * @return true only if v is a clicked NoteView that is not a rest
+     */
     private fun isMovableNoteView(v: View): Boolean {
         return v is NoteView && v.isClicked && v.notePositionDict.note.pitchClass != Music.PitchClass.REST
     }

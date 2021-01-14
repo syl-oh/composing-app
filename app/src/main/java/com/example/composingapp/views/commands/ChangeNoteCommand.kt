@@ -27,20 +27,32 @@ class ChangeNoteCommand(
 
                 // Replace the note differently depending on whether the newNote was loaded with
                 // a rest or a regular Note
-                if (newNote.pitchClass == Music.PitchClass.REST) {
-                    updateNoteInScore(NoteTable.get(newNote.noteLength), barObserver, index)
-                } else if (oldNote.pitchClass == Music.PitchClass.REST) {
-                    updateNoteInScore(NoteTable.get(newNote.pitchClass, newNote.octave, newNote.noteLength),
-                            barObserver, index)
-                } else {
-                    updateNoteInScore(NoteTable.get(oldNote.pitchClass, oldNote.octave, newNote.noteLength),
-                            barObserver, index)
+                when {
+                    newNote.pitchClass == Music.PitchClass.REST -> {
+                        updateNoteInScore(NoteTable.get(newNote.noteLength), barObserver, index)
+                    }
+                    oldNote.pitchClass == Music.PitchClass.REST -> {
+                        updateNoteInScore(NoteTable.get(newNote.pitchClass, newNote.octave, newNote.noteLength),
+                                barObserver, index)
+                    }
+                    else -> {
+                        updateNoteInScore(NoteTable.get(oldNote.pitchClass, oldNote.octave, newNote.noteLength),
+                                barObserver, index)
+                    }
                 }
             }
         }
     }
 
-
+    /**
+     * Replaces a target note in the ScoreViewModel's ScoreObservable to note
+     *
+     * @param note the replacement Note
+     * @param targetBarObserver BarObserver of the target Note
+     * @param targetIndex Int representing the index of the target Note
+     *
+     * Side effects: Mutates the ScoreViewModel's LiveData; notifies the ViewModel's observers
+     */
     private fun updateNoteInScore(note: Note, targetBarObserver: BarObserver, targetIndex: Int) {
         // Mutate data without forcing a reset for any observers. This prevents any clicked item from
         // resetting
@@ -49,7 +61,7 @@ class ChangeNoteCommand(
                 .apply { this?.replaceNoteAt(targetIndex, note) }
 
         if (notifyScoreObserversWhenExecuted) {
-            scoreViewModel.scoreObservableMutableLiveData.mutation {  }
+            scoreViewModel.scoreObservableMutableLiveData.mutation { }
         }
     }
 

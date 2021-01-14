@@ -35,17 +35,25 @@ class BarViewGroupDrawer(
         resetDrawers()
     }
 
+    /**
+     * Sets the noteViewList of this BarViewGroupDrawer to a provided list of NoteViews
+     *
+     * @param noteViewList List of NoteViews to assign to this BarViewGroupDrawer
+     * Side effects: Clears flaggableGroups and this.noteViewList, the adds back required components
+     */
     fun setNoteViews(noteViewList: List<NoteView>) {
         this.noteViewList.clear()
         flaggableGroups.clear()
         noteViewList.map { this.noteViewList.add(it) }
-        noteViewList.filterNot { it.getNotePositionDict().note.pitchClass == Music.PitchClass.REST }
+        noteViewList.filterNot { it.notePositionDict.note.pitchClass == Music.PitchClass.REST }
                 .onlyGroupsWithNoteLengthCondition { it.needsFlag() }.map { flaggableGroups.add(it) }
         resetDrawers()
     }
 
     /**
-     * Recreates all the drawers
+     * Recreates all the drawers of this BarViewGroupDrawer
+     *
+     * Side Effects: Clears drawers, then fills it back up with required ComponentDrawers
      */
     private fun resetDrawers() {
         drawers.clear()

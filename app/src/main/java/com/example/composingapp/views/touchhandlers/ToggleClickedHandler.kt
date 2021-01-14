@@ -36,6 +36,14 @@ object ToggleClickedHandler : TouchHandler {
         }
     }
 
+    /**
+     * Determines if v should be clicked depending on event
+     *
+     * @param v View to examine
+     * @param event MotionEvent containing details of location touched on screen
+     *
+     * @return true only if v is Clickable and event occured within v's TouchAreaRectF
+     */
     private fun shouldBeClicked(v: View, event: MotionEvent): Boolean {
         return (v is Clickable) && (v.touchAreaRectF.contains(event.x, event.y))
     }

@@ -25,8 +25,14 @@ public class ScoreObservable implements Observable {
         return mClef;
     }
 
-    public void setClef(Music.Clef mClef) {
-        this.mClef = mClef;
+    /**
+     * Sets the Clef of this ScoreObservable
+     *
+     * @param clef Clef to change to
+     * Side effects: Updates Observers of this ScoreObservable
+     */
+    public void setClef(Music.Clef clef) {
+        this.mClef = clef;
         updateObservers();
     }
 
@@ -34,8 +40,14 @@ public class ScoreObservable implements Observable {
         return mBeatUnit;
     }
 
-    public void setBeatUnit(Music.NoteLength mBeatUnit) {
-        this.mBeatUnit = mBeatUnit;
+    /**
+     * Sets the beat unit of this ScoreObservable
+     *
+     * @param beatUnit NoteLength representing the new beat unit
+     * Side effects: Updates Observers of this ScoreObservable
+     */
+    public void setBeatUnit(Music.NoteLength beatUnit) {
+        this.mBeatUnit = beatUnit;
         updateObservers();
     }
 
@@ -43,8 +55,14 @@ public class ScoreObservable implements Observable {
         return mBeatsPerBar;
     }
 
-    public void setBeatsPerBar(int mBeatsPerBar) {
-        this.mBeatsPerBar = mBeatsPerBar;
+    /**
+     * Sets the number of beats in a bar of this ScoreObservable
+     *
+     * @param beatsPerBar int representing the new number of beats in a bar
+     * Side effects: Updates Observers of this ScoreObservable
+     */
+    public void setBeatsPerBar(int beatsPerBar) {
+        this.mBeatsPerBar = beatsPerBar;
         updateObservers();
     }
 

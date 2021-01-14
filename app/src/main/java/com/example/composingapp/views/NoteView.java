@@ -1,6 +1,5 @@
 package com.example.composingapp.views;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -22,35 +21,31 @@ import org.jetbrains.annotations.NotNull;
 public class NoteView extends View implements Clickable {
     //    private static final String TAG = "NoteView";
     private NotePositionDict mNotePositionDict;
-    private Note mNote;
+    private final Note mNote;
     private NoteViewDrawer mNoteViewDrawer;
-    private BarViewGroup mBarViewGroup;
+    private final BarViewGroup mBarViewGroup;
     private boolean mIsClicked = false;
-    private ScorePositionDict mPositionDict;
+    private final ScorePositionDict mScorePositionDict;
     /**
      * Constructor for programmatically creating a NoteView
      *
      * @param context Context of the view
      * @param note    Note object
      */
-    @SuppressLint("ClickableViewAccessibility")
     public NoteView(Context context, BarViewGroup barViewGroup, ScorePositionDict positionDict, @NonNull Note note) {
         super(context);
         mNote = note;
-        mPositionDict = positionDict;
+        mScorePositionDict = positionDict;
         mBarViewGroup = barViewGroup;
 
         // Set the touch listener for events
         setOnTouchListener((v, event) -> {
+            performClick();
             ToggleClickedHandler.INSTANCE.handleTouch(v, event);
             NoteViewMoveHandler.INSTANCE.handleTouch(v, event);
             return true;
         });
         this.setBackgroundColor(Color.TRANSPARENT);
-    }
-
-    public void setNoteViewDrawer(NoteViewDrawer mNoteViewDrawer) {
-        this.mNoteViewDrawer = mNoteViewDrawer;
     }
 
     public BarViewGroup getBarViewGroup() {
@@ -68,7 +63,7 @@ public class NoteView extends View implements Clickable {
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        mNotePositionDict = new NotePositionDict(mPositionDict, mNote, (float) w, (float) h);
+        mNotePositionDict = new NotePositionDict(mScorePositionDict, mNote, (float) w, (float) h);
         mNoteViewDrawer = new NoteViewDrawer(mNotePositionDict);
 //        Log.d(TAG, "onSizeChanged: x:" + getX() +" y:" + getY() + " w:" + w + " h:" + h);
     }
@@ -82,7 +77,6 @@ public class NoteView extends View implements Clickable {
     @Override
     protected void onDraw(Canvas canvas) {
         mNoteViewDrawer.draw(canvas);
-//        canvas.drawRect(notePositionDict.getTouchAreaRectF(), mNoteViewDrawer.getPaint());
     }
 
     @Override

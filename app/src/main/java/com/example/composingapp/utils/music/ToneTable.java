@@ -9,6 +9,10 @@ public final class ToneTable {
 
     private ToneTable() { }
 
+    /**
+     * Builds an ImmutableTable with keys Note and NoteLength to produce a Note value
+     * @return ImmutableTable with keys Note and NoteLength to produce a Note value
+     */
     private static ImmutableTable<Music.PitchClass, Integer, Tone> buildToneTable() {
         ImmutableTable.Builder<Music.PitchClass, Integer, Tone> builder = new ImmutableTable.Builder<>();
         for (Music.PitchClass pitchClass : Music.PitchClass.getValues()) {

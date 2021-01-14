@@ -11,6 +11,7 @@ public abstract class AccidentalLeaf implements LeafDrawer {
     protected Paint mPaint;
     protected NotePositionDict mNotePositionDict;
     protected Float centerX, centerY;
+
     /**
      * Constructor for a NoteView
      *

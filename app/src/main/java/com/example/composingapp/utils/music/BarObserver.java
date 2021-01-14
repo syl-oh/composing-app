@@ -42,6 +42,13 @@ public class BarObserver implements Observer {
         addRestsWithWeightSumAt(0, mBeatsPerBar);
     }
 
+    /**
+     * Adjusts notes in noteArrayList to fit within the range of clef
+     *
+     * @param noteArrayList ArrayList of Notes whose Pitchclasses/octaves to adjust
+     * @param clef          Clef to adjust under
+     * @return ArrayList of Notes identical to noteArrayList but fits in the range of clef
+     */
     private ArrayList<Note> fitNotesWithinStaff(ArrayList<Note> noteArrayList, Music.Clef clef) {
         final int octaveMidiDistance = 12;
         MidiNoteDict midiNoteDict = MidiNoteDict.getInstance();

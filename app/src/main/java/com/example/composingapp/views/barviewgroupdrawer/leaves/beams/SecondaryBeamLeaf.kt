@@ -6,8 +6,18 @@ import com.example.composingapp.views.NoteView
 import com.example.composingapp.views.barviewgroupdrawer.leaves.StemLeaf
 import com.example.composingapp.views.barviewgroupdrawer.leaves.beams.BeamHelper.getStemX
 
+/**
+ * Constructor
+ *
+ * @param noteView NoteView to add the SecondaryBeamLeaf to
+ * @param stemDirection StemDirection of the NoteView
+ * @param paint Paint to calculate x position of the NoteView's stem
+ * @param yTranslation Float - vertical shift of the SecondaryBeamLeaf. Defaults to 0.
+ * @param extendsBefore Boolean - true if this SecondaryBeamLeaf should extend before the NoteView
+ * @param extendsAfter Boolean - true if this SecondaryBeamLeaf should extend after the NoteView
+ */
 class SecondaryBeamLeaf(
-        val noteView: NoteView,
+        noteView: NoteView,
         stemDirection: StemLeaf.StemDirection,
         paint: Paint,
         yTranslation: Float = 0F,

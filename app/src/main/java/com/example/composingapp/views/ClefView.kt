@@ -13,7 +13,6 @@ class ClefView(
 ) : androidx.appcompat.widget.AppCompatImageButton(context), Clickable {
     override lateinit var touchAreaRectF: RectF
 
-
     override var isClicked: Boolean = false;
     init {
         setImageResource(R.drawable.ic_treble_clef)
@@ -31,6 +30,12 @@ class ClefView(
         touchAreaRectF = RectF(0f, 0f, w.toFloat(), h.toFloat())
     }
 
+    /**
+     * Sets the clef of this ClefView
+     *
+     * @param clef Clef to change to
+     *
+     */
     fun setClef(clef: Music.Clef) {
         when (clef) {
             Music.Clef.TREBLE_CLEF -> setImageResource(R.drawable.ic_treble_clef)

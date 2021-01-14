@@ -7,6 +7,10 @@ public class NoteTable {
 
     private NoteTable() { }
 
+    /**
+     * Builds an ImmutableTable with keys Tone and NoteLength to produce a Note value
+     * @return ImmutableTable with keys Tone and NoteLength to produce a Note value
+     */
     private static ImmutableTable<Tone, Music.NoteLength, Note> buildNoteTable() {
         ImmutableTable.Builder<Tone, Music.NoteLength, Note> builder = new ImmutableTable.Builder<>();
         for (Tone tone : ToneTable.values()) {

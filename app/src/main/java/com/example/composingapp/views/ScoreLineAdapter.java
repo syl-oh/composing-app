@@ -110,6 +110,12 @@ public class ScoreLineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
         return (position == mBarObservers.size()) ? ADD_BUTTON_FOOTER : super.getItemViewType(position);
     }
 
+    /**
+     * Creates a ClefView to add to parent
+     *
+     * @param parent the parent of the ClefView
+     * @return ClefView to add
+     */
     private ClefView createClefView(View parent) {
         clefView = new ClefView(parent.getContext());
         int singleSpace = positionDict.getSingleSpaceHeight().intValue();
