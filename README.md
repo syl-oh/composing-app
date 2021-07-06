@@ -1,4 +1,4 @@
-# composing-app
+# Composing App
 
 An Android app for composing music on your phone!
 
