@@ -15,5 +15,5 @@ This app is incomplete, but the codebase is large and many features have already
 Checkout my [website](https://personal-website-70fad.web.app/) to see a video demonstration of the app!
 
 ## Contact
-Interested in the project? Got a feature you would like to see in the app? 
+Interested in the project? Got a feature you would like to see in the app? <br>
 [Email me](mailto:k.manku4@gmail.com) - let's chat!
